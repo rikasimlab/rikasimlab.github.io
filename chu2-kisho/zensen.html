@@ -28,6 +28,7 @@
     --isobar: #8a96a3;
     --warm: #d6451e;
     --cool: #1f63b3;
+    --occl: #7b3fa8;
     --sky: #eef3f8;
     --cold-air: #d9e7f5;
     --warm-air: #f8e1d6;
@@ -41,13 +42,13 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
-      --warm: #ff7d52; --cool: #63a6ff; --sky: #1a2430; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #5a4e3c;
+      --warm: #ff7d52; --cool: #63a6ff; --occl: #c79bf0; --sky: #1a2430; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #5a4e3c;
       --focus: #7fb3ff; --cell: #1f2b38; color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
     --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
-    --warm: #ff7d52; --cool: #63a6ff; --sky: #1a2430; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #5a4e3c;
+    --warm: #ff7d52; --cool: #63a6ff; --occl: #c79bf0; --sky: #1a2430; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #5a4e3c;
     --focus: #7fb3ff; --cell: #1f2b38; color-scheme: dark;
   }
   * { box-sizing: border-box; }
@@ -157,11 +158,15 @@
   .qt th, .qt td { border-bottom: 1px solid var(--line); padding: 3px 4px; text-align: center; white-space: nowrap; }
   .qt th { color: var(--muted); font-weight: 600; }
   .qt td:first-child, .qt tr:first-child th { font-family: var(--font-num); }
+  /* 閉そく前線の静止図：平面の記号と断面を横に並べ、狭い幅では縦に積む */
+  .occ { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .occ p { grid-column: 1 / -1; margin: 0; font-size: 14px; max-width: 72ch; }
   footer { font-size: 12px; color: var(--muted); }
   @media (max-width: 760px) {
     .grid { grid-template-columns: 1fr; }
     .wide { grid-column: auto; }
     .rec { grid-template-columns: 1fr; }
+    .occ { grid-template-columns: 1fr; }
   }
   .motion-note { display: none; }
   @media (prefers-reduced-motion: reduce) { .motion-note { display: block; } }
@@ -237,9 +242,17 @@
       <figcaption>観測点の記録（時間の変化）<span>入試のグラフ問題はこの形。縦線がいまの時刻</span></figcaption>
       <canvas id="graph" width="1200" height="520" aria-label="気温・気圧・風向・天気の時間変化"></canvas>
     </figure>
+    <figure class="panel wide">
+      <figcaption>閉そく前線（寒冷前線が温暖前線に追いつくと）<span>左が天気図の記号、右が西から東への断面</span></figcaption>
+      <div class="occ">
+        <canvas id="occ-plan" width="600" height="480" aria-label="閉そく前線の天気図の記号"></canvas>
+        <canvas id="occ-xs" width="600" height="480" aria-label="閉そく前線の断面図"></canvas>
+        <p>寒冷前線は温暖前線より速く進むので、低気圧が発達するとやがて温暖前線に追いつき、閉そく前線ができる。記号は、半円と▲が線の同じ側（進む側）に交互につく。閉そく前線では地上で寒気どうしが接し、暖気は上空へ押し上げられる。寒気どうしでも温度がちがい、冷たく重いほうが下になる（右の図は、寒冷前線の後ろの寒気のほうがあたたかく、温暖前線の前の寒気の上にはい上がる場合）。地上が寒気におおわれると、低気圧はやがて衰える。</p>
+      </div>
+    </figure>
   </main>
 
-  <footer>北半球の温帯低気圧を、教科書の模式図にそって単純化している。前線の位置・雨の範囲・気温の値は典型的な例で、実際の低気圧ごとにちがう。天気図記号の読み方は「気圧と風」のページにある。</footer>
+  <footer>北半球の温帯低気圧を、教科書の模式図にそって単純化している。上の動く図では前線は低気圧と一緒に動き、閉そくさせない（閉そく前線は下の静止図）。前線の位置・雨の範囲・気温の値は典型的な例で、実際の低気圧ごとにちがう。天気図記号の読み方は「気圧と風」のページにある。</footer>
 </div>
 
 <script>
@@ -332,17 +345,17 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - nx * 6, y2 - ny * 6); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - nx * 10 - ny * 5, y2 - ny * 10 + nx * 5); ctx.lineTo(x2 - nx * 10 + ny * 5, y2 - ny * 10 - nx * 5); ctx.closePath(); ctx.fill();
   }
-  // 前線の記号
+  // 前線の記号（kind：warm／cold／occl。閉そく前線は半円と▲を同じ側に交互）
   function frontLine(ctx, x1, y1, x2, y2, kind) {
     const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = dx / L, ny = dy / L;
-    const color = kind === 'warm' ? css('--warm') : css('--cool');
+    const color = css(kind === 'warm' ? '--warm' : kind === 'cold' ? '--cool' : '--occl');
     ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3; ctx.lineCap = 'round';
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
     const ang = Math.atan2(ny, nx);
-    for (let s = 14; s < L - 6; s += 22) {
-      const bx = x1 + nx * s, by = y1 + ny * s;
+    for (let s = 14, k = 0; s < L - 6; s += 22, k++) {
+      const bx = x1 + nx * s, by = y1 + ny * s, mark = kind === 'occl' ? (k % 2 ? 'cold' : 'warm') : kind;
       ctx.beginPath();
-      if (kind === 'warm') { ctx.arc(bx, by, 6, ang, ang + Math.PI, true); ctx.fill(); }          // 半円は進む側（北東）
+      if (mark === 'warm') { ctx.arc(bx, by, 6, ang, ang + Math.PI, true); ctx.fill(); }          // 半円は進む側（北東）
       else { ctx.moveTo(bx - nx * 6, by - ny * 6); ctx.lineTo(bx + ny * 10, by - nx * 10); ctx.lineTo(bx + nx * 6, by + ny * 6); ctx.closePath(); ctx.fill(); } // 三角は進む側（南東）
     }
   }
@@ -482,6 +495,67 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     xctx.font = '700 12px ' + css('--font-body'); xctx.textAlign = 'center'; xctx.textBaseline = 'top'; xctx.fillText('観測点', o.x, GY + 52);
   }
 
+  // ---------- 閉そく前線の静止図（モデルとは別。論理 300×240 を 2 枚） ----------
+  // 断面は宮城 R7 の図4 と同じ形：寒冷前線の後ろの寒気（西）が温暖前線の前の寒気（東）の上にはい上がり、暖気は上空へ（docs/reference/zensen.md）
+  const occPlan = document.getElementById('occ-plan'), opctx = occPlan.getContext('2d');
+  const occXs = document.getElementById('occ-xs'), oxctx = occXs.getContext('2d');
+  const OW = 300, OH = 240;
+  const OL = [92, 56], OP = [152, 128];                    // 低気圧の中心と、閉そく前線が温暖前線・寒冷前線に分かれる点
+  const OGY = 196, OTOP = 26, OXG = 110, OM = 0.5;         // 断面：地面、上端、地上の閉そく前線、ゆるやかな前線面の傾き
+  const oyG = (x) => OGY - (x - OXG) * OM, OJ = [200, oyG(200)];   // 2 つの前線面が交わる点（地上より上）
+  function drawOccPlan() {
+    const ctx = opctx, s = occPlan.width / OW; ctx.setTransform(s, 0, 0, s, 0, 0); ctx.clearRect(0, 0, OW, OH);
+    const ink = css('--ink'), muted = css('--muted');
+    ctx.fillStyle = css('--sky'); ctx.fillRect(0, 0, OW, OH);
+    ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.globalAlpha = 0.5;
+    [30, 58, 90].forEach(r => { ctx.beginPath(); ctx.ellipse(OL[0] + r * 0.15, OL[1] + r * 0.1, r * 1.15, r, 0, 0, Math.PI * 2); ctx.stroke(); });
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = muted; ctx.lineWidth = 1.2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(44, 104); ctx.lineTo(214, 104); ctx.stroke(); ctx.setLineDash([]);
+    frontLine(ctx, OP[0], OP[1], OP[0] + DW[0] * 150, OP[1] + DW[1] * 150, 'warm');
+    frontLine(ctx, OP[0], OP[1], OP[0] + DC[0] * 140, OP[1] + DC[1] * 140, 'cold');
+    const [ux, uy] = norm(OP[0] - OL[0], OP[1] - OL[1]); frontLine(ctx, OL[0] + ux * 14, OL[1] + uy * 14, OP[0], OP[1], 'occl');   // 「低」の字にかからないよう中心から少し離す
+    ctx.textBaseline = 'middle'; ctx.font = '11px ' + css('--font-body'); ctx.fillStyle = muted;
+    ctx.textAlign = 'right'; ctx.fillText('西', 40, 104); ctx.textAlign = 'left'; ctx.fillText('東', 218, 104);
+    ctx.fillText('断面（右の図）', 222, 88);
+    ctx.font = '700 12px ' + css('--font-body');
+    ctx.fillStyle = css('--occl'); ctx.textAlign = 'right'; ctx.fillText('閉そく前線', 118, 124);
+    ctx.fillStyle = css('--warm'); ctx.textAlign = 'center'; ctx.fillText('温暖前線', 236, 184);
+    ctx.fillStyle = css('--cool'); ctx.textAlign = 'right'; ctx.fillText('寒冷前線', 84, 194);
+    ctx.fillStyle = css('--warm'); ctx.textAlign = 'center'; ctx.font = '700 22px ' + css('--font-body'); ctx.fillText('低', OL[0], OL[1]);
+    drawFocus('occPlan', ctx);
+  }
+  function drawOccXs() {
+    const ctx = oxctx, s = occXs.width / OW; ctx.setTransform(s, 0, 0, s, 0, 0); ctx.clearRect(0, 0, OW, OH);
+    const ink = css('--ink'), muted = css('--muted'), warm = css('--warm'), cool = css('--cool'), occl = css('--occl');
+    const curve = (c) => c.quadraticCurveTo(205, 60, 100, OTOP);          // 寒冷前線の面：交わる点から急に上り、上空で西へ寝る
+    ctx.fillStyle = css('--sky'); ctx.fillRect(0, 0, OW, OGY);
+    ctx.fillStyle = css('--ground'); ctx.fillRect(0, OGY, OW, 10);
+    ctx.fillStyle = css('--warm-air'); ctx.fillRect(0, OTOP, OW, OGY - OTOP);
+    ctx.fillStyle = css('--cold-air');
+    ctx.beginPath(); ctx.moveTo(OXG, OGY); ctx.lineTo(OW, OGY); ctx.lineTo(OW, oyG(OW)); ctx.closePath(); ctx.fill();                           // 前の寒気
+    ctx.beginPath(); ctx.moveTo(0, OGY); ctx.lineTo(OXG, OGY); ctx.lineTo(OJ[0], OJ[1]); curve(ctx); ctx.lineTo(0, OTOP); ctx.closePath(); ctx.fill(); // 後ろの寒気
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = occl; ctx.beginPath(); ctx.moveTo(OXG, OGY); ctx.lineTo(OJ[0], OJ[1]); ctx.stroke();
+    ctx.strokeStyle = warm; ctx.beginPath(); ctx.moveTo(OJ[0], OJ[1]); ctx.lineTo(OW, oyG(OW)); ctx.stroke();
+    ctx.strokeStyle = cool; ctx.beginPath(); ctx.moveTo(OJ[0], OJ[1]); curve(ctx); ctx.stroke();
+    [[238, 24], [268, 22]].forEach(([x, h]) => cloudPuffs(ctx, x, oyG(x) - 20, 40, h, 0.95));
+    cloudPuffs(ctx, 224, 100, 40, 26, 0.95);
+    ctx.strokeStyle = css('--rain'); ctx.lineWidth = 1.2;
+    for (let x = 216; x < 262; x += 8) { const y = oyG(x) + 16 - ((x * 7) % 9); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 1.5, y + 9); ctx.stroke(); }
+    ctx.strokeStyle = occl; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(OXG, OGY); ctx.lineTo(OXG, OGY + 10); ctx.stroke();
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+    ctx.font = '700 12px ' + css('--font-body');
+    ctx.fillStyle = warm; ctx.fillText('暖気', 244, 46);
+    ctx.fillStyle = cool; ctx.fillText('後ろの寒気', 58, 150); ctx.fillText('前の寒気', 262, 180);
+    ctx.fillStyle = occl; ctx.fillText('閉そく前線', OXG, OGY + 22);
+    ctx.font = '11px ' + css('--font-body');
+    ctx.fillStyle = warm; ctx.fillText('上空へ押し上げられる', 244, 62);
+    ctx.fillStyle = muted; ctx.fillText('（寒冷前線の後ろ）', 58, 166);
+    arrow(ctx, 12, 12, 52, 12, muted, 2); ctx.textAlign = 'left'; ctx.fillText('前線はこちらへ進む（東）', 58, 12);
+    ctx.fillText('西', 6, OGY + 22); ctx.textAlign = 'right'; ctx.fillText('東', OW - 6, OGY + 22);
+    drawFocus('occXs', ctx);
+  }
+
   // ---------- 時間グラフ ----------
   const gr = document.getElementById('graph'), gctx = gr.getContext('2d');
   let GW = 600; const GH = 260, GL = 54, GR = 14;
@@ -604,10 +678,10 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     if (gr.height !== gh) gr.height = gh;
   }
   layoutCanvases();
-  const FITS = [fitCanvas(xs, xctx, () => xsView().w), fitCanvas(plan, pctx, () => PW), fitCanvas(gr, gctx, () => GW)];
+  const FITS = [fitCanvas(xs, xctx, () => xsView().w), fitCanvas(plan, pctx, () => PW), fitCanvas(gr, gctx, () => GW), fitCanvas(occPlan, opctx, () => OW), fitCanvas(occXs, oxctx, () => OW)];
   let lastW = innerWidth;
   addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; layoutCanvases(); FITS.forEach(f => f()); renderAll(); });
-  function renderAll() { drawXs(); drawPlan(); drawGraph(); updateReadout(); }
+  function renderAll() { drawXs(); drawPlan(); drawGraph(); drawOccPlan(); drawOccXs(); updateReadout(); }
 
   // ---------- 操作 ----------
   const slider = document.getElementById('time'), play = document.getElementById('play');
@@ -671,7 +745,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     // ---- イージー：用語・記号・しくみ ----
     { level: 'easy', setup: { t: 20, obs: QOBS },
       q: '天気図で、低気圧の中心から南西にのびる、▲の記号がついた前線を何というか。',
-      choices: ['温暖前線', '寒冷前線', '停滞前線', '閉塞前線'], answer: 1,
+      choices: ['温暖前線', '寒冷前線', '停滞前線', '閉そく前線'], answer: 1,
       explain: '平面図の青い線が寒冷前線。▲は、寒気が暖気を押しながら進む向き（南東側）につく。赤い線が温暖前線で、半円の記号が進む向き（北東側）につく。',
       focus: { plan: 'coldFront' } },
     { level: 'easy', setup: { t: 20, obs: QOBS },
@@ -699,11 +773,11 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       choices: ['広い範囲に、長い時間おだやかに降る', 'せまい範囲に、短い時間強く降る', '前線の後ろ（西側）だけに降る', '雨は降らず、晴れる'], answer: 0,
       explain: '断面図で、温暖前線の前方（東側）に横に広がる乱層雲。暖気が寒気の上をゆるやかにはい上がるので、雲は横に広がり、雨の範囲も広い。平面図では温暖前線の前の青い帯が雨の範囲。',
       focus: { xs: 'ns', plan: 'warmRain' } },
-    { level: 'easy', setup: { t: QPT.cold, obs: QOBS },
-      q: '寒冷前線が進むとき、寒気は暖気に対してどのように動くか。',
-      choices: ['暖気の上にゆるやかにはい上がる', '暖気の下にもぐりこんで、暖気を押し上げる', '暖気と混ざって、ひとつの気団になる', '暖気の上を通りこして先へ進む'], answer: 1,
-      explain: '断面図の寒冷前線。寒気は暖気より重い（密度が大きい）ので、暖気の下にもぐりこむ。押し上げられた暖気が強い上昇気流になり、積乱雲ができる。',
-      focus: { xs: 'cb' } },
+    { level: 'easy', setup: { t: 20, obs: QOBS },
+      q: '寒冷前線が温暖前線に追いついてできる、閉そく前線を表す記号として正しいものはどれか。',
+      choices: ['半円と▲が交互に、線の両側に向きを変えてつく', '▲の記号だけが、前線の進む向きの側につく', '半円と▲が交互に、線の同じ側（進む向きの側）につく', '半円の記号だけが、前線の進む向きの側につく'], answer: 2,
+      explain: 'ページのいちばん下の「閉そく前線」の図の紫の線。温暖前線の半円と寒冷前線の▲を合わせた形で、どちらも進む側に交互につく。半円と▲が線の両側に向きを変えてつくのは停滞前線（5章の梅雨前線）。',
+      focus: { occPlan: 'symbol' } },
     // ---- スタンダード：図・グラフの読み取り ----
     { level: 'std', setup: { t: QPT.cold, obs: QOBS },
       q: '観測点の記録（時間の変化）のグラフで、寒冷前線が通過したのはおよそ何時間のところか。',
@@ -767,10 +841,10 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       explain: '断面図の2つの前線面を見比べる。温暖前線面は暖気がはい上がるのでゆるやかで、横に広い乱層雲。寒冷前線面は寒気がもぐりこむので急で、縦に高い積乱雲。入試では断面図の A・B を見せて、どちらが寒冷前線かを問う。',
       focus: { xs: 'both' } },
     { level: 'hard', setup: { t: 20, obs: QOBS },
-      q: '温帯低気圧の中心付近で雲ができ、天気が悪くなる理由として正しいものはどれか。',
-      choices: ['中心から風が吹き出して、空気が地面の近くに集まるから', '中心に向かって風が吹きこみ、上昇気流が生じて空気が冷え、水蒸気が水滴になるから', '中心付近は気圧が高く、空気が圧縮されて温まるから', '中心付近では風がなく、空気が動かないから'], answer: 1,
-      explain: '平面図の中心付近の風の矢印は、反時計回りに中心へ吹きこんでいる。集まった空気は上に逃げるしかなく（上昇気流）、上空で膨張して温度が下がり、露点に達して雲ができる。2章「気圧と風」と3章「雲のでき方」のつながり。',
-      focus: { plan: 'center' } },
+      q: 'ページのいちばん下の「閉そく前線」の断面図では、地上で2つの寒気が接し、寒冷前線の後ろの寒気が、温暖前線の前の寒気の上にはい上がっている。断面がこのような形になる理由として正しいものはどれか。',
+      choices: ['後ろの寒気のほうが前の寒気よりあたたかく、軽いから', '暖気のほうが寒気より重く、寒気を押し上げるから', '寒冷前線のほうが温暖前線よりおそく進むから', '後ろの寒気のほうが前の寒気より冷たく、重いから'], answer: 0,
+      explain: '閉そく前線の断面図で、地上の閉そく前線から東へ上る、2つの寒気の境の面を見る。寒気どうしでも温度がちがい、冷たく重い空気が下になる（寒冷前線・温暖前線の前線面と同じ理由）。後ろの寒気のほうがあたたかく軽いので、前の寒気の上にはい上がる。暖気はどちらの寒気よりも軽いので、地上から離れて上空へ押し上げられる。記述で答えるなら：「寒冷前線の後ろの寒気が、温暖前線の前の寒気よりもあたたかく密度が小さいので、前の寒気の上にはい上がるから。」',
+      focus: { occXs: 'cold2' } },
     { level: 'hard', setup: { t: 16, obs: QOBS },
       q: '図の時刻から 12 時間後の、観測点の天気・気温・風向として正しいものはどれか。',
       choices: ['雨。気温は約 18 ℃ で、南の風', 'くもり。気温は約 18 ℃ のままで、南西の風', `${WX_LABEL[later.wx]}。気温は約 ${Math.round(later.temp)} ℃ で、${later.dir}の風`, '雨。気温は約 8 ℃ で、東の風'], answer: 2,
@@ -789,7 +863,6 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       moveArrow: (ctx) => { const cx = cxAt(state.t); hlRect(ctx, cx - 14, CY - 80, 170, 40); },
       warmRain: (ctx) => { const cx = cxAt(state.t); hlRing(ctx, cx + DW[0] * 300 + NW[0] * 35, CY + DW[1] * 300 + NW[1] * 35, 110); },
       rainAreas: (ctx) => { const cx = cxAt(state.t); FOCUS.plan.warmRain(ctx); hlRing(ctx, cx + DC[0] * 170 + NC[0] * 18, CY + DC[1] * 170 + NC[1] * 18, 60); },
-      center: (ctx) => hlRing(ctx, cxAt(state.t), CY, 70),
       obs: (ctx) => hlRing(ctx, state.obs.x, state.obs.y, 40)
     },
     xs: {
@@ -802,8 +875,11 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       warmSector: (ctx) => { const pt = passTimes(state.obs); if (pt) hlRect(ctx, GX(pt.warm), 14, GX(pt.cold) - GX(pt.warm), 228); },
       pMin: (ctx) => hlRect(ctx, GX((state.obs.x + 150) / SPEED) - 14, 14, 28, 228),
       future: (ctx) => hlRect(ctx, GX(state.t), 14, GX(T_MAX) - GX(state.t), 228)
-    }
+    },
+    occPlan: { symbol: (ctx) => hlRing(ctx, (OL[0] + OP[0]) / 2 + 6, (OL[1] + OP[1]) / 2, 44) },
+    occXs: { cold2: (ctx) => hlRect(ctx, OXG - 14, OJ[1] - 22, OJ[0] - OXG + 32, OGY - OJ[1] + 30) }
   };
+  const FOCUS_EL = [['occXs', 'occ-xs'], ['occPlan', 'occ-plan'], ['xs', 'xs'], ['plan', 'plan'], ['graph', 'graph']];   // 「図をこの状態にして見る」でスクロールする先（先にあるものを優先）
   function drawFocus(which, ctx) { const key = state.focus && state.focus[which]; if (key) FOCUS[which][key](ctx); }
 
   const quizEl = document.getElementById('panel-quiz');
@@ -831,7 +907,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     else if (d.retry) { levelList().forEach(([, k]) => { quiz.picked[k] = null; }); goQuestion(0); }
     else if (d.focus) {
       const q = current()[0]; state.focus = q.focus; applySetup(q.setup);
-      const target = document.getElementById(q.focus.xs ? 'xs' : q.focus.plan ? 'plan' : 'graph');
+      const target = document.getElementById(FOCUS_EL.find(([k]) => q.focus[k])[1]);
       target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
     }
   });
