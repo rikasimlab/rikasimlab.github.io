@@ -149,6 +149,8 @@
   .dot.ng { background: var(--warm); border-color: var(--warm); color: #fff; }
   .dot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
   .q { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .qmaps { display: grid; gap: 6px; margin: 8px 0; }
+  .qmaps canvas { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
   .choices { display: grid; gap: 6px; }
   .choices button { text-align: left; font: inherit; font-size: 14px; line-height: 1.4; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; display: flex; gap: 8px; align-items: baseline; }
   .choices button .k { font-family: var(--font-num); color: var(--muted); flex: none; }
@@ -1093,6 +1095,11 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     return { km: Math.round(gap * 5 / 100) * 100, kmh: Math.round(speed * 5), days: gap / speed / 24 };
   })();
   const BAIU_LAT = [5, 10].map(s => Math.round(baiuLat(s)));
+  // 天気の変化の予測（東京 R8・福岡 R7 の型）：春・秋の 24 時間ちがいの天気図 2 枚（図1・図2）と、図2 の 24 時間後の東京の天気
+  const FC_T = [24, 48, 72];
+  const FC = FC_T.map(t => withModel('spring', t, () => ({ wx: WX_LABEL[situation(TOKYO.x, TOKYO.y).wx], low: systems()[2], high: systems()[3] })));   // systems() の [2] は k=1 の低気圧、[3] は k=2 の高気圧
+  const fcLon = (x) => Math.round(118 + x / 15), FC_KM = Math.round((FC[1].low.x - FC[0].low.x) * 5 / 10) * 10;   // 1 px ≒ 5 km（hard の SP と同じ）
+  const fcMaps = () => `<div class="qmaps">${FC_T.slice(0, 2).map((t, i) => `<canvas data-fc="${t}" data-tag="図${i + 1}" width="1200" height="600" aria-label="図${i + 1}：日本付近の天気図（${i ? '図1 の 24 時間後' : '春のある日'}）"></canvas>`).join('')}</div>`;
   const QUIZ = [
     // ---- イージー：用語・記号・しくみ ----
     { level: 'easy', setup: { mode: 'winter', v: 6, obs: NIIGATA },
@@ -1156,11 +1163,11 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       choices: ['南東に太平洋高気圧、北西の大陸に低気圧があり、等圧線の間隔が広い（南高北低）', '西に高気圧、東に低気圧があり、等圧線の間隔がせまい（西高東低）', '日本付近に東西にのびる停滞前線がある', '高気圧と低気圧が交互に並び、西から東へ動く'], answer: 0,
       explain: '平面図：日本の南東に太平洋高気圧、大陸に低気圧の「南高北低」。等圧線の間隔が広いので季節風は冬より弱く、南東から吹く。冬の「西高東低」と並べて覚える。',
       focus: { plan: 'summerHL' } },
-    { level: 'std', setup: { mode: 'baiu', v: 5, obs: TOKYO },
-      q: '平面図の梅雨前線（停滞前線）の記号として正しいものはどれか。',
-      choices: ['▲だけが、前線の南側に並ぶ', '半円だけが、前線の北側に並ぶ', '半円と▲が交互に、線の反対側につく', '半円と▲が交互に、線の同じ側につく'], answer: 2,
-      explain: '平面図の前線：半円（北側）と▲（南側）が交互に、線の反対側についている。暖気と寒気がおし合って、どちらにも進まないことを表す。半円だけなら温暖前線、▲だけなら寒冷前線（4章）。',
-      focus: { plan: 'front' } },
+    { level: 'std', setup: { mode: 'spring', v: FC_T[1], obs: TOKYO },
+      q: `図1 は春のある日の天気図、図2 はその 24 時間後の天気図である。${fcMaps()}図1 から図2 までに、高気圧と低気圧はどの向きに動いたか。また、東京の天気はどう変わったか。正しい組み合わせはどれか。`,
+      choices: [`西へ動いた。東京は ${FC[1].wx} → ${FC[0].wx}`, `東へ動いた。東京は ${FC[1].wx} → ${FC[0].wx}`, `東へ動いた。東京は ${FC[0].wx} → ${FC[1].wx}`, `西へ動いた。東京は ${FC[0].wx} → ${FC[1].wx}`], answer: 2,
+      explain: `図1 で大陸（東経 ${fcLon(FC[0].low.x)} 度付近）にあった低気圧は、図2 では東経 ${fcLon(FC[1].low.x)} 度付近へ、東京のすぐ東（東経 ${fcLon(FC[0].high.x)} 度付近）にあった高気圧は東経 ${fcLon(FC[1].high.x)} 度付近の海上へ。どちらも 1 日に約 ${FC_KM} km 東へ進んだ（上空の偏西風に流される）。東京は高気圧の中の${FC[0].wx}から、西から低気圧が近づいて${FC[1].wx}になった。大きい天気図で時間を ${FC_T[0]} → ${FC_T[1]} 時間と動かすと確かめられる。`,
+      focus: { plan: 'springRow' } },
     { level: 'std', setup: { mode: 'winter', v: 3, obs: NIIGATA },
       q: '観測点（新潟）の位置はそのままで、シベリア高気圧の強さを 3 から 8 にすると、日本付近の等圧線の間隔と観測点の風力はどうなるか。',
       choices: [`等圧線の間隔が広くなり、風力は ${WF8} から ${WF3} に小さくなる`, `等圧線の間隔がせまくなり、風力は ${WF3} から ${WF8} に大きくなる`, '等圧線の間隔も風力も変わらない', `等圧線の間隔がせまくなるが、風力は ${WF3} のまま変わらない`], answer: 1,
@@ -1192,11 +1199,11 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       choices: ['約 1 日ごと', '約 2 日ごと', `約 ${Math.floor(SP.days)}〜${Math.ceil(SP.days)} 日ごと`, '約 10 日ごと'], answer: 2,
       explain: `${SP.km} km ÷ ${SP.kmh} km/h ≒ ${Math.round(SP.km / SP.kmh)} 時間 ≒ ${SP.days.toFixed(1)} 日。高気圧（晴れ）と低気圧（雨）が交互に西から来るので、天気は数日ごとに変わる。「動かす」で観測点の天気が晴れ → くもり → 雨 → 晴れとめぐるのを確かめる。`,
       focus: { plan: 'springRow' } },
-    { level: 'hard', setup: { mode: 'winter', v: 6, obs: TOKYO },
-      q: '冬の季節風は大陸を出たときは冷たく乾いているが、日本海側に大雪を降らせる。山を越えて太平洋側に吹き下りてくる風の性質と、その理由の組み合わせとして正しいものはどれか。',
-      choices: ['あたたかく湿っている。太平洋から水蒸気をもらうから', '冷たく湿っている。日本海で水蒸気をもらったままだから', 'あたたかく乾いている。シベリア気団が太平洋側には届かないから', '冷たく乾いている。日本海でもらった水蒸気を、山を越える前に雪として日本海側に落としたから'], answer: 3,
-      explain: '断面図の①→④：大陸（乾）→ 日本海で水蒸気をもらう（湿）→ 山にぶつかって上昇し雪を降らせる → 太平洋側へ乾いた風（からっ風）。観測点の記録で、東京の天気は晴れ。',
-      focus: { xs: 'snow' } },
+    { level: 'hard', setup: { mode: 'spring', v: FC_T[1], obs: TOKYO },
+      q: `図1 は春のある日の天気図、図2 はその 24 時間後の天気図である。${fcMaps()}図2 のさらに 24 時間後、東京の天気はどうなると考えられるか。天気と、そう考えた理由の組み合わせとして最も適当なものはどれか。`,
+      choices: ['晴れ。東の海上へ進んだ高気圧が、西へもどってくるから', '晴れ。低気圧は動かずに、その場で消えるから', `${FC[1].wx}のまま。高気圧も低気圧も、図2 の位置にとどまるから`, `${FC[2].wx}。西にある低気圧が上空の偏西風に流されて東へ進み、東京に近づくから`], answer: 3,
+      explain: `図1 → 図2 で、高気圧も低気圧も 1 日に約 ${FC_KM} km 東へ進んだ。同じように進むと、24 時間後には図2 の低気圧が東経 ${fcLon(FC[2].low.x)} 度付近（東京の北）まで来て、東京は${FC[2].wx}になる。天気は西から変わるので、明日の天気は西にある高気圧・低気圧を見て予想する。「図をこの状態にして見る」で 24 時間後（${FC_T[2]} 時間）の天気図になる。記述で答えるなら：「低気圧が偏西風によって西から東へ移動し、東京に近づくから。」`,
+      focus: { plan: 'fcLow' }, reveal: { v: FC_T[2] } },
     { level: 'hard', setup: { mode: 'typhoon', v: 50, obs: TOKYO },
       q: '台風と、4章で学んだ温帯低気圧のちがいとして正しいものはどれか。',
       choices: ['台風には寒冷前線と温暖前線がある', '台風には前線がなく、等圧線がほぼ同心円で間隔がせまい', '温帯低気圧は熱帯の海上で発生する', '台風の中心は気圧が最も高い'], answer: 1,
@@ -1221,6 +1228,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       sides: (ctx) => { const c = typhoonAt(val()); hlRing(ctx, c.x, c.y, 110); },
       path: (ctx) => { const a = typhoonAt(0), b = typhoonAt(72); hlRect(ctx, Math.min(a.x, typhoonAt(30).x) - 30, b.y - 30, b.x - Math.min(a.x, typhoonAt(30).x) + 60, a.y - b.y + 60); },
       springRow: (ctx) => hlRect(ctx, 10, L2Y(44), PW - 20, L2Y(33) - L2Y(44)),
+      fcLow: (ctx) => { const q = systems()[2]; hlRing(ctx, TOKYO.x, TOKYO.y, 40); hlRing(ctx, q.x, q.y, 50); },
       tyIsobars: (ctx) => { const c = typhoonAt(val()); hlRing(ctx, c.x, c.y, 90); },
     },
     xs: {
@@ -1232,6 +1240,46 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
   function drawFocus(which, ctx) { const key = state.focus && state.focus[which]; if (key) FOCUS[which][key](ctx); }
 
   const quizEl = document.getElementById('panel-quiz');
+  // 問題の中の天気図（図1・図2）：春・秋の時刻 t を入試の図の形で（気団・天気の塗り・風は描かない）。日本付近（y FC_Y0〜FC_Y0+300）を横長に切り出す
+  const FC_Y0 = 90;
+  function drawFcMaps() {
+    quizEl.querySelectorAll('canvas[data-fc]').forEach(cv => {
+      const ctx = cv.getContext('2d'), t = +cv.dataset.fc, s = cv.width / PW;
+      fitCanvas(cv, ctx, () => PW);
+      withModel('spring', t, () => {
+        const ink = css('--ink'), muted = css('--muted');
+        ctx.setTransform(s, 0, 0, s, 0, -FC_Y0 * s); ctx.clearRect(0, FC_Y0, PW, 300);
+        ctx.fillStyle = css('--map'); ctx.fillRect(0, FC_Y0, PW, 300);
+        ctx.fillStyle = css('--sea-soft'); ctx.globalAlpha = 0.55; ctx.fillRect(0, FC_Y0, PW, 300); ctx.globalAlpha = 1;
+        const poly = (pts) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); };
+        ctx.fillStyle = css('--land'); ctx.strokeStyle = muted; ctx.lineWidth = 1;
+        poly(CONT); ctx.fill(); ctx.stroke(); for (const isl of ISLANDS) { poly(isl); ctx.fill(); ctx.stroke(); }
+        ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.setLineDash([2, 4]);
+        ctx.beginPath(); ctx.moveTo(0, L2Y(40)); ctx.lineTo(PW, L2Y(40)); ctx.stroke();
+        for (const lon of [130, 140, 150]) { ctx.beginPath(); ctx.moveTo(L2X(lon), FC_Y0); ctx.lineTo(L2X(lon), FC_Y0 + 300); ctx.stroke(); }
+        ctx.setLineDash([]);
+        drawIsobars(ctx); pendingLabels.length = 0;                     // 等圧線の値は切り出した外（上下の端）に付くので描かない
+        for (const q of systems()) if (q.kind === 'L') {
+          frontLine(ctx, q.x, q.y, q.x + 150 * Math.cos(25 * Math.PI / 180), q.y + 150 * Math.sin(25 * Math.PI / 180), 'warm');
+          frontLine(ctx, q.x, q.y, q.x - 0.6 * 150, q.y + 0.8 * 150, 'cold');
+        }
+        for (const q of systems()) {
+          if (q.x < -20 || q.x > PW + 20) continue;
+          const hi = q.kind === 'H', color = hi ? css('--cool') : css('--warm');
+          haloText(ctx, hi ? '高' : '低', q.x, q.y - 6, color, '700 22px ' + css('--font-body'));
+          haloText(ctx, String(Math.round(pressureAt(q.x, q.y))), q.x, q.y + 13, color, '600 11px ' + css('--font-num'));
+        }
+        ctx.fillStyle = ink; ctx.beginPath(); ctx.arc(TOKYO.x, TOKYO.y, 4.5, 0, Math.PI * 2); ctx.fill();
+        haloText(ctx, '東京', TOKYO.x + 10, TOKYO.y + 10, ink, '700 12px ' + css('--font-body'), 'left');
+        haloText(ctx, '40°N', PW - 4, L2Y(40) - 8, muted, '10px ' + css('--font-num'), 'right');   // 左端は図1 の低気圧と重なるので右端に
+        for (const lon of [130, 140, 150]) haloText(ctx, lon + '°E', L2X(lon), FC_Y0 + 290, muted, '10px ' + css('--font-num'));
+        ctx.fillStyle = css('--panel'); ctx.strokeStyle = ink; ctx.lineWidth = 1.5; ctx.fillRect(8, FC_Y0 + 8, 56, 32); ctx.strokeRect(8, FC_Y0 + 8, 56, 32);
+        ctx.fillStyle = ink; ctx.font = '700 18px ' + css('--font-body'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(cv.dataset.tag, 36, FC_Y0 + 24);
+      });
+    });
+  }
+  addEventListener('resize', drawFcMaps);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', drawFcMaps);
   const quiz = { level: 'easy', i: { easy: 0, std: 0, hard: 0 }, picked: QUIZ.map(() => null) };
   const levelList = () => QUIZ.map((q, k) => [q, k]).filter(([q]) => q.level === quiz.level);
   const current = () => levelList()[quiz.i[quiz.level]];
@@ -1244,6 +1292,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     const choices = q.choices.map((c, k) => { const mark = picked === null ? '' : k === q.answer ? 'ok' : k === picked ? 'ng' : ''; return `<button type="button" data-pick="${k}" data-mark="${mark}"${picked === null ? '' : ' disabled'}><span class="k">${KEYS[k]}</span><span>${c}</span></button>`; }).join('');
     const explain = picked === null ? '' : `<div class="explain"><div class="verdict ${picked === q.answer ? 'ok' : 'ng'}">${picked === q.answer ? '正解' : `ちがう。正解は ${KEYS[q.answer]}`}</div><div><strong>図のどこを見るか：</strong>${q.explain}</div><button type="button" class="qbtn focus" data-focus="1">図をこの状態にして見る</button></div>`;
     quizEl.innerHTML = `<div class="levels" role="tablist" aria-label="難易度">${levels}</div><p class="ldesc">${LEVELS.find(l => l[0] === quiz.level)[2]}</p><div class="qnav"><span>問 ${i + 1} / ${n}</span><div class="dots">${dots}</div></div><div class="q">${q.q}</div><div class="choices">${choices}</div>${explain}<div class="qfoot"><button type="button" class="qbtn" data-step="-1"${i === 0 ? ' disabled' : ''}>← 前</button><button type="button" class="qbtn" data-step="1"${i === n - 1 ? ' disabled' : ''}>次 →</button><span class="score">${answered} 問中 ${correct} 問正解</span><button type="button" class="qbtn" data-retry="1"${answered ? '' : ' disabled'}>やり直す</button></div>`;
+    drawFcMaps();
   }
   function goQuestion(j) { const list = levelList(); quiz.i[quiz.level] = Math.max(0, Math.min(list.length - 1, j)); state.focus = null; applySetup(current()[0].setup); renderQuiz(); }
   quizEl.addEventListener('click', (ev) => {
