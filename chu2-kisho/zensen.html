@@ -474,7 +474,11 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     // ラベル
     xctx.font = '700 12px ' + css('--font-body'); xctx.textBaseline = 'middle';
     xctx.textAlign = 'center';
-    xctx.fillStyle = cool; xctx.fillText('寒気', Math.max(v.x0 + 30, xc - 110), GY - 60); xctx.fillText('寒気', Math.min(v.x0 + v.w - 30, xw + 170), GY - 22);
+    // 寒気の字は図の端に寄せるが、前線が図の外に出て端が暖気になったら描かない（字の幅の半分 12 を見込んで、くさびの中にあるときだけ）
+    const ckL = Math.max(v.x0 + 30, xc - 110), ckR = Math.min(v.x0 + v.w - 30, xw + 170);
+    xctx.fillStyle = cool;
+    if (ckL + 12 < xc - 60 / 1.1) xctx.fillText('寒気', ckL, GY - 60);
+    if (ckR - 12 > xw + 22 / 0.3) xctx.fillText('寒気', ckR, GY - 22);
     xctx.fillStyle = warm; xctx.fillText('暖気', (xc + xw) / 2, GY - 80);
     xctx.fillStyle = ink;
     xctx.fillText('積乱雲', cbX + 10, cbTop - 12); xctx.fillText('乱層雲', xw + 55, GY - 90); xctx.fillText('高層雲', xw + 160, GY - 76); xctx.fillText('巻雲', xw + 240, GY - 100);
