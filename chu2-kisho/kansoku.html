@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>気象観測｜中2 理科 気象とその変化</title>
+<meta name="description" content="天気図記号の読み書き、乾湿計と湿度表で湿度を読む、圧力と大気圧の計算。中2理科「気象とその変化」1章。問題は難易度3段階。">
+<link rel="canonical" href="https://rikasimlab.github.io/chu2-kisho/kansoku.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="中2 理科 気象とその変化">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="気象観測｜中2 理科 気象とその変化">
+<meta property="og:description" content="天気図記号の読み書き、乾湿計と湿度表で湿度を読む、圧力と大気圧の計算。中2理科「気象とその変化」1章。問題は難易度3段階。">
+<meta property="og:url" content="https://rikasimlab.github.io/chu2-kisho/kansoku.html">
+<meta property="og:image" content="https://rikasimlab.github.io/chu2-kisho/ogp/kansoku.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: 1章は計算ツールと静止図の章。左に大きな天気図記号（この章で目立たせる1か所）、右に「記号を読む」「問題」、下に記号一覧・乾湿計・圧力の計算 */
+  :root {
+    --paper: #eef1f4; --map: #f7f9fa; --panel: #ffffff; --ink: #17202a; --muted: #5f6b78; --line: #cfd6dd; --isobar: #8a96a3; --cell: #f3f5f7;
+    --warm: #d6451e; --cool: #1f63b3; --focus: #2a5d8f; --focus-soft: rgba(42, 93, 143, .12);
+    --cool-soft: #dbe9f4; --warm-soft: #fbe9e2;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b; --cell: #1f2b38; --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff; --focus-soft: rgba(127, 179, 255, .14); --cool-soft: #1f3344; --warm-soft: #3a2620; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b; --cell: #1f2b38; --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff; --focus-soft: rgba(127, 179, 255, .14); --cool-soft: #1f3344; --warm-soft: #3a2620; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .app { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px; display: flex; flex-direction: column; gap: 18px; }
+  nav.crumbs { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+  nav.crumbs a { color: var(--focus); text-decoration: none; }
+  nav.crumbs a:hover { text-decoration: underline; text-underline-offset: .18em; }
+  nav.crumbs span { color: var(--muted); }
+
+  /* 表題枠：天気図の凡例枠に見立てた墨線の枠（目次と同じ形） */
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px; }
+  .cartouche { padding: 12px 18px 12px 16px; background: var(--panel); border: 1.5px solid var(--ink); }
+  .cartouche h1 { margin: 0; font-size: clamp(24px, 4vw, 34px); font-weight: 700; line-height: 1.25; letter-spacing: .02em; }
+  .cartouche p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+  .cartouche p b { font-family: var(--font-num); font-weight: 600; color: var(--ink); }
+  header .lead { margin: 0; flex: 1 1 320px; max-width: 48em; font-size: 15px; }
+  header .lead strong { font-weight: 700; }
+
+  .grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; align-items: start; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-top: 2px solid var(--ink); padding: 12px 14px 14px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .wide { grid-column: 1 / -1; }
+  figcaption, .cap { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 700; flex-wrap: wrap; }
+  figcaption span, .cap span { font-weight: 400; color: var(--muted); }
+
+  /* 記号をつくる：この章で目立たせる1か所 */
+  .symframe { border: 1.5px solid var(--ink); background: var(--map); }
+  canvas { display: block; width: 100%; height: auto; }
+  .controls { display: flex; flex-direction: column; gap: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
+  .group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .gl { font-size: 13px; white-space: nowrap; }
+  .seg { display: inline-flex; border: 1px solid var(--line); overflow: hidden; }
+  .seg button { font: inherit; font-size: 14px; font-weight: 500; padding: 7px 12px; min-height: 40px; background: transparent; color: var(--ink); border: 0; cursor: pointer; white-space: nowrap; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+  .btn { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 12px; min-height: 36px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .btn:focus-visible { outline: 2px solid var(--focus); }
+  .btn:disabled { opacity: .35; cursor: default; }
+  .btn.num { font-family: var(--font-num); width: 40px; padding: 0; }
+  .stepper { display: flex; align-items: center; gap: 8px; flex: 1 1 260px; min-width: 0; }
+  .stepper input[type="range"] { flex: 1; min-width: 90px; accent-color: var(--focus); }
+  .stepper output { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 14px; min-width: 2.2em; text-align: center; white-space: nowrap; }
+  select, input[type="number"] { font: inherit; font-size: 14px; padding: 6px 8px; min-height: 36px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+  input[type="number"] { font-family: var(--font-num); width: 7em; text-align: right; }
+  select:focus-visible, input:focus-visible { outline: 2px solid var(--focus); }
+  .reading, .explain { margin: 0; padding: 10px 12px; background: var(--cell); font-size: 13px; display: grid; gap: 4px; }
+  .reading strong { color: var(--ink); }
+
+  /* タブ（2章と同じ） */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line); }
+  .tabs button { font: inherit; font-size: 13px; font-weight: 700; padding: 8px 12px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+  .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .tabpanel { display: grid; gap: 12px; }
+  .tabpanel[hidden] { display: none; }
+  .rec { display: grid; grid-template-columns: 112px 1fr; gap: 12px; align-items: start; }
+  .symbol { width: 112px; height: 112px; border: 1px solid var(--line); background: var(--map); }
+  table.rt { border-collapse: collapse; width: 100%; font-size: 14px; }
+  table.rt th, table.rt td { border: 1px solid var(--line); padding: 5px 10px; text-align: left; vertical-align: middle; }
+  table.rt th { background: var(--cell); color: var(--muted); font-weight: 500; width: 5em; white-space: nowrap; }
+  table.rt td select { width: 100%; }
+  table.rt td .ok { color: var(--cool); font-weight: 700; }
+  table.rt td .ng { color: var(--warm); font-weight: 700; }
+  .score { margin-left: auto; font-family: var(--font-num); font-size: 12px; color: var(--muted); }
+
+  /* 記号一覧 */
+  .list { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+  .list ul { margin: 0; padding-left: 1.2em; font-size: 13px; display: grid; gap: 3px; }
+  table.tb { border-collapse: collapse; width: 100%; font-size: 14px; border-top: 2px solid var(--ink); }
+  table.tb th, table.tb td { border-bottom: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+  table.tb th { font-weight: 500; color: var(--muted); font-size: 12px; }
+  table.tb td.n { font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .hl { outline: 3px dashed var(--focus); outline-offset: 4px; background: var(--focus-soft); }
+
+  /* 圧力の計算 */
+  .press, .hum { display: grid; grid-template-columns: 1fr 1.1fr; gap: 16px; align-items: start; }
+  .press .inputs { display: grid; gap: 10px; }
+  .field { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+  .field .unit { font-family: var(--font-num); color: var(--muted); font-size: 13px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 6px; }
+  table.steps { border-collapse: collapse; width: 100%; font-size: 14px; border-top: 2px solid var(--ink); }
+  table.steps th, table.steps td { border-bottom: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+  table.steps th { width: 4.5em; font-weight: 500; color: var(--muted); font-size: 12px; white-space: nowrap; }
+  table.steps td { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 14px; }
+  table.steps td small { font-family: var(--font-body); color: var(--muted); display: block; font-size: 12px; }
+  table.steps tr.res td { font-weight: 600; font-size: 16px; }
+  .why { margin: 0; padding: 10px 12px; border-left: 3px solid var(--cool); background: var(--cool-soft); font-size: 13px; }
+  .why strong { display: block; margin-bottom: 2px; }
+  .why b { font-family: var(--font-num); font-weight: 600; }
+
+  /* 乾湿計：湿度表の一部（乾球の行と差の列が交わるところを示す） */
+  .stepper output.t { width: 3.4em; flex: none; }
+  .u { font-family: var(--font-body); }   /* ℃ は IBM Plex Mono にないので本文の字で */
+  table.hy { border-collapse: collapse; width: 100%; font-size: 13px; border-top: 2px solid var(--ink); table-layout: fixed; }
+  table.hy caption { caption-side: top; text-align: left; font-size: 12px; color: var(--muted); padding-bottom: 4px; }
+  table.hy th, table.hy td { border-bottom: 1px solid var(--line); padding: 5px 2px; text-align: center; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+  table.hy th { font-weight: 500; color: var(--muted); font-size: 12px; }
+  table.hy th.lab { font-family: var(--font-body); width: 4.6em; text-align: left; padding-left: 6px; }
+  table.hy .on { background: var(--focus-soft); color: var(--ink); }
+  table.hy td.hit { outline: 2px solid var(--ink); outline-offset: -2px; font-weight: 600; }
+
+  /* 問題タブ（4章の型） */
+  .quiz { gap: 10px; }
+  .qnav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .dots { display: flex; gap: 4px; flex-wrap: wrap; }
+  .dot { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font: 600 12px var(--font-num); color: var(--muted); cursor: pointer; padding: 0; }
+  .dot[aria-current="true"] { border-color: var(--ink); color: var(--ink); border-width: 2px; }
+  .dot.ok { background: var(--cool); border-color: var(--cool); color: #fff; }
+  .dot.ng { background: var(--warm); border-color: var(--warm); color: #fff; }
+  .dot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .q { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .choices { display: grid; gap: 6px; }
+  .choices button { text-align: left; font: inherit; font-size: 14px; line-height: 1.4; padding: 8px 10px; min-height: 40px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; display: flex; gap: 8px; align-items: center; }
+  .choices button .k { font-family: var(--font-num); color: var(--muted); flex: none; }
+  .choices button img { width: 64px; height: 64px; display: block; }
+  .choices button:focus-visible { outline: 2px solid var(--focus); }
+  .choices button:disabled { cursor: default; }
+  .choices button[data-mark="ok"] { border-color: var(--cool); background: var(--cool-soft); }
+  .choices button[data-mark="ng"] { border-color: var(--warm); background: var(--warm-soft); }
+  .choices button[data-mark="ok"] .k, .choices button[data-mark="ng"] .k { color: inherit; font-weight: 600; }
+  .explain { gap: 6px; }
+  .verdict { font-weight: 700; }
+  .verdict.ok { color: var(--cool); }
+  .verdict.ng { color: var(--warm); }
+  .qbtn { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 12px; min-height: 36px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .qbtn:focus-visible { outline: 2px solid var(--focus); }
+  .qbtn:disabled { opacity: .35; cursor: default; }
+  .qbtn.focus { border-color: var(--focus); color: var(--focus); justify-self: start; }
+  .qfoot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .qfoot .score { margin-left: auto; }
+  .levels { display: flex; gap: 14px; border-bottom: 1px solid var(--line); }
+  .levels button { font: inherit; font-size: 13px; font-weight: 700; padding: 2px 0 6px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; margin-bottom: -1px; display: flex; gap: 5px; align-items: baseline; }
+  .levels button small { font: 600 11px var(--font-num); color: var(--muted); }
+  .levels button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .levels button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .ldesc { margin: -6px 0 0; font-size: 12px; color: var(--muted); }
+  .freq { margin: 0 0 -8px; font-size: 11px; font-weight: 700; color: var(--muted); }
+  .fnote { margin: 0; font-size: 11px; color: var(--muted); }
+  .qt { border-collapse: collapse; margin: 8px 0; font-size: 12px; font-weight: 400; width: 100%; border-top: 2px solid var(--ink); }
+  .qt th, .qt td { border-bottom: 1px solid var(--line); padding: 3px 4px; text-align: center; white-space: nowrap; }
+  .qt th { color: var(--muted); font-weight: 600; }
+  .qt td:first-child, .qt tr:first-child th { font-family: var(--font-num); }
+
+  footer { font-size: 12px; color: var(--muted); max-width: 70em; }
+  @media (max-width: 760px) {
+    .grid, .list, .press, .hum { grid-template-columns: 1fr; }
+    .wide { grid-column: auto; }
+    .rec { grid-template-columns: 112px 1fr; }
+  }
+  /* タッチ端末：押せるものは 44px 四方以上。マウスの見た目は変えない */
+  @media (pointer: coarse) {
+    .seg button { min-height: 44px; min-width: 44px; }
+    .btn { min-height: 44px; }
+    .btn.num { width: 44px; flex: none; }
+    select, input[type="number"] { min-height: 44px; }
+    .stepper input[type="range"] { height: 44px; min-width: 80px; }
+    .tabs button { min-height: 44px; padding-inline: 16px; }
+    .dot { width: 44px; height: 44px; }
+    .choices button, .qbtn { min-height: 44px; }
+    .levels button { min-height: 44px; }
+    nav.crumbs { row-gap: 0; }
+    nav.crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+</style>
+
+<div class="app">
+  <nav class="crumbs"><a href="./">← 目次（気象とその変化）</a><span>1 気象観測</span><a href="kiatsu-to-kaze.html">2 気圧と風</a><a href="suijoki.html">3 空気中の水の変化</a><a href="zensen.html">4 前線と天気の変化</a><a href="nihon-no-kisho.html">5 日本の気象</a></nav>
+  <header>
+    <div class="cartouche">
+      <h1>気象観測</h1>
+      <p>中学2年 理科　第2分野 ｜ 気象とその変化 <b>1</b></p>
+    </div>
+    <p class="lead"><strong>記号ひとつで、天気・風向・風力がわかる。</strong>天気・風向・風力を選ぶと天気図記号ができる（文 → 記号）。「記号を読む」で逆向きも練習できる（記号 → 文）。下の「乾湿計で湿度を読む」で湿度表の使い方を、「圧力を計算する」で、N/m²・Pa・hPa の換算と大気圧の大きさを確かめる。「問題」タブは入試形式。</p>
+  </header>
+
+  <main class="grid">
+    <figure class="panel">
+      <figcaption>記号をつくる（文 → 記号）<span>天気・風向・風力を選ぶと記号が変わる</span></figcaption>
+      <div class="symframe"><canvas id="sym" width="900" height="800" aria-label="天気図記号。16 方位の目盛りの中に記号"></canvas></div>
+      <div class="controls">
+        <div class="row">
+          <div class="group"><span class="gl">天気</span>
+            <div class="seg" id="wxseg" role="group" aria-label="天気">
+              <button type="button" data-wx="clear" aria-pressed="false">快晴</button>
+              <button type="button" data-wx="fine" aria-pressed="true">晴れ</button>
+              <button type="button" data-wx="cloudy" aria-pressed="false">くもり</button>
+              <button type="button" data-wx="rain" aria-pressed="false">雨</button>
+              <button type="button" data-wx="snow" aria-pressed="false">雪</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="group"><label class="gl" for="dir">風向</label>
+            <button type="button" class="btn num" id="dir-minus" aria-label="風向を反時計回りに1つ">−</button>
+            <select id="dir" aria-label="風向（風が吹いてくる方位）"></select>
+            <button type="button" class="btn num" id="dir-plus" aria-label="風向を時計回りに1つ">＋</button>
+          </div>
+          <div class="stepper"><label class="gl" for="force">風力</label>
+            <button type="button" class="btn num" id="f-minus" aria-label="風力を1下げる">−</button>
+            <input type="range" id="force" min="0" max="12" step="1" value="3">
+            <button type="button" class="btn num" id="f-plus" aria-label="風力を1上げる">＋</button>
+            <output id="force-out" for="force">3</output>
+          </div>
+        </div>
+      </div>
+      <div class="reading" id="reading" aria-live="polite"></div>
+    </figure>
+
+    <aside class="panel">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-read" aria-selected="true" aria-controls="panel-read">記号を読む</button>
+        <button type="button" role="tab" id="tab-quiz" aria-selected="false" aria-controls="panel-quiz">問題</button>
+      </div>
+      <div class="tabpanel" id="panel-read" role="tabpanel" aria-labelledby="tab-read">
+        <div class="cap">記号を読む（記号 → 文）<span>記号を見て、天気・風向・風力を答える</span></div>
+        <div class="rec">
+          <canvas class="symbol" id="rsym" width="224" height="224" aria-label="読む練習の天気図記号"></canvas>
+          <table class="rt">
+            <tr><th><label for="a-wx">天気</label></th><td><select id="a-wx"></select></td></tr>
+            <tr><th><label for="a-dir">風向</label></th><td><select id="a-dir"></select></td></tr>
+            <tr><th><label for="a-f">風力</label></th><td><select id="a-f"></select></td></tr>
+          </table>
+        </div>
+        <div class="row">
+          <button type="button" class="qbtn" id="r-check">答え合わせ</button>
+          <button type="button" class="qbtn" id="r-next">次の記号</button>
+          <span class="score" id="r-score">0 問中 0 問正解</span>
+        </div>
+        <div class="explain" id="r-verdict" hidden></div>
+        <ul style="margin:0;padding-left:1.2em;font-size:13px;display:grid;gap:3px">
+          <li>線が伸びている向きが<strong>風向</strong>（風が吹いてくる方位）。線がなければ風力0（静穏）</li>
+          <li>矢羽根の本数が<strong>風力</strong>。○の中の印が<strong>天気</strong></li>
+        </ul>
+      </div>
+      <div class="tabpanel quiz" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden></div>
+    </aside>
+
+    <section class="panel wide" aria-labelledby="list-cap">
+      <div class="cap" id="list-cap">記号一覧<span>日本式の天気図記号。入試で使うのはこの 5 つの天気と風力 0〜12</span></div>
+      <div class="list">
+        <div>
+          <canvas id="legend" width="1000" height="560" aria-label="天気の記号 5 種と、風力 0〜12 の矢羽根"></canvas>
+          <ul>
+            <li>○の中の印が<strong>天気</strong>：○ 快晴、縦線 晴れ、◎ くもり、● 雨、× 雪</li>
+            <li>線は<strong>風が吹いてくる向き</strong>。北へ伸びていれば「北の風」（北から吹いてくる風）。風向は 16 方位</li>
+            <li>矢羽根の本数が<strong>風力</strong>（0〜12）。風力0は線を引かない。矢羽根は、○から線の先を見て右側につける</li>
+          </ul>
+        </div>
+        <div>
+          <table class="tb" id="cloudtable">
+            <tr><th>雲量（空全体を 10）</th><th>天気</th><th>記号</th></tr>
+            <tr><td class="n">0〜1</td><td>快晴</td><td>○</td></tr>
+            <tr><td class="n">2〜8</td><td>晴れ</td><td>○の中に縦線</td></tr>
+            <tr><td class="n">9〜10</td><td>くもり</td><td>◎</td></tr>
+            <tr><td colspan="3" style="color:var(--muted);font-size:12px">雨や雪が降っているときは雲量に関係なく「雨」「雪」</td></tr>
+          </table>
+          <table class="tb" id="forcetable" style="margin-top:12px">
+            <tr><th>風力</th><th>風速（m/s）</th><th>風力</th><th>風速（m/s）</th></tr>
+            <tbody id="forcerows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <figure class="panel wide" id="kanshitsu">
+      <figcaption>乾湿計で湿度を読む<span>乾球の示度（気温）と、乾球と湿球の示度の差から、湿度表で湿度を読む</span></figcaption>
+      <div class="hum">
+        <div class="inputs">
+          <div class="stepper"><label class="gl" for="dry">乾球</label>
+            <button type="button" class="btn num" id="dry-minus" aria-label="乾球の示度を1℃下げる">−</button>
+            <input type="range" id="dry" min="0" max="35" step="1" value="21">
+            <button type="button" class="btn num" id="dry-plus" aria-label="乾球の示度を1℃上げる">＋</button>
+            <output class="t" id="dry-out" for="dry">21</output>
+          </div>
+          <div class="stepper"><label class="gl" for="wet">湿球</label>
+            <button type="button" class="btn num" id="wet-minus" aria-label="湿球の示度を1℃下げる">−</button>
+            <input type="range" id="wet" min="14" max="21" step="1" value="18">
+            <button type="button" class="btn num" id="wet-plus" aria-label="湿球の示度を1℃上げる">＋</button>
+            <output class="t" id="wet-out" for="wet">18</output>
+          </div>
+          <div class="presets" id="hpresets">
+            <button type="button" class="btn" data-t="21" data-d="3">乾球 21℃・湿球 18℃</button>
+            <button type="button" class="btn" data-t="15" data-d="0">示度が同じ（15℃・15℃）</button>
+            <button type="button" class="btn" data-t="10" data-d="5">冬の乾いた日（10℃・5℃）</button>
+          </div>
+          <canvas id="hcv" width="900" height="500" aria-label="乾湿計の図。左が乾球、右が湿球（球部をぬれた布で包む）"></canvas>
+        </div>
+        <div>
+          <table class="steps" id="hsteps">
+            <tr><th>① 気温</th><td id="h-t"></td></tr>
+            <tr><th>② 差</th><td id="h-d"></td></tr>
+            <tr class="res"><th>③ 湿度</th><td id="h-rh"></td></tr>
+            <tr><th>水蒸気量</th><td id="h-v"></td></tr>
+          </table>
+          <table class="hy" id="htable" style="margin-top:12px"><caption>湿度表の一部（湿度 %）</caption><thead></thead><tbody></tbody></table>
+          <p class="why" id="hwhy" style="margin-top:12px"><strong>なぜ湿球のほうが低いのか</strong>湿球は球部をぬれた布で包んである。布の水が蒸発するとき周りから熱（気化熱）をうばうので、湿球の示度は下がる。空気が乾いているほど水がよく蒸発するので、示度の差が大きくなり、湿度は低い。湿度 100% のときは蒸発しないので、2 本の示度は同じになる。乾湿計は、直射日光が当たらない風通しのよい所で、地上約 1.5 m の高さに置く。</p>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="panel wide">
+      <figcaption>圧力を計算する<span>圧力〔Pa〕＝ 面を垂直に押す力〔N〕÷ 力がはたらく面積〔m²〕。1 Pa ＝ 1 N/m²</span></figcaption>
+      <div class="press">
+        <div class="inputs">
+          <div class="field"><label for="mass">物体の質量</label><input type="number" id="mass" min="1" max="1000000" step="1" value="2000"><span class="unit">g</span><span style="font-size:12px;color:var(--muted)">100 g の物体にはたらく重力を 1 N とする</span></div>
+          <div class="field"><label for="area">面の面積</label><input type="number" id="area" min="0.01" max="1000000" step="1" value="100"><span class="unit">cm²</span><span style="font-size:12px;color:var(--muted)">1 m² ＝ 10000 cm²</span></div>
+          <div class="presets" id="presets">
+            <button type="button" class="btn" data-mass="2000" data-area="100">レンガを寝かせる（2 kg、100 cm²）</button>
+            <button type="button" class="btn" data-mass="2000" data-area="50">同じレンガを立てる（50 cm²）</button>
+            <button type="button" class="btn" data-mass="50000" data-area="400">人が両足で立つ（50 kg、400 cm²）</button>
+            <button type="button" class="btn" data-mass="50000" data-area="200">片足で立つ（200 cm²）</button>
+          </div>
+          <canvas id="pcv" width="900" height="420" aria-label="物体が面を押す図。矢印が力、底面が面積"></canvas>
+        </div>
+        <div>
+          <table class="steps" id="psteps">
+            <tr><th>① 力</th><td id="s-f"></td></tr>
+            <tr><th>② 面積</th><td id="s-a"></td></tr>
+            <tr class="res"><th>③ 圧力</th><td id="s-p"></td></tr>
+            <tr><th>hPa</th><td id="s-h"></td></tr>
+            <tr><th>比べる</th><td id="s-c"></td></tr>
+          </table>
+          <p class="why" id="atm" style="margin-top:12px"><strong>大気圧（気圧）</strong>空気にも重さがあり、その重さによる圧力が大気圧。あらゆる向きに同じ大きさではたらく。海面の高さでは約 <b>1013 hPa</b> ＝ <b>101300 Pa</b>（N/m²）。1 m² の面に約 <b>101300 N</b>、約 10 t の物体をのせたのと同じ。高い所ほど、その上にある空気が少ないので気圧は低くなる。</p>
+        </div>
+      </div>
+    </figure>
+  </main>
+
+  <footer>天気図記号は日本式（気象庁「天気記号解説（日本式）」）。中学で使う天気は快晴・晴れ・くもり・雨・雪の 5 つ、雲量による区分は気象庁の定義（0〜1 快晴、2〜8 晴れ、9〜10 くもり）。風力は気象庁風力階級（風力 0〜12）。湿度表は乾湿計の式（自然通風、乾湿計定数 0.0008/℃、1013 hPa）から計算した値で、教科書によっては 1% ちがうマスがある。水蒸気量の計算に使う飽和水蒸気量は3章と同じ教科書の値。圧力の単位は 1 Pa ＝ 1 N/m²、1 hPa ＝ 100 Pa。1 気圧 ≒ 1013 hPa。</footer>
+</div>
+
+<script>
+(() => {
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DIRS = ['北','北北東','北東','東北東','東','東南東','南東','南南東','南','南南西','南西','西南西','西','西北西','北西','北北西'];
+  const WX = [['clear','快晴'],['fine','晴れ'],['cloudy','くもり'],['rain','雨'],['snow','雪']];
+  const WXL = Object.fromEntries(WX);
+  const SHAPE = { clear: '○の中に何もないので「快晴」', fine: '○の中に縦線があるので「晴れ」', cloudy: '○が二重なので「くもり」', rain: '●が黒くぬってあるので「雨」', snow: '○の中に × があるので「雪」' };
+  // 気象庁風力階級（各風力の下限 m/s）。docs/reference/tenkizu-kigo-furyoku.md
+  const BEAUFORT = [0.3, 1.6, 3.4, 5.5, 8.0, 10.8, 13.9, 17.2, 20.8, 24.5, 28.5, 32.7];
+  const speedRange = (f) => f === 0 ? '0.0〜0.2' : f === 12 ? '32.7 以上' : `${BEAUFORT[f - 1].toFixed(1)}〜${(BEAUFORT[f] - 0.1).toFixed(1)}`;
+  const state = { wx: 'fine', di: 2, f: 3, focus: null, press: { mass: 2000, area: 100 } };
+
+  // ---------- 天気図記号（2章 drawSymbol と同じ描き方。快晴と雪を足した） ----------
+  function drawSymbol(ctx, x, y, size, wx, bearing, force, color) {
+    const ink = color || css('--ink');
+    ctx.save();
+    ctx.strokeStyle = ink; ctx.fillStyle = ink; ctx.lineWidth = Math.max(1.5, size * 0.06); ctx.lineCap = 'round';
+    const R = size * 0.22;
+    ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2);
+    if (wx === 'rain') ctx.fill(); else ctx.stroke();
+    if (wx === 'fine') { ctx.beginPath(); ctx.moveTo(x, y - R); ctx.lineTo(x, y + R); ctx.stroke(); }
+    if (wx === 'cloudy') { ctx.beginPath(); ctx.arc(x, y, R * 0.55, 0, Math.PI * 2); ctx.stroke(); }
+    if (wx === 'snow') { const k = R * 0.62; ctx.beginPath(); ctx.moveTo(x - k, y - k); ctx.lineTo(x + k, y + k); ctx.moveTo(x + k, y - k); ctx.lineTo(x - k, y + k); ctx.stroke(); }
+    if (force > 0) {
+      const b = bearing * Math.PI / 180;
+      const dx = Math.sin(b), dy = -Math.cos(b);      // 風が吹いてくる向き
+      const L = size * 0.9;
+      ctx.beginPath(); ctx.moveTo(x + dx * R, y + dy * R); ctx.lineTo(x + dx * (R + L), y + dy * (R + L)); ctx.stroke();
+      const rxv = -dy, ryv = dx;                       // 円から先端を見て右側
+      let fx = rxv * 0.85 + dx * 0.5, fy = ryv * 0.85 + dy * 0.5;
+      const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
+      const flen = size * 0.3, gap = size * 0.13;
+      for (let i = 0; i < force; i++) {
+        const t = L - i * gap; if (t < size * 0.2) break;
+        const px = x + dx * (R + t), py = y + dy * (R + t);
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * flen, py + fy * flen); ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+  function hl(ctx, draw) { ctx.save(); ctx.strokeStyle = css('--focus'); ctx.fillStyle = css('--focus'); ctx.lineWidth = 3; ctx.setLineDash([8, 6]); draw(); ctx.restore(); }
+  function hlRing(ctx, x, y, r) { hl(ctx, () => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.globalAlpha = .12; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke(); }); }
+  function hlRect(ctx, x, y, w, h) { hl(ctx, () => { ctx.globalAlpha = .12; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; ctx.strokeRect(x, y, w, h); }); }
+
+  // ---------- 記号をつくる（大きな記号と 16 方位の目盛り） ----------
+  const sym = document.getElementById('sym'), sctx = sym.getContext('2d');
+  const SW = 300, SH = 266.7, CX = 150, CY = 134, RING = 118;
+  function drawHero() {
+    sctx.setTransform(3, 0, 0, 3, 0, 0); sctx.clearRect(0, 0, SW, SH);
+    const muted = css('--muted'), line = css('--isobar');
+    sctx.strokeStyle = line; sctx.lineWidth = 0.8;
+    sctx.beginPath(); sctx.arc(CX, CY, RING, 0, Math.PI * 2); sctx.stroke();
+    sctx.fillStyle = muted; sctx.textAlign = 'center'; sctx.textBaseline = 'middle';
+    for (let i = 0; i < 16; i++) {
+      const a = i * 22.5 * Math.PI / 180, dx = Math.sin(a), dy = -Math.cos(a), main = i % 4 === 0, sub = i % 2 === 0;
+      sctx.strokeStyle = i === state.di && state.f > 0 ? css('--focus') : line; sctx.lineWidth = main ? 1.5 : 0.8;
+      sctx.beginPath(); sctx.moveTo(CX + dx * (RING - (main ? 8 : sub ? 6 : 4)), CY + dy * (RING - (main ? 8 : sub ? 6 : 4))); sctx.lineTo(CX + dx * RING, CY + dy * RING); sctx.stroke();
+      if (sub) {
+        sctx.font = (main ? '700 11px ' : '9px ') + css('--font-body');
+        sctx.fillStyle = i === state.di && state.f > 0 ? css('--focus') : muted;
+        sctx.fillText(DIRS[i], CX + dx * (RING + 10), CY + dy * (RING + 9));
+      }
+    }
+    drawSymbol(sctx, CX, CY, 90, state.wx, state.di * 22.5, state.f);
+    if (state.f > 0) {
+      sctx.font = '700 10px ' + css('--font-body'); sctx.fillStyle = css('--focus'); sctx.textAlign = 'center'; sctx.textBaseline = 'middle';
+      // 線の中ほどの左側（矢羽根は右側につく）に置き、線から離れる向きに文字を伸ばす。枠からはみ出すなら反対側に置く
+      const a = state.di * 22.5 * Math.PI / 180, dx = Math.sin(a), dy = -Math.cos(a), k = RING * 0.55, d = 34, label = '風が吹いてくる向き';
+      const tw = sctx.measureText(label).width, px = CX + dx * k, py = CY + dy * k;
+      let sx = dy, sy = -dx, align = Math.abs(sx) < 0.3 ? 'center' : sx > 0 ? 'left' : 'right';
+      if ((align === 'left' && px + sx * d + tw > SW - 4) || (align === 'right' && px + sx * d - tw < 4)) { sx = -sx; sy = -sy; align = align === 'left' ? 'right' : 'left'; }
+      sctx.textAlign = align;
+      sctx.fillText(label, px + sx * d, py + sy * d);
+    }
+    if (state.focus && state.focus.sym) hlRing(sctx, CX, CY, 126);
+  }
+  function fmtReading(wx, di, f) { return f === 0 ? `静穏・${WXL[wx]}` : `${DIRS[di]}の風・風力${f}・${WXL[wx]}`; }
+  function updateReading() {
+    const { wx, di, f } = state;
+    document.getElementById('reading').innerHTML = '<strong>この記号はこう読む</strong>' + (f === 0
+      ? `<span>線がないので風力0（静穏、風速 0.0〜0.2 m/s）。風向は書かない。</span><span>${SHAPE[wx]}。</span><span>まとめると「<strong>静穏・${WXL[wx]}</strong>」。</span>`
+      : `<span>線が<strong>${DIRS[di]}</strong>へ伸びているので「${DIRS[di]}の風」（${DIRS[di]}から吹いてくる風）。</span><span>矢羽根が<strong>${f}本</strong>なので風力${f}（風速 ${speedRange(f)} m/s）。</span><span>${SHAPE[wx]}。</span><span>まとめると「<strong>${fmtReading(wx, di, f)}</strong>」。</span>`);
+  }
+  const dirSel = document.getElementById('dir'), forceIn = document.getElementById('force');
+  DIRS.forEach((d, i) => dirSel.add(new Option(d, i)));
+  function setSym(s) {
+    if (s.wx) state.wx = s.wx; if (s.di !== undefined) state.di = (s.di + 16) % 16; if (s.f !== undefined) state.f = Math.max(0, Math.min(12, s.f));
+    document.querySelectorAll('[data-wx]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.wx === state.wx)));
+    dirSel.value = state.di; forceIn.value = state.f; document.getElementById('force-out').value = state.f;
+    document.getElementById('f-minus').disabled = state.f <= 0; document.getElementById('f-plus').disabled = state.f >= 12;
+    drawHero(); updateReading();
+  }
+  document.querySelectorAll('[data-wx]').forEach(b => b.addEventListener('click', () => setSym({ wx: b.dataset.wx })));
+  dirSel.addEventListener('change', () => setSym({ di: +dirSel.value }));
+  document.getElementById('dir-minus').addEventListener('click', () => setSym({ di: state.di - 1 }));
+  document.getElementById('dir-plus').addEventListener('click', () => setSym({ di: state.di + 1 }));
+  forceIn.addEventListener('input', () => setSym({ f: +forceIn.value }));
+  document.getElementById('f-minus').addEventListener('click', () => setSym({ f: state.f - 1 }));
+  document.getElementById('f-plus').addEventListener('click', () => setSym({ f: state.f + 1 }));
+
+  // ---------- 記号を読む（記号 → 文） ----------
+  const rsym = document.getElementById('rsym'), rctx = rsym.getContext('2d');
+  const aWx = document.getElementById('a-wx'), aDir = document.getElementById('a-dir'), aF = document.getElementById('a-f');
+  aWx.add(new Option('—', '')); WX.forEach(([k, l]) => aWx.add(new Option(l, k)));
+  aDir.add(new Option('—', '')); aDir.add(new Option('静穏（線がない）', 'calm')); DIRS.forEach((d, i) => aDir.add(new Option(d, i)));
+  aF.add(new Option('—', '')); for (let i = 0; i <= 12; i++) aF.add(new Option(String(i), i));
+  const read = { cur: null, n: 0, ok: 0, checked: false };
+  function newRead() {
+    const f = Math.random() < 0.12 ? 0 : 1 + Math.floor(Math.random() * 7);
+    read.cur = { wx: WX[Math.floor(Math.random() * WX.length)][0], di: Math.floor(Math.random() * 16), f };
+    read.checked = false;
+    aWx.value = ''; aDir.value = ''; aF.value = '';
+    const v = document.getElementById('r-verdict'); v.hidden = true; v.innerHTML = '';
+    document.querySelectorAll('#panel-read .rt td').forEach(td => { const m = td.querySelector('.mark'); if (m) m.remove(); });
+    drawRead();
+  }
+  function drawRead() {
+    rctx.setTransform(2, 0, 0, 2, 0, 0); rctx.clearRect(0, 0, 112, 112);
+    const c = read.cur; drawSymbol(rctx, 56, 56, 44, c.wx, c.di * 22.5, c.f);
+  }
+  function checkRead() {
+    const c = read.cur;
+    if (aWx.value === '' || aDir.value === '' || aF.value === '') { const v = document.getElementById('r-verdict'); v.hidden = false; v.innerHTML = '<span class="verdict ng">天気・風向・風力の 3 つを全部選んでから答え合わせ</span>'; return; }
+    const okWx = aWx.value === c.wx, okDir = c.f === 0 ? aDir.value === 'calm' : aDir.value === String(c.di), okF = +aF.value === c.f;
+    const mark = (td, ok, right) => { let m = td.querySelector('.mark'); if (!m) { m = document.createElement('div'); m.className = 'mark'; td.appendChild(m); } m.innerHTML = ok ? '<span class="ok">○</span>' : `<span class="ng">×</span> <small>正しくは ${right}</small>`; };
+    mark(aWx.closest('td'), okWx, WXL[c.wx]); mark(aDir.closest('td'), okDir, c.f === 0 ? '静穏（線がない）' : DIRS[c.di]); mark(aF.closest('td'), okF, String(c.f));
+    if (!read.checked) { read.n++; if (okWx && okDir && okF) read.ok++; read.checked = true; }
+    document.getElementById('r-score').textContent = `${read.n} 問中 ${read.ok} 問正解`;
+    const v = document.getElementById('r-verdict'); v.hidden = false;
+    v.innerHTML = `<div class="verdict ${okWx && okDir && okF ? 'ok' : 'ng'}">${okWx && okDir && okF ? '正解' : 'ちがうところがある'}</div><div>この記号は「<strong>${fmtReading(c.wx, c.di, c.f)}</strong>」。${c.f === 0 ? '線がないので風力0（静穏）、風向は書かない。' : `線が${DIRS[c.di]}へ伸びている（${DIRS[c.di]}から吹いてくる）。矢羽根 ${c.f} 本。`}${SHAPE[c.wx]}。</div>`;
+  }
+  document.getElementById('r-check').addEventListener('click', checkRead);
+  document.getElementById('r-next').addEventListener('click', newRead);
+
+  // ---------- 記号一覧 ----------
+  // Canvas の論理幅を表示幅に合わせる（スマホ幅でも文字の大きさを保つ）。戻り値は論理幅
+  function fit(c, maxW, h) { const w = Math.round(Math.max(300, Math.min(maxW, c.clientWidth || maxW))); c.width = w * 2; c.height = h * 2; return w; }
+  const legend = document.getElementById('legend'), lctx = legend.getContext('2d');
+  function drawLegend() {
+    const narrow = (legend.clientWidth || 500) < 440, perRow = narrow ? 5 : 7, rows = Math.ceil(13 / perRow);
+    const LW = fit(legend, 500, 120 + rows * 80);
+    lctx.setTransform(2, 0, 0, 2, 0, 0); lctx.clearRect(0, 0, LW, 120 + rows * 80);
+    const muted = css('--muted'), ink = css('--ink');
+    lctx.textAlign = 'left'; lctx.textBaseline = 'top'; lctx.fillStyle = muted; lctx.font = '700 12px ' + css('--font-body');
+    lctx.fillText('天気（○の中の印）', 8, 6);
+    lctx.textAlign = 'center'; lctx.font = '12px ' + css('--font-body');
+    WX.forEach(([k, l], i) => { const x = 40 + i * 62; drawSymbol(lctx, x, 46, 40, k, 0, 0); lctx.fillStyle = ink; lctx.fillText(l, x, 68); });
+    lctx.textAlign = 'left'; lctx.fillStyle = muted; lctx.font = '700 12px ' + css('--font-body');
+    lctx.fillText('風力（矢羽根の本数）　例はすべて北の風', 8, 100);
+    lctx.font = '11px ' + css('--font-body'); lctx.textAlign = 'center';
+    const step = (LW - 40) / perRow;
+    for (let f = 0; f <= 12; f++) {
+      const row = Math.floor(f / perRow), col = f % perRow;
+      const x = 20 + step * (col + 0.5), y = 160 + row * 80;
+      drawSymbol(lctx, x, y, 30, 'fine', 0, f);
+      lctx.fillStyle = ink; lctx.fillText(f === 0 ? '0（静穏）' : String(f), x, y + 14);
+    }
+    const L = state.focus && state.focus.list;
+    if (L === 'wx') hlRect(lctx, 6, 22, 330, 64);
+    if (L === 'force') hlRect(lctx, 6, 116, LW - 12, rows * 80);
+  }
+  document.getElementById('forcerows').innerHTML = Array.from({ length: 7 }, (_, i) => { const a = i, b = i + 7; return `<tr><td class="n">${a}</td><td class="n">${speedRange(a)}</td>${b <= 12 ? `<td class="n">${b}</td><td class="n">${speedRange(b)}</td>` : '<td></td><td></td>'}</tr>`; }).join('');
+
+  // ---------- 乾湿計 ----------
+  // 湿度表 HUM[乾球℃][示度の差℃]（%）。乾湿計の式から計算した値。docs/reference/kanshitsukei.md
+  const HUM = [[100,80,60,40,21,3,null,null], [100,81,62,43,25,7,null,null], [100,82,64,46,29,12,null,null], [100,82,65,49,32,16,null,null],
+    [100,83,67,51,35,20,5,null], [100,84,68,53,38,24,9,null], [100,85,70,55,41,27,13,null], [100,85,71,57,43,30,17,4],
+    [100,86,72,59,46,33,20,8], [100,86,73,60,48,36,24,12], [100,87,74,62,50,38,27,15], [100,87,75,63,52,40,29,19],
+    [100,88,76,65,53,43,32,22], [100,88,77,66,55,45,34,25], [100,89,78,67,57,46,37,27], [100,89,78,68,58,48,39,30],
+    [100,89,79,69,59,50,41,32], [100,90,80,70,61,51,43,34], [100,90,80,71,62,53,44,36], [100,90,81,72,63,54,46,38],
+    [100,91,81,72,64,56,48,40], [100,91,82,73,65,57,49,41], [100,91,82,74,66,58,50,43], [100,91,83,75,67,59,52,45],
+    [100,91,83,75,67,60,53,46], [100,92,84,76,68,61,54,47], [100,92,84,76,69,62,55,48], [100,92,84,77,70,63,56,50],
+    [100,92,85,77,70,64,57,51], [100,92,85,78,71,64,58,52], [100,92,85,78,72,65,59,53], [100,93,86,79,72,66,60,54],
+    [100,93,86,79,73,66,60,55], [100,93,86,80,73,67,61,56], [100,93,86,80,74,68,62,56], [100,93,87,80,74,68,63,57]];
+  // 飽和水蒸気量（g/m³、0〜35℃）。3章と同じ教科書の値。docs/reference/suijoki.md
+  const SAT = [4.8, 5.2, 5.6, 6.0, 6.4, 6.8, 7.3, 7.8, 8.3, 8.8, 9.4, 10.0, 10.7, 11.4, 12.1, 12.8, 13.6, 14.5, 15.4, 16.3,
+    17.3, 18.3, 19.4, 20.6, 21.8, 23.1, 24.4, 25.8, 27.2, 28.8, 30.4, 32.1, 33.8, 35.7, 37.6, 39.6];
+  const maxD = (t) => HUM[t].reduce((m, v, d) => v === null ? m : d, 0);
+  state.hum = { t: 21, d: 3 };
+  const dryIn = document.getElementById('dry'), wetIn = document.getElementById('wet');
+  const hcv = document.getElementById('hcv'), hctx = hcv.getContext('2d');
+  function setHum(h) {
+    if (h.t !== undefined) state.hum.t = Math.max(0, Math.min(35, h.t));
+    if (h.d !== undefined) state.hum.d = h.d;
+    const t = state.hum.t, d = state.hum.d = Math.max(0, Math.min(maxD(t), state.hum.d)), w = t - d, rh = HUM[t][d];
+    dryIn.value = t; wetIn.min = t - maxD(t); wetIn.max = t; wetIn.value = w;
+    const C = '<span class="u">℃</span>';
+    document.getElementById('dry-out').innerHTML = `${t}${C}`; document.getElementById('wet-out').innerHTML = `${w}${C}`;
+    document.getElementById('dry-minus').disabled = t <= 0; document.getElementById('dry-plus').disabled = t >= 35;
+    document.getElementById('wet-minus').disabled = d >= maxD(t); document.getElementById('wet-plus').disabled = d <= 0;
+    document.getElementById('h-t').innerHTML = `${t} ${C}<small>気温は乾球の示度</small>`;
+    document.getElementById('h-d').innerHTML = `${t} − ${w} ＝ ${d} ${C}<small>乾球の示度 − 湿球の示度</small>`;
+    document.getElementById('h-rh').innerHTML = `${rh} %<small>湿度表で、乾球 ${t}℃ の行と差 ${d}℃ の列が交わるところ</small>`;
+    const v = SAT[t] * rh / 100;
+    document.getElementById('h-v').innerHTML = `${SAT[t]} × ${rh} ÷ 100 ≒ ${v.toFixed(1)} g/m³<small>${t}℃ の飽和水蒸気量 × 湿度。露点の求め方は3章「空気中の水の変化」</small>`;
+    // 湿度表の一部：乾球の行を中心に 5 行
+    const lo = Math.max(0, Math.min(31, t - 2)), cols = [0, 1, 2, 3, 4, 5, 6, 7];
+    const tb = document.getElementById('htable');
+    tb.tHead.innerHTML = `<tr><th class="lab" rowspan="2">乾球 ${C}</th><th colspan="8" class="u">乾球と湿球の示度の差 ℃</th></tr><tr>${cols.map(c => `<th class="${c === d ? 'on' : ''}">${c}</th>`).join('')}</tr>`;
+    tb.tBodies[0].innerHTML = [4, 3, 2, 1, 0].map(k => lo + k).map(r => `<tr><th class="${r === t ? 'on' : ''}">${r}</th>${cols.map(c => `<td class="${r === t && c === d ? 'on hit' : r === t || c === d ? 'on' : ''}">${HUM[r][c] ?? ''}</td>`).join('')}</tr>`).join('');
+    drawHum();
+  }
+  function drawHum() {
+    const H = 250, W = fit(hcv, 450, H); hctx.setTransform(2, 0, 0, 2, 0, 0); hctx.clearRect(0, 0, W, H);
+    const ink = css('--ink'), muted = css('--muted'), line = css('--line'), focus = css('--focus'), cool = css('--cool'), coolSoft = css('--cool-soft'), map = css('--map');
+    const { t, d } = state.hum, w = t - d, rh = HUM[t][d];
+    const y0 = 190, k = 3.8, ty = (c) => y0 - c * k;    // 0℃ が y0、1℃ が k px
+    const xs = [Math.min(110, W * 0.26), Math.min(210, W * 0.52)];
+    [['乾球', t, false], ['湿球', w, true]].forEach(([name, temp, wet], i) => {
+      const x = xs[i];
+      hctx.fillStyle = map; hctx.strokeStyle = ink; hctx.lineWidth = 1.2;
+      hctx.beginPath(); hctx.rect(x - 5, ty(40) - 8, 10, y0 - ty(40) + 14); hctx.fill(); hctx.stroke();
+      // 目盛り（1℃ ごと、10℃ ごとに数字）
+      hctx.strokeStyle = muted; hctx.fillStyle = muted; hctx.font = '10px ' + css('--font-num'); hctx.textAlign = 'right'; hctx.textBaseline = 'middle';
+      for (let c = 0; c <= 40; c++) {
+        const len = c % 10 === 0 ? 9 : c % 5 === 0 ? 6 : 3;
+        hctx.lineWidth = c % 5 === 0 ? 1 : 0.6; hctx.beginPath(); hctx.moveTo(x - 6, ty(c)); hctx.lineTo(x - 6 - len, ty(c)); hctx.stroke();
+        if (c % 10 === 0) hctx.fillText(String(c), x - 18, ty(c));
+      }
+      // 液柱と球部
+      hctx.fillStyle = ink; hctx.fillRect(x - 2, ty(temp), 4, y0 + 8 - ty(temp));
+      hctx.beginPath(); hctx.arc(x, y0 + 14, 8, 0, Math.PI * 2); hctx.fill();
+      if (wet) {   // ぬれた布と、水につかったひも
+        hctx.fillStyle = coolSoft; hctx.strokeStyle = cool; hctx.lineWidth = 1.2;
+        hctx.beginPath(); hctx.rect(x - 11, y0 + 2, 22, 24); hctx.fill(); hctx.stroke();
+        hctx.beginPath(); hctx.moveTo(x, y0 + 26); hctx.lineTo(x, y0 + 44); hctx.stroke();
+        hctx.strokeStyle = ink; hctx.beginPath(); hctx.moveTo(x - 16, y0 + 34); hctx.lineTo(x - 16, y0 + 54); hctx.lineTo(x + 16, y0 + 54); hctx.lineTo(x + 16, y0 + 34); hctx.stroke();
+        hctx.fillStyle = coolSoft; hctx.fillRect(x - 15, y0 + 40, 30, 13);
+      }
+      // 名前と読み
+      hctx.fillStyle = ink; hctx.font = '700 12px ' + css('--font-body'); hctx.textAlign = 'center'; hctx.textBaseline = 'alphabetic';
+      hctx.fillText(name, x, ty(40) - 14);
+      hctx.strokeStyle = focus; hctx.lineWidth = 1.5; hctx.beginPath(); hctx.moveTo(x + 6, ty(temp)); hctx.lineTo(x + 16, ty(temp)); hctx.stroke();
+      hctx.fillStyle = focus; hctx.font = '600 12px ' + css('--font-num'); hctx.textAlign = 'left'; hctx.textBaseline = 'middle';
+      hctx.fillText(`${temp}℃`, x + 19, ty(temp));
+    });
+    // 示度の差（湿球の右側に寸法線）
+    if (d > 0) {
+      const x = xs[1] + 54;
+      hctx.strokeStyle = muted; hctx.lineWidth = 1; hctx.setLineDash([3, 3]);
+      hctx.beginPath(); hctx.moveTo(xs[0] + 50, ty(t)); hctx.lineTo(x + 4, ty(t)); hctx.stroke(); hctx.setLineDash([]);
+      hctx.beginPath(); hctx.moveTo(x, ty(t)); hctx.lineTo(x, ty(w)); hctx.stroke();
+      hctx.fillStyle = ink; hctx.font = '700 12px ' + css('--font-body'); hctx.textAlign = 'left'; hctx.textBaseline = 'middle';
+      hctx.fillText(`差 ${d}℃`, x + 6, (ty(t) + ty(w)) / 2);
+    }
+    // 結果
+    hctx.fillStyle = ink; hctx.textAlign = 'right'; hctx.textBaseline = 'alphabetic';
+    hctx.font = '600 20px ' + css('--font-num'); hctx.fillText(`${rh} %`, W - 12, 40);
+    hctx.font = '12px ' + css('--font-body'); hctx.fillStyle = muted; hctx.fillText('湿度（湿度表）', W - 12, 58);
+    hctx.strokeStyle = line; hctx.lineWidth = 1; hctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+  }
+  dryIn.addEventListener('input', () => setHum({ t: +dryIn.value }));
+  wetIn.addEventListener('input', () => setHum({ d: state.hum.t - +wetIn.value }));
+  document.getElementById('dry-minus').addEventListener('click', () => setHum({ t: state.hum.t - 1 }));
+  document.getElementById('dry-plus').addEventListener('click', () => setHum({ t: state.hum.t + 1 }));
+  document.getElementById('wet-minus').addEventListener('click', () => setHum({ d: state.hum.d + 1 }));
+  document.getElementById('wet-plus').addEventListener('click', () => setHum({ d: state.hum.d - 1 }));
+  document.querySelectorAll('#hpresets button').forEach(b => b.addEventListener('click', () => setHum({ t: +b.dataset.t, d: +b.dataset.d })));
+
+  // ---------- 圧力の計算 ----------
+  const massIn = document.getElementById('mass'), areaIn = document.getElementById('area');
+  const pcv = document.getElementById('pcv'), pctx = pcv.getContext('2d');
+  const fmt = (v) => { if (!isFinite(v)) return '—'; const a = Math.abs(v); const s = a >= 100 ? v.toFixed(0) : a >= 10 ? v.toFixed(1) : a >= 1 ? v.toFixed(2) : v.toPrecision(2); return String(+s); };
+  function calcP(mass, area) { const F = mass / 100, A = area / 10000, P = F / A; return { F, A, P, hPa: P / 100 }; }
+  function setPress(p, fromInput) {
+    if (p.mass !== undefined) state.press.mass = Math.max(1, +p.mass || 0); if (p.area !== undefined) state.press.area = Math.max(0.01, +p.area || 0);
+    if (!fromInput) { massIn.value = state.press.mass; areaIn.value = state.press.area; }
+    const { mass, area } = state.press, r = calcP(mass, area);
+    document.getElementById('s-f').innerHTML = `${fmt(mass)} g ÷ 100 ＝ ${fmt(r.F)} N<small>100 g にはたらく重力が 1 N</small>`;
+    document.getElementById('s-a').innerHTML = `${fmt(area)} cm² ÷ 10000 ＝ ${fmt(r.A)} m²<small>Pa で答えるには面積を m² にする</small>`;
+    document.getElementById('s-p').innerHTML = `${fmt(r.F)} N ÷ ${fmt(r.A)} m² ＝ ${fmt(r.P)} Pa<small>＝ ${fmt(r.P)} N/m²（1 Pa ＝ 1 N/m²）</small>`;
+    document.getElementById('s-h').innerHTML = `${fmt(r.P)} Pa ÷ 100 ＝ ${fmt(r.hPa)} hPa<small>1 hPa ＝ 100 Pa</small>`;
+    const ratio = r.hPa / 1013;
+    document.getElementById('s-c').innerHTML = ratio >= 1 ? `大気圧（1013 hPa）の約 ${fmt(ratio)} 倍` : `大気圧（1013 hPa）の約 ${fmt(1 / ratio)} 分の 1`;
+    drawPress(r);
+  }
+  function drawPress(r) {
+    const H = 210, W = fit(pcv, 450, H); pctx.setTransform(2, 0, 0, 2, 0, 0); pctx.clearRect(0, 0, W, H);
+    const ink = css('--ink'), muted = css('--muted'), line = css('--line'), cell = css('--cell'), focus = css('--focus');
+    const { mass, area } = state.press;
+    const bw = Math.max(28, Math.min(240, 12 * Math.sqrt(area))), bh = Math.max(22, Math.min(110, 6 * Math.cbrt(mass)));
+    const cx = Math.min(170, W * 0.36), floor = 168, top = floor - bh;
+    pctx.fillStyle = cell; pctx.fillRect(0, floor, W, H - floor);
+    pctx.strokeStyle = ink; pctx.lineWidth = 1.5; pctx.beginPath(); pctx.moveTo(0, floor); pctx.lineTo(W, floor); pctx.stroke();
+    pctx.fillStyle = css('--map'); pctx.strokeStyle = ink; pctx.fillRect(cx - bw / 2, top, bw, bh); pctx.strokeRect(cx - bw / 2, top, bw, bh);
+    // 力の矢印（物体の重さ）：長さは力に応じて
+    const al = Math.max(18, Math.min(60, 10 * Math.log10(mass)));
+    pctx.strokeStyle = focus; pctx.fillStyle = focus; pctx.lineWidth = 2.5;
+    pctx.beginPath(); pctx.moveTo(cx, top + bh / 2 - al / 2); pctx.lineTo(cx, top + bh / 2 + al / 2); pctx.stroke();
+    pctx.beginPath(); pctx.moveTo(cx, top + bh / 2 + al / 2 + 4); pctx.lineTo(cx - 5, top + bh / 2 + al / 2 - 5); pctx.lineTo(cx + 5, top + bh / 2 + al / 2 - 5); pctx.closePath(); pctx.fill();
+    pctx.font = '700 12px ' + css('--font-body'); pctx.textAlign = 'left'; pctx.textBaseline = 'middle';
+    pctx.fillText(`力 ${fmt(r.F)} N`, cx + bw / 2 + 10, top + bh / 2);
+    // 面積のしるし
+    pctx.strokeStyle = muted; pctx.lineWidth = 1; pctx.setLineDash([3, 3]);
+    pctx.beginPath(); pctx.moveTo(cx - bw / 2, floor + 6); pctx.lineTo(cx - bw / 2, floor + 22); pctx.moveTo(cx + bw / 2, floor + 6); pctx.lineTo(cx + bw / 2, floor + 22); pctx.stroke(); pctx.setLineDash([]);
+    pctx.beginPath(); pctx.moveTo(cx - bw / 2, floor + 16); pctx.lineTo(cx + bw / 2, floor + 16); pctx.stroke();
+    pctx.fillStyle = muted; pctx.font = '12px ' + css('--font-body'); pctx.textAlign = 'center'; pctx.textBaseline = 'top';
+    pctx.fillText(`面積 ${fmt(area)} cm² ＝ ${fmt(r.A)} m²`, cx, floor + 22);
+    // 結果
+    pctx.fillStyle = ink; pctx.textAlign = 'right'; pctx.textBaseline = 'alphabetic';
+    pctx.font = '600 20px ' + css('--font-num'); pctx.fillText(`${fmt(r.P)} Pa`, W - 12, 40);
+    pctx.font = '12px ' + css('--font-body'); pctx.fillStyle = muted; pctx.fillText('圧力 ＝ 力 ÷ 面積', W - 12, 58);
+    pctx.fillText(`＝ ${fmt(r.hPa)} hPa`, W - 12, 76);
+    pctx.strokeStyle = line; pctx.lineWidth = 1; pctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+  }
+  massIn.addEventListener('input', () => setPress({ mass: massIn.value }, true));
+  areaIn.addEventListener('input', () => setPress({ area: areaIn.value }, true));
+  document.querySelectorAll('#presets button').forEach(b => b.addEventListener('click', () => setPress({ mass: b.dataset.mass, area: b.dataset.area })));
+
+  // ---------- 問題（入試形式、4章の型） ----------
+  // 問題を開くと図が setup の状態になる。答えると正誤と「図のどこを見るか」。「図をこの状態にして見る」で focus の部分を点線枠で強調する。
+  // 難易度は3段階（level: easy／std／hard、各 7 問）。reveal は「図をこの状態にして見る」のときだけ setup に上書きする状態。数値の答えは HUM・SAT・calcP から計算する。
+  const KEYS = ['ア', 'イ', 'ウ', 'エ'];
+  const LEVELS = [['easy', 'イージー', '用語・記号・しくみの一問一答（入試の小問1〜2の型）'], ['std', 'スタンダード', '図・表の読み取りと計算（入試の標準的な小問の型）'], ['hard', 'ハード', '観測記録の表・計算・理由（正答率が下がる小問の型）']];
+  const rd = (di, f, wx) => fmtReading(wx, di, f);
+  const r1 = (v) => Math.round(v * 10) / 10;
+  function symImg(wx, di, f) {          // 選択肢用の小さな記号（いまのテーマの色で描く）
+    const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d');
+    drawSymbol(x, 64, 64, 50, wx, di * 22.5, f);
+    return `<img src="${c.toDataURL()}" alt="">`;
+  }
+  const Q1 = { wx: 'cloudy', di: 2, f: 3 }, Q2 = { wx: 'rain', di: 10, f: 4 }, Q3 = { wx: 'fine', di: 1, f: 2 };
+  const P6 = calcP(2000, 100), P7 = calcP(2000, 50), P25 = calcP(2000, 25);
+  const PA = calcP(1200, 200), PC = calcP(1200, 50);           // スポンジの問：5 cm × 10 cm × 20 cm、1.2 kg
+  // 晴れた日の気温と湿度（水蒸気量 E6 g/m³ のまま。湿度 ＝ E6 ÷ 飽和水蒸気量）
+  const E6 = 10.0, D6 = [[6, 12], [9, 16], [12, 21], [15, 23], [18, 18]];
+  const humTable = () => `<table class="qt"><tr><th>時刻</th>${D6.map(([h]) => `<th>${h}時</th>`).join('')}</tr><tr><th>気温</th>${D6.map(([, t]) => `<td>${t} ℃</td>`).join('')}</tr><tr><th>湿度</th>${D6.map(([, t]) => `<td>${Math.round(E6 / SAT[t] * 100)} %</td>`).join('')}</tr></table>`;
+  // 6 時間ごとの気圧と天気（低気圧が通り過ぎた日）
+  const D7 = [[0, 1016, '晴れ'], [6, 1013, '晴れ'], [12, 1009, 'くもり'], [18, 1005, '雨'], [24, 1008, 'くもり'], [30, 1013, '晴れ']];
+  const presTable = () => `<table class="qt"><tr><th>時間</th>${D7.map(([h]) => `<th>${h}</th>`).join('')}</tr><tr><th>気圧</th>${D7.map(([, p]) => `<td>${p}</td>`).join('')}</tr><tr><th>天気</th>${D7.map(([, , w]) => `<td>${w}</td>`).join('')}</tr></table>`;
+  // 晴れた日の乾湿計の記録（朝 12℃・差 1℃、昼 22℃・差 6℃。どちらも四捨五入の境目でないマス）
+  const DW = [[6, 12, 11], [14, 22, 16]];
+  const dwTable = () => `<table class="qt"><tr><th>時刻</th>${DW.map(([h]) => `<th>${h}時</th>`).join('')}</tr><tr><th>乾球</th>${DW.map(([, t]) => `<td>${t} ℃</td>`).join('')}</tr><tr><th>湿球</th>${DW.map(([, , w]) => `<td>${w} ℃</td>`).join('')}</tr></table>`;
+  const RH_AM = HUM[12][1], RH_PM = HUM[22][6], V_AM = r1(SAT[12] * RH_AM / 100), V_PM = r1(SAT[22] * RH_PM / 100);
+  // freq: true ＝「よく出る」。公立高校入試 29 回のうち 10 回に出た小単元 3a 飽和水蒸気量・湿度・露点を主に問う問（docs/reference/nyushi-hindo-kisho.md の小単元表）
+  const QUIZ = [
+    // ---- イージー：用語・記号・しくみ ----
+    { level: 'easy', setup: { sym: Q1 },
+      q: '図の天気図記号の読み方として正しいものはどれか。',
+      choices: () => [rd((Q1.di + 8) % 16, Q1.f, Q1.wx), rd(Q1.di, Q1.f, Q1.wx), rd(Q1.di, Q1.f + 1, Q1.wx), rd(Q1.di, Q1.f, 'rain')], answer: 1,
+      explain: '「記号をつくる」の図：線が伸びている向き（北東）が風の吹いてくる方位。矢羽根の本数（3本）が風力。○が二重なのでくもり。線の先を「風が吹いていく向き」と読みまちがえやすい。',
+      focus: { sym: true } },
+    { level: 'easy', setup: { sym: { wx: 'clear', di: 0, f: 0 } },
+      q: '図のように、○だけで線がない天気図記号は何を表すか。',
+      choices: () => ['風向が不明で、天気は快晴', '風力1で、天気は晴れ', '風力0（静穏）で、天気はくもり', '風力0（静穏）で、天気は快晴'], answer: 3,
+      explain: '「記号をつくる」で風力を 0 にすると線が消える。風力0（静穏）のときは風向を書かない。○の中に何もないのは快晴。縦線があれば晴れ。',
+      focus: { sym: true } },
+    { level: 'easy', setup: { list: true },
+      q: '雨や雪が降っていないとき、空全体を 10 として雲量が 8 のときの天気はどれか。',
+      choices: () => ['晴れ', 'くもり', '快晴', '雨'], answer: 0,
+      explain: '「記号一覧」の雲量の表：0〜1 が快晴、2〜8 が晴れ、9〜10 がくもり。雲量 8 は晴れ。「空の 8 割が雲ならくもり」と思いやすいが、くもりは 9 以上。',
+      focus: { list: 'cloud' } },
+    { level: 'easy', setup: { sym: { wx: 'fine', di: 0, f: 2 } },
+      q: '図の記号は「北の風」を表している。「北の風」とはどのような風か。',
+      choices: () => ['北へ向かって吹いていく風', '南から吹いてくる風', '北から吹いてくる風', '北と南から交互に吹く風'], answer: 2,
+      explain: '「記号をつくる」の図：線は北（上）へ伸びている。風向は風が「吹いてくる方位」で表すので、北から南へ向かって吹く風が「北の風」。線は風上（風が吹いてくる側）を指す。',
+      focus: { sym: true } },
+    { level: 'easy', setup: { sym: { wx: 'cloudy', di: 12, f: 5 } },
+      q: '天気図記号で、風力を表しているのはどれか。',
+      choices: () => ['線の長さ', '矢羽根の数', '○の大きさ', '線の向き'], answer: 1,
+      explain: '「記号をつくる」の図：矢羽根が 5 本なので風力 5。線の向き（西）は風向、○の中の形は天気。線の長さは風力に関係なく同じ。風力 0 のときは線も矢羽根も書かない（静穏）。',
+      focus: { sym: true } },
+    { level: 'easy', setup: { press: { mass: 2000, area: 100 } },
+      q: '圧力の単位 Pa（パスカル）について正しいものはどれか。',
+      choices: () => ['1 Pa は、1 cm² の面を 1 N の力で垂直に押すときの圧力', '1 Pa は、1 m² の面に 1 kg の物体をのせたときの圧力', '1 Pa は、1 m² の面を 100 N の力で垂直に押すときの圧力', '1 Pa は、1 m² の面を 1 N の力で垂直に押すときの圧力'], answer: 3,
+      explain: '「圧力を計算する」の見出し：圧力〔Pa〕＝ 力〔N〕÷ 面積〔m²〕なので 1 Pa ＝ 1 N/m²。cm² ではなく m² で割る（③）。100 N/m² は 100 Pa ＝ 1 hPa。',
+      focus: { press: true } },
+    { level: 'easy', setup: { press: { mass: 2000, area: 100 } },
+      q: '海面の高さでの大気圧（1 気圧）は約何 hPa か。',
+      choices: () => ['約 100 hPa', '約 101.3 hPa', '約 1013 hPa', '約 10130 hPa'], answer: 2,
+      explain: '「大気圧（気圧）」の枠：海面の高さで約 1013 hPa（＝ 101300 Pa）。天気図の等圧線も 1000 hPa 前後の値で書かれる。',
+      focus: { atm: true } },
+    // ---- スタンダード：図・表の読み取りと計算 ----
+    { level: 'std', setup: { sym: Q2 },
+      q: '「南西の風・風力4・雨」を表す天気図記号はどれか。',
+      choices: () => [symImg('rain', 2, 4), symImg('cloudy', 10, 4), symImg('rain', 10, 3), symImg('rain', 10, 4)], answer: 3,
+      explain: '「記号をつくる」で南西・風力4・雨を選んだ図と見比べる。線は南西（左下）へ伸ばす。矢羽根は4本。雨は●を黒くぬる。アは線が北東へ伸びているので「北東の風」になってしまう。',
+      focus: { sym: true } },
+    { level: 'std', setup: { sym: Q3 },
+      q: '図の天気図記号の風向と風力として正しいものはどれか。',
+      choices: () => [`${DIRS[(Q3.di + 8) % 16]}の風・風力${Q3.f}`, `${DIRS[Q3.di + 2]}の風・風力${Q3.f}`, `${DIRS[Q3.di]}の風・風力${Q3.f}`, `${DIRS[Q3.di]}の風・風力${Q3.f + 1}`], answer: 2,
+      explain: `「記号をつくる」の 16 方位の目盛り：線は北と北東のあいだ（北から 22.5°）に伸びているので${DIRS[Q3.di]}。16 方位は、北・東・南・西を先に、あいだの方位を後につけて読む（北と北東のあいだ → 北北東）。${DIRS[(Q3.di + 8) % 16]}は線の先を風の行く向きと読んだまちがい。矢羽根は ${Q3.f} 本。`,
+      focus: { sym: true } },
+    { level: 'std', setup: { hum: { t: 21, d: 3 } },
+      q: '乾湿計の乾球が 21℃、湿球が 18℃ を示していた。湿度表を使うと、このときの湿度は何％か。',
+      choices: () => [`${HUM[18][3]} %`, `${HUM[21][2]} %`, `${HUM[21][3]} %`, `${Math.round(18 / 21 * 100)} %`], answer: 2,
+      explain: `「乾湿計で湿度を読む」の湿度表：乾球の示度 21℃ の行と、示度の差 21 − 18 ＝ 3℃ の列が交わるところが ${HUM[21][3]}%。湿球の示度（18℃）の行で読むと ${HUM[18][3]}% とまちがえる。湿球が低いのは、布の水が蒸発するとき熱をうばうから。`,
+      focus: { hum: true } },
+    { level: 'std', setup: { press: { mass: 2000, area: 100 } },
+      q: '質量 2 kg の直方体を、面積 100 cm² の面を下にして床に置いた。床が受ける圧力は何 Pa か。100 g の物体にはたらく重力を 1 N とする。',
+      choices: () => [`${fmt(P6.P)} Pa`, `${fmt(P6.P / 10)} Pa`, `${fmt(P6.P * 10)} Pa`, `${fmt(P6.P / 10000)} Pa`], answer: 0,
+      explain: '「圧力を計算する」の①〜③：力は 2000 g ÷ 100 ＝ 20 N。面積は 100 cm² ÷ 10000 ＝ 0.01 m²。圧力 ＝ 20 N ÷ 0.01 m² ＝ 2000 Pa。cm² のまま割ると 0.2 になってしまう。',
+      focus: { press: true } },
+    { level: 'std', setup: { press: { mass: 2000, area: 50 } },
+      q: '問4 と同じ直方体を、面積 50 cm² の面を下にして置くと、床が受ける圧力はどうなるか。',
+      choices: () => [`半分の ${fmt(P7.P / 4)} Pa になる`, `変わらず ${fmt(P6.P)} Pa のまま`, `4 倍の ${fmt(P7.P * 2)} Pa になる`, `2 倍の ${fmt(P7.P)} Pa になる`], answer: 3,
+      explain: '「圧力を計算する」の③：力は同じ 20 N のまま、面積が 0.005 m² と半分になるので、圧力は 2 倍の 4000 Pa。同じ力なら面積が小さいほど圧力は大きい。',
+      focus: { press: true } },
+    { level: 'std', setup: { hum: { t: 21, d: 3 } },
+      q: `次の表は、晴れた日に 3 時間ごとに記録した気温と湿度である。${humTable()}この表からわかることとして正しいものはどれか。`,
+      choices: () => ['気温が最も高い時刻に、湿度も最も高い', '気温が上がると湿度は下がり、気温が下がると湿度は上がる', '湿度は 1 日中ほとんど変わらない', '気温と湿度は同じように上がり下がりする'], answer: 1,
+      explain: `晴れた日は、空気中の水蒸気量がほとんど変わらない（この表は 1 m³ に ${E6.toFixed(1)} g のまま）。気温が上がると飽和水蒸気量が大きくなるので、湿度 ＝ 水蒸気量 ÷ 飽和水蒸気量 × 100 は下がる。「乾湿計で湿度を読む」の水蒸気量の行と同じく 飽和水蒸気量 × 湿度 ÷ 100 で表の湿度から水蒸気量を出すと、どの時刻もほぼ ${E6.toFixed(0)} g になる。グラフで出たときは、気温と山・谷が逆になる線が湿度。`,
+      focus: { el: 'hsteps' } },
+    { level: 'std', setup: { press: { mass: 2000, area: 100 } },
+      q: `次の表は、ある地点で 6 時間ごとに記録した気圧（hPa）と天気である。時間は観測を始めてからの時間。${presTable()}この表からわかることとして正しいものはどれか。`,
+      choices: () => ['気圧が下がると天気が悪くなり、気圧が上がると天気は回復する', '気圧が上がると天気が悪くなる', '気圧と天気には関係がない', '気圧が最も低いときに晴れる'], answer: 0,
+      explain: `表で気圧が ${D7[0][1]} → ${Math.min(...D7.map(d => d[1]))} hPa と下がるあいだに、晴れ → くもり → 雨と悪くなり、気圧が上がり始めると回復している。低気圧が近づくと気圧が下がり、低気圧の中心付近は上昇気流で雲ができやすい（2章「気圧と風」）。気圧は「大気圧」の枠の 1013 hPa 前後で上がり下がりする。`,
+      focus: { atm: true } },
+    // ---- ハード：観測記録の表・計算・理由 ----
+    { level: 'hard', setup: { press: { mass: 2000, area: 100 } },
+      q: '海面の高さでの大気圧は約 1013 hPa である。これは何 Pa か。',
+      choices: () => ['10.13 Pa', '1013 Pa', '101300 Pa', '1013000 Pa'], answer: 2,
+      explain: '「大気圧」の枠：1 hPa ＝ 100 Pa なので、1013 hPa ＝ 101300 Pa ＝ 101300 N/m²。1 m² の面に約 101300 N（約 10 t の物体の重さ）がかかっている。',
+      focus: { atm: true } },
+    { level: 'hard', setup: { press: { mass: 2000, area: 100 } },
+      q: '大気圧を 1013 hPa とする。手のひら（面積 100 cm²）が大気から受ける力は約何 N か。',
+      choices: () => ['約 1000 N', '約 10 N', '約 100 N', '約 100000 N'], answer: 0,
+      explain: '力 ＝ 圧力 × 面積。1013 hPa ＝ 101300 Pa（N/m²）、100 cm² ＝ 0.01 m² なので 101300 × 0.01 ≒ 1013 N（約 100 kg の物体の重さ）。それでも手がつぶれないのは、大気圧があらゆる向きから同じ大きさではたらき、手の裏側からも押しているから。「圧力を計算する」の③を逆に使う。',
+      focus: { atm: true } },
+    { level: 'hard', setup: { press: { mass: 2000, area: 100 } }, reveal: { press: { mass: 2000, area: 25 } },
+      q: '物体の質量を変えずに、床に接する面の面積を 1/4 にすると、床が受ける圧力はもとの何倍になるか。',
+      choices: () => ['1/4 倍', '変わらない', '2 倍', '4 倍'], answer: 3,
+      explain: `圧力 ＝ 力 ÷ 面積。力（重さ）は同じで面積が 1/4 なので、圧力は 4 倍。図をこの状態にすると、2 kg・100 cm² で ${fmt(P6.P)} Pa だったものが、25 cm² で ${fmt(P25.P)} Pa になる。力が同じなら、面積が小さいほど圧力は大きい。`,
+      focus: { press: true } },
+    { level: 'hard', setup: { press: { mass: 1200, area: 200 } }, reveal: { press: { mass: 1200, area: 50 } },
+      q: '質量 1.2 kg、5 cm × 10 cm × 20 cm の直方体をスポンジの上に置く。スポンジのへこみ方が最も大きいのはどの面を下にしたときか。また、そのときスポンジが受ける圧力は何 Pa か。100 g の物体にはたらく重力を 1 N とする。',
+      choices: () => [`10 cm × 20 cm の面、${fmt(PA.P)} Pa`, `5 cm × 10 cm の面、${fmt(PC.P)} Pa`, `10 cm × 20 cm の面、${fmt(PC.P)} Pa`, `5 cm × 10 cm の面、${fmt(PC.P / 10000)} Pa`], answer: 1,
+      explain: `どの面を下にしても力は 1200 g ÷ 100 ＝ 12 N で同じ。へこみ（圧力）が最も大きいのは面積が最も小さい 5 cm × 10 cm ＝ 50 cm² ＝ 0.005 m² の面で、12 N ÷ 0.005 m² ＝ ${fmt(PC.P)} Pa。10 cm × 20 cm の面なら ${fmt(PA.P)} Pa で 1/4。cm² のまま割ると ${fmt(PC.P / 10000)} になる。`,
+      focus: { press: true } },
+    { level: 'hard', setup: { hum: { t: 21, d: 3 } },
+      q: '乾湿計で、湿球の示度が乾球の示度より低くなる理由と、2 本の示度の差が大きいときの湿度の組み合わせとして正しいものはどれか。',
+      choices: () => ['湿球の布の水が蒸発するとき熱をうばうから ／ 差が大きいほど湿度は高い', '湿球の布が日光をさえぎるから ／ 差が大きいほど湿度は低い', '湿球の布の水が蒸発するとき熱をうばうから ／ 差が大きいほど湿度は低い', '空気中の水蒸気が湿球の布で凝結して熱を出すから ／ 差が大きいほど湿度は低い'], answer: 2,
+      explain: '「なぜ湿球のほうが低いのか」の枠：布の水が蒸発するとき周りから熱（気化熱）をうばう。空気が乾いているほどよく蒸発して差が大きくなるので、湿度は低い。湿度表でも、同じ乾球の行で右（差が大きい列）へ行くほど湿度は小さい。湿度 100% なら蒸発しないので差は 0。',
+      focus: { el: 'hwhy' } },
+    { level: 'hard', freq: true, setup: { hum: { t: 12, d: 1 } }, reveal: { hum: { t: 22, d: 6 } },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `次の表は、よく晴れた日の乾湿計の記録である。${dwTable()}6 時と 14 時の湿度と、6 時のほうが湿度が高い理由の組み合わせとして正しいものはどれか。`,
+      choices: () => [`6 時 ${RH_AM}%、14 時 ${RH_PM}% ／ 気温が低いと飽和水蒸気量が小さく、水蒸気量はほとんど同じだから`, `6 時 ${RH_AM}%、14 時 ${RH_PM}% ／ 夜のあいだに空気中の水蒸気量が大きく増えたから`, `6 時 ${HUM[11][1]}%、14 時 ${HUM[16][6]}% ／ 気温が低いと飽和水蒸気量が小さく、水蒸気量はほとんど同じだから`, `6 時 ${RH_AM}%、14 時 ${RH_PM}% ／ 気温が低いと飽和水蒸気量が大きくなるから`], answer: 0,
+      explain: `湿度表で乾球の行と差の列を読む：6 時は 12℃・差 1℃ で ${RH_AM}%、14 時は 22℃・差 6℃ で ${RH_PM}%（湿球の示度の行で読むとウの値になる）。水蒸気量は 6 時 ${V_AM} g/m³、14 時 ${V_PM} g/m³ とほとんど同じ。気温が下がると飽和水蒸気量が小さくなるので、同じ水蒸気量でも湿度は高くなる（3章）。図をこの状態にすると 14 時の読み方になる。`,
+      focus: { hum: true } },
+    { level: 'hard', setup: { press: { mass: 2000, area: 100 } },
+      q: 'ふもとで密閉した菓子の袋を持って高い山に登ると、山頂で袋がふくらんだ。その理由として正しいものはどれか。',
+      choices: () => ['山頂は気温が高く、袋の中の空気が温められて膨張したから', '山頂は風が強く、袋に空気が入りこんだから', '山頂は上にある空気が多く、気圧が高いから', '山頂は上にある空気が少なく気圧が低いので、袋の中の空気が外より強く押したから'], answer: 3,
+      explain: '「大気圧（気圧）」の枠：気圧は上にある空気の重さによる圧力なので、高い所ほど上にある空気が少なく、気圧は低い（山頂は気温も低い）。袋の中はふもとの気圧のままなので、中から押す力が外から押す力より大きくなり、ふくらむ。上昇した空気が膨張して冷えるのも同じ理由（3章）。',
+      focus: { atm: true } }
+  ];
+  const quizEl = document.getElementById('panel-quiz');
+  const quiz = { level: 'easy', i: { easy: 0, std: 0, hard: 0 }, picked: QUIZ.map(() => null) };
+  const levelList = () => QUIZ.map((q, k) => [q, k]).filter(([q]) => q.level === quiz.level);
+  const current = () => levelList()[quiz.i[quiz.level]];
+  function clearFocus() {
+    state.focus = null;
+    document.querySelectorAll('.hl').forEach(e => e.classList.remove('hl'));
+    drawHero(); drawLegend();
+  }
+  function applySetup(s) {
+    if (s.sym) setSym(s.sym);
+    if (s.press) setPress(s.press);
+    if (s.hum) setHum(s.hum);
+  }
+  function showFocus(q) {
+    clearFocus(); state.focus = q.focus; applySetup({ ...q.setup, ...(q.reveal || {}) });
+    let target;
+    if (q.focus.sym) { drawHero(); target = sym; }
+    if (q.focus.list) { drawLegend(); target = document.getElementById(q.focus.list === 'cloud' ? 'cloudtable' : 'legend'); if (q.focus.list === 'cloud') target.classList.add('hl'); }
+    if (q.focus.press) { target = document.getElementById('psteps'); target.classList.add('hl'); }
+    if (q.focus.atm) { target = document.getElementById('atm'); target.classList.add('hl'); }
+    if (q.focus.hum) { target = document.getElementById('htable'); target.classList.add('hl'); }
+    if (q.focus.el) { target = document.getElementById(q.focus.el); target.classList.add('hl'); }
+    if (target) target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+  }
+  const FREQ_NOTE = '<p class="fnote">よく出る：10 都府県の公立高校入試 29 回（2024〜2026 年）のうち 10 回に出た内容（飽和水蒸気量・湿度・露点）</p>';
+  function renderQuiz() {
+    const list = levelList(), n = list.length, i = quiz.i[quiz.level], [q, qi] = list[i], picked = quiz.picked[qi];
+    const answered = list.filter(([, k]) => quiz.picked[k] !== null).length, correct = list.filter(([qq, k]) => quiz.picked[k] === qq.answer).length;
+    const levels = LEVELS.map(([id, name]) => { const c = QUIZ.filter((qq, k) => qq.level === id && quiz.picked[k] === qq.answer).length, m = QUIZ.filter(qq => qq.level === id).length; return `<button type="button" role="tab" data-level="${id}" aria-selected="${id === quiz.level}">${name}<small>${c}/${m}</small></button>`; }).join('');
+    const dots = list.map(([qq, k], j) => { const p = quiz.picked[k], cls = p === null ? '' : p === qq.answer ? 'ok' : 'ng'; return `<button type="button" class="dot ${cls}" data-go="${j}" aria-current="${j === i}" aria-label="問${j + 1}">${j + 1}</button>`; }).join('');
+    const choices = q.choices().map((c, k) => { const mark = picked === null ? '' : k === q.answer ? 'ok' : k === picked ? 'ng' : ''; return `<button type="button" data-pick="${k}" data-mark="${mark}"${picked === null ? '' : ' disabled'}><span class="k">${KEYS[k]}</span><span>${c}</span></button>`; }).join('');
+    const explain = picked === null ? '' : `<div class="explain"><div class="verdict ${picked === q.answer ? 'ok' : 'ng'}">${picked === q.answer ? '正解' : `ちがう。正解は ${KEYS[q.answer]}`}</div><div><strong>図のどこを見るか：</strong>${q.explain}</div><button type="button" class="qbtn focus" data-focus="1">図をこの状態にして見る</button></div>`;
+    quizEl.innerHTML = `<div class="levels" role="tablist" aria-label="難易度">${levels}</div><p class="ldesc">${LEVELS.find(l => l[0] === quiz.level)[2]}</p><div class="qnav"><span>問 ${i + 1} / ${n}</span><div class="dots">${dots}</div></div>${q.freq ? '<p class="freq">よく出る</p>' : ''}<div class="q">${q.q}</div><div class="choices">${choices}</div>${explain}<div class="qfoot"><button type="button" class="qbtn" data-step="-1"${i === 0 ? ' disabled' : ''}>← 前</button><button type="button" class="qbtn" data-step="1"${i === n - 1 ? ' disabled' : ''}>次 →</button><span class="score">${answered} 問中 ${correct} 問正解</span><button type="button" class="qbtn" data-retry="1"${answered ? '' : ' disabled'}>やり直す</button></div>${list.some(([qq]) => qq.freq) ? FREQ_NOTE : ''}`;
+  }
+  function goQuestion(j) { const list = levelList(); quiz.i[quiz.level] = Math.max(0, Math.min(list.length - 1, j)); clearFocus(); applySetup(current()[0].setup); renderQuiz(); }
+  quizEl.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button'); if (!b || b.disabled) return;
+    const d = b.dataset;
+    if (d.pick !== undefined) { quiz.picked[current()[1]] = +d.pick; renderQuiz(); }
+    else if (d.level) { quiz.level = d.level; goQuestion(quiz.i[quiz.level]); }
+    else if (d.go !== undefined) goQuestion(+d.go);
+    else if (d.step !== undefined) goQuestion(quiz.i[quiz.level] + +d.step);
+    else if (d.retry) { levelList().forEach(([, k]) => { quiz.picked[k] = null; }); goQuestion(0); }
+    else if (d.focus) showFocus(current()[0]);
+  });
+
+  // タブ
+  const tabs = [['tab-read', 'panel-read'], ['tab-quiz', 'panel-quiz']];
+  tabs.forEach(([t, p]) => document.getElementById(t).addEventListener('click', () => {
+    tabs.forEach(([t2, p2]) => { document.getElementById(t2).setAttribute('aria-selected', String(t2 === t)); document.getElementById(p2).hidden = p2 !== p; });
+    if (p === 'panel-quiz') goQuestion(quiz.i[quiz.level]); else clearFocus();
+  }));
+
+  // ---------- 初期化 ----------
+  setSym({});
+  newRead();
+  drawLegend();
+  setHum({});
+  setPress({ mass: 2000, area: 100 });
+  renderQuiz();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { drawHero(); drawRead(); drawLegend(); drawHum(); setPress({}); renderQuiz(); });
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { drawLegend(); drawHum(); setPress({}); }, 120); });
+})();
+</script>

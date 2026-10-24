@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>日本の気象｜中2 理科 気象とその変化</title>
+<meta name="description" content="冬の西高東低、梅雨の停滞前線、夏の南高北低、春・秋の移動性高気圧、台風の進路。3つの気団と四季の天気図。中2理科「気象とその変化」5章。">
+<link rel="canonical" href="https://rikasimlab.github.io/chu2-kisho/nihon-no-kisho.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="中2 理科 気象とその変化">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="日本の気象｜中2 理科 気象とその変化">
+<meta property="og:description" content="冬の西高東低、梅雨の停滞前線、夏の南高北低、春・秋の移動性高気圧、台風の進路。3つの気団と四季の天気図。中2理科「気象とその変化」5章。">
+<meta property="og:url" content="https://rikasimlab.github.io/chu2-kisho/nihon-no-kisho.html">
+<meta property="og:image" content="https://rikasimlab.github.io/chu2-kisho/ogp/nihon-no-kisho.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: 2章・4章と同じ見開き。上に季節と強さ／時間の操作、断面図を幅いっぱい、下に日本付近の天気図（平面図）と観測点の記録 */
+  :root {
+    --paper: #eef1f4;
+    --map: #f7f9fa;
+    --panel: #ffffff;
+    --ink: #17202a;
+    --muted: #5f6b78;
+    --line: #cfd6dd;
+    --isobar: #8a96a3;
+    --warm: #d6451e;
+    --cool: #1f63b3;
+    --sky: #eef3f8;
+    --sea: #9fc3e3;
+    --sea-soft: #dbe9f4;
+    --warm-soft: #fbe9e2;
+    --land: #e3e8d6;
+    --land-soft: #e9efdc;
+    --ground: #c9bba3;
+    --rain: #4e7fb8;
+    --snow: #9fc0e8;
+    --focus: #2a5d8f;
+    --cell: #f3f5f7;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
+      --warm: #ff7d52; --cool: #63a6ff; --sky: #1a2430; --sea: #2c5b85; --sea-soft: #1f3344; --warm-soft: #3a2620; --land: #2a3326; --land-soft: #26301f; --ground: #5a4e3c; --rain: #7fb0e6; --snow: #8fb4e0;
+      --focus: #7fb3ff; --cell: #1f2b38; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
+    --warm: #ff7d52; --cool: #63a6ff; --sky: #1a2430; --sea: #2c5b85; --sea-soft: #1f3344; --warm-soft: #3a2620; --land: #2a3326; --land-soft: #26301f; --ground: #5a4e3c; --rain: #7fb0e6; --snow: #8fb4e0;
+    --focus: #7fb3ff; --cell: #1f2b38; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .app {
+    max-width: 1120px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 40px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  nav.crumbs { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+  nav.crumbs a { color: var(--focus); text-decoration: none; }
+  nav.crumbs a:hover { text-decoration: underline; }
+  /* 表題枠：天気図の凡例枠に見立てた墨線の枠（目次と同じ形）。右に章の問いと説明 */
+  header { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-start; }
+  .cartouche { flex: 0 0 auto; max-width: 100%; padding: 12px 18px 12px 16px; background: var(--panel); border: 1.5px solid var(--ink); }
+  .cartouche h1 { margin: 0; font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; line-height: 1.25; letter-spacing: .02em; display: flex; align-items: baseline; gap: .45em; }
+  .cartouche h1 .num { font-family: var(--font-num); font-weight: 600; font-size: .8em; color: var(--muted); }
+  .cartouche p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  header .intro { flex: 1 1 360px; min-width: 0; }
+  header h2 { margin: 2px 0 6px; font-size: clamp(18px, 2.4vw, 22px); font-weight: 700; line-height: 1.35; text-wrap: balance; }
+  header .intro p { margin: 0; max-width: 60ch; color: var(--muted); font-size: 14px; }
+
+  .controls { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px; background: var(--panel); border: 1px solid var(--line); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+  .group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .group .gl { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { font: inherit; font-weight: 500; padding: 7px 13px; background: transparent; color: var(--ink); border: 0; cursor: pointer; white-space: nowrap; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+  .stepper { display: flex; align-items: center; gap: 8px; flex: 1 1 300px; min-width: 0; }
+  .stepper label { font-size: 14px; white-space: nowrap; }
+  .stepper input[type="range"] { flex: 1; min-width: 80px; accent-color: var(--focus); }
+  .btn { font: inherit; font-weight: 600; height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .btn.num { font-family: var(--font-num); width: 32px; padding: 0; }
+  .btn:focus-visible { outline: 2px solid var(--focus); }
+  .btn:disabled { opacity: .35; cursor: default; }
+  .btn.play[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+  .stepper output { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 14px; text-align: right; white-space: nowrap; }
+  .hint { font-size: 12px; color: var(--muted); }
+
+  .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); padding: 12px; min-width: 0; }
+  figure.panel { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 700; flex-wrap: wrap; }
+  figcaption span { font-weight: 400; color: var(--muted); }
+  canvas { display: block; width: 100%; height: auto; }
+  #plan { cursor: crosshair; touch-action: none; }
+  .wide { grid-column: 1 / -1; }
+
+  .info { display: flex; flex-direction: column; gap: 12px; }
+  .info h3 { margin: 0; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .tabs button { font: inherit; font-size: 13px; font-weight: 700; padding: 6px 12px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+  .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .tabpanel { display: grid; gap: 12px; }
+  .tabpanel[hidden] { display: none; }
+  .rec { display: grid; grid-template-columns: 112px 1fr; gap: 12px; align-items: start; }
+  .symbol { width: 112px; height: 112px; border: 1px solid var(--line); border-radius: 8px; background: var(--sky); }
+  table.rt { border-collapse: collapse; width: 100%; font-size: 14px; }
+  table.rt th, table.rt td { border: 1px solid var(--line); padding: 5px 10px; text-align: left; vertical-align: top; }
+  table.rt th { background: var(--cell); color: var(--muted); font-weight: 500; width: 5em; white-space: nowrap; }
+  table.rt td { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-weight: 600; }
+  table.rt td.t { font-family: var(--font-body); }
+  table.rt td small { font-family: var(--font-body); font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .now { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--cell); font-size: 13px; display: grid; gap: 4px; }
+  .now strong { color: var(--ink); }
+  .steps { margin: 0; padding-left: 1.5em; font-size: 14px; display: grid; gap: 4px; }
+  .steps li::marker { color: var(--muted); font-family: var(--font-num); }
+  .steps .warm { color: var(--warm); }
+  .steps .cool { color: var(--cool); }
+  .why { margin: 0; padding: 10px 12px; border-left: 3px solid var(--cool); background: var(--sea-soft); border-radius: 0 6px 6px 0; font-size: 13px; }
+  .why.warm { border-left-color: var(--warm); background: var(--warm-soft); }
+  .why strong { display: block; margin-bottom: 2px; }
+  /* 気団と季節の表 */
+  table.km { border-collapse: collapse; width: 100%; font-size: 13px; border-top: 2px solid var(--ink); }
+  table.km th, table.km td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  table.km th { color: var(--muted); font-weight: 500; white-space: nowrap; }
+  table.km td strong.warm { color: var(--warm); }
+  table.km td strong.cool { color: var(--cool); }
+  table.km tr.on td, table.km tr.on th { background: var(--cell); }
+  table.km button { font: inherit; font-size: 13px; font-weight: 700; color: var(--focus); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: .18em; }
+  table.km button:focus-visible { outline: 2px solid var(--focus); }
+  /* 問題タブ */
+  .quiz { gap: 10px; }
+  .qnav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .dots { display: flex; gap: 4px; flex-wrap: wrap; }
+  .dot { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font: 600 12px var(--font-num); color: var(--muted); cursor: pointer; padding: 0; }
+  .dot[aria-current="true"] { border-color: var(--ink); color: var(--ink); border-width: 2px; }
+  .dot.ok { background: var(--cool); border-color: var(--cool); color: #fff; }
+  .dot.ng { background: var(--warm); border-color: var(--warm); color: #fff; }
+  .dot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .q { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .choices { display: grid; gap: 6px; }
+  .choices button { text-align: left; font: inherit; font-size: 14px; line-height: 1.4; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; display: flex; gap: 8px; align-items: baseline; }
+  .choices button .k { font-family: var(--font-num); color: var(--muted); flex: none; }
+  .choices button:focus-visible { outline: 2px solid var(--focus); }
+  .choices button:disabled { cursor: default; }
+  .choices button[data-mark="ok"] { border-color: var(--cool); background: var(--sea-soft); }
+  .choices button[data-mark="ng"] { border-color: var(--warm); background: var(--warm-soft); }
+  .choices button[data-mark="ok"] .k, .choices button[data-mark="ng"] .k { color: inherit; font-weight: 600; }
+  .explain { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--cell); font-size: 13px; display: grid; gap: 6px; }
+  .verdict { font-weight: 700; }
+  .verdict.ok { color: var(--cool); }
+  .verdict.ng { color: var(--warm); }
+  .qbtn { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .qbtn:focus-visible { outline: 2px solid var(--focus); }
+  .qbtn:disabled { opacity: .35; cursor: default; }
+  .qbtn.focus { border-color: var(--focus); color: var(--focus); justify-self: start; }
+  .qfoot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .qfoot .score { margin-left: auto; font-family: var(--font-num); }
+  .levels { display: flex; gap: 14px; border-bottom: 1px solid var(--line); }
+  .levels button { font: inherit; font-size: 13px; font-weight: 700; padding: 2px 0 6px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; margin-bottom: -1px; display: flex; gap: 5px; align-items: baseline; }
+  .levels button small { font: 600 11px var(--font-num); color: var(--muted); }
+  .levels button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .levels button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .ldesc { margin: -6px 0 0; font-size: 12px; color: var(--muted); }
+  .qt { border-collapse: collapse; margin: 8px 0; font-size: 12px; font-weight: 400; width: 100%; border-top: 2px solid var(--ink); }
+  .qt th, .qt td { border-bottom: 1px solid var(--line); padding: 3px 4px; text-align: center; white-space: nowrap; }
+  .qt th { color: var(--muted); font-weight: 600; }
+  .qt td { font-family: var(--font-num); }
+  footer { font-size: 12px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    .wide { grid-column: auto; }
+    .rec { grid-template-columns: 1fr; }
+  }
+  .motion-note { display: none; }
+  @media (prefers-reduced-motion: reduce) { .motion-note { display: block; } }
+  /* タッチ端末：押せるものは 44px 四方以上。マウスの見た目は変えない */
+  @media (pointer: coarse) {
+    .seg button { min-height: 44px; min-width: 44px; }
+    button[data-goto] { min-height: 44px; min-width: 44px; }
+    table.km td:has(> button[data-goto]) { white-space: nowrap; }
+    .btn { height: 44px; }
+    .btn.num { width: 44px; flex: none; }
+    .stepper input[type="range"] { height: 44px; min-width: 80px; }
+    .tabs button { min-height: 44px; padding-inline: 16px; }
+    .dot { width: 44px; height: 44px; }
+    .choices button, .qbtn { min-height: 44px; }
+    .levels button { min-height: 44px; }
+    nav.crumbs { row-gap: 0; }
+    nav.crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+  /* 狭いタッチ画面：スライダーの名前が長い季節（冬・梅雨・夏）は 1 行に入らず数値の欄がはみ出すので、名前を 1 行目に */
+  @media (pointer: coarse) and (max-width: 480px) {
+    .stepper { flex-wrap: wrap; row-gap: 2px; }
+    .stepper label { flex-basis: 100%; }
+  }
+</style>
+
+<div class="app">
+  <nav class="crumbs" id="crumbs"></nav>
+  <header>
+    <div class="cartouche"><h1><span class="num">5</span>日本の気象</h1><p>中学2年 理科　第2分野　気象とその変化</p></div>
+    <div class="intro"><h2>日本の四季の天気は、どの気団がつくるか</h2><p>季節を切り替えると、日本付近の天気図（等圧線・気団・前線・風）と、その断面のしくみが変わる。冬の北西の季節風は2章の陸風、夏の南東の季節風は海風を、大陸と海のスケールで見たもの。天気図の観測点はドラッグできる。「問題」タブで入試形式の問題を解ける。</p></div>
+  </header>
+
+  <section class="controls" aria-label="操作">
+    <div class="row">
+      <div class="group">
+        <span class="gl">季節</span>
+        <div class="seg" role="group" aria-label="季節">
+          <button type="button" data-mode="winter" aria-pressed="true">冬</button>
+          <button type="button" data-mode="spring" aria-pressed="false">春・秋</button>
+          <button type="button" data-mode="baiu" aria-pressed="false">梅雨</button>
+          <button type="button" data-mode="summer" aria-pressed="false">夏</button>
+          <button type="button" data-mode="typhoon" aria-pressed="false">台風</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="stepper">
+        <label for="param" id="param-label">シベリア高気圧の強さ</label>
+        <button type="button" class="btn num" id="minus" aria-label="減らす">−</button>
+        <input type="range" id="param" min="1" max="10" step="1" value="5">
+        <button type="button" class="btn num" id="plus" aria-label="増やす">＋</button>
+        <output id="param-out" for="param">5</output>
+      </div>
+      <button type="button" class="btn play" id="play" aria-pressed="false" hidden>▶ 動かす</button>
+      <span class="hint" id="hint"></span>
+    </div>
+  </section>
+
+  <main class="grid">
+    <figure class="panel wide">
+      <figcaption><span id="xs-title" style="font-weight:700;color:var(--ink)">断面図（横から見る）</span><span id="xs-cap"></span></figcaption>
+      <canvas id="xs" width="1200" height="600" aria-label="断面図"></canvas>
+    </figure>
+    <figure class="panel">
+      <figcaption>平面図（日本付近の天気図）<span>等圧線 4 hPa ごと・観測点をドラッグ</span></figcaption>
+      <canvas id="plan" width="1200" height="1200" aria-label="日本付近の天気図。等圧線、気団、前線、風、観測点"></canvas>
+    </figure>
+    <aside class="panel info">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-rec" aria-selected="true" aria-controls="panel-rec">観測点の記録</button>
+        <button type="button" role="tab" id="tab-km" aria-selected="false" aria-controls="panel-km">気団と季節</button>
+        <button type="button" role="tab" id="tab-quiz" aria-selected="false" aria-controls="panel-quiz">問題</button>
+      </div>
+      <div class="tabpanel" id="panel-rec" role="tabpanel" aria-labelledby="tab-rec">
+        <div class="rec">
+          <canvas class="symbol" id="symbol" width="224" height="224" aria-label="観測点の天気図記号"></canvas>
+          <table class="rt">
+            <tr><th>気圧</th><td id="r-p">—</td></tr>
+            <tr><th>風向</th><td id="r-dir">—</td></tr>
+            <tr><th>風力</th><td id="r-force">—</td></tr>
+            <tr><th>天気</th><td id="r-wx" class="t">—</td></tr>
+            <tr><th>気温</th><td id="r-t">—</td></tr>
+            <tr><th>気団</th><td id="r-km" class="t">—</td></tr>
+          </table>
+        </div>
+        <div class="now" id="now"></div>
+      </div>
+      <div class="tabpanel" id="panel-km" role="tabpanel" aria-labelledby="tab-km" hidden>
+        <h3>日本付近の3つの気団（大陸は乾き、海は湿る。北は冷たく、南はあたたかい）</h3>
+        <table class="km">
+          <tr><th>気団</th><th>季節</th><th>性質</th></tr>
+          <tr data-km="siberia"><td><strong class="cool">シベリア気団</strong><br><small>大陸（北西）</small></td><td><button type="button" data-goto="winter">冬</button></td><td>冷たく、<strong>乾いて</strong>いる</td></tr>
+          <tr data-km="okhotsk"><td><strong class="cool">オホーツク海気団</strong><br><small>オホーツク海（北東）</small></td><td><button type="button" data-goto="baiu">梅雨</button>・秋雨</td><td>冷たく、<strong>湿って</strong>いる</td></tr>
+          <tr data-km="ogasawara"><td><strong class="warm">小笠原気団</strong><br><small>日本の南の太平洋</small></td><td><button type="button" data-goto="summer">夏</button></td><td>あたたかく、<strong>湿って</strong>いる</td></tr>
+        </table>
+        <h3>四季の天気図の形</h3>
+        <table class="km">
+          <tr data-season="winter"><th><button type="button" data-goto="winter">冬</button></th><td><strong>西高東低</strong>。等圧線が南北にのび、間隔がせまい。<strong>北西の季節風</strong>。日本海側は雪、太平洋側は乾いた晴れ</td></tr>
+          <tr data-season="spring"><th><button type="button" data-goto="spring">春・秋</button></th><td><strong>移動性高気圧</strong>と低気圧が交互に西から東へ通り、天気が数日の周期で変わる（偏西風）</td></tr>
+          <tr data-season="baiu"><th><button type="button" data-goto="baiu">梅雨</button></th><td>オホーツク海気団と小笠原気団の勢力がつり合い、<strong>停滞前線（梅雨前線）</strong>が日本付近にとどまって長雨。秋の秋雨前線も同じ</td></tr>
+          <tr data-season="summer"><th><button type="button" data-goto="summer">夏</button></th><td><strong>南高北低</strong>。太平洋高気圧（小笠原気団）におおわれ、蒸し暑い晴れ。<strong>南東の季節風</strong></td></tr>
+          <tr data-season="typhoon"><th><button type="button" data-goto="typhoon">台風</button></th><td>最大風速が約 17 m/s 以上になった<strong>熱帯低気圧</strong>。等圧線は同心円で間隔がせまく、<strong>前線をともなわない</strong>。太平洋高気圧のふちを回って北上し、偏西風で北東へ</td></tr>
+        </table>
+      </div>
+      <div class="tabpanel quiz" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden></div>
+      <h3>起きていること</h3>
+      <ol class="steps" id="steps"></ol>
+      <p class="why" id="why"></p>
+      <p class="motion-note hint">動きを減らす設定のため、「動かす」はゆっくり進みます。</p>
+    </aside>
+  </main>
+
+  <footer>日本付近の天気図は、教科書の模式図にそって単純化している。高気圧・低気圧の位置や気圧の値は典型的な例で、実際の天気図ごとにちがう。気団は現行の教科書どおり3つで扱う。天気図記号の読み方は「気圧と風」、前線の通過は「前線と天気の変化」のページにある。</footer>
+</div>
+
+<script>
+window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象観測", "kansoku.html"], ["2 気圧と風", "kiatsu-to-kaze.html"], ["3 空気中の水の変化", "suijoki.html"], ["4 前線と天気の変化", "zensen.html"], ["5 日本の気象", null]];
+</script>
+<script>
+(() => {
+  // ---------- 状態 ----------
+  const state = { mode: 'winter', val: { winter: 5, spring: 24, baiu: 5, summer: 5, typhoon: 30 }, obs: { x: 326, y: 286 }, playing: false, dragging: false, focus: null };
+  const BG = 1012;                        // 周りの気圧 hPa
+  // 地上の風が等圧線を横切る角度。ふだんは 30°（2章と同じ）。夏の季節風は気圧の差が小さく、海と大陸の温度差で吹くので 65°（海風と同じく、等圧線を大きく横切る）
+  const alpha = () => (state.mode === 'summer' ? 65 : 30) * Math.PI / 180;
+  const K = 60;                           // 気圧傾度 → 風速の係数（hPa/px あたり m/s）
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const PARAM = {
+    winter:  { label: 'シベリア高気圧の強さ', min: 1, max: 10, step: 1, time: false, fmt: v => String(v) },
+    spring:  { label: '時間', min: 0, max: 96, step: 1, time: true, fmt: v => `${v} 時間` },
+    baiu:    { label: '小笠原気団の勢力', min: 1, max: 10, step: 1, time: false, fmt: v => String(v) },
+    summer:  { label: '太平洋高気圧の強さ', min: 1, max: 10, step: 1, time: false, fmt: v => String(v) },
+    typhoon: { label: '時間', min: 0, max: 72, step: 1, time: true, fmt: v => `${v} 時間` },
+  };
+  const val = () => state.val[state.mode];
+
+  // ---------- 地図（経度 118〜158°E → x 0〜600、緯度 50〜20°N → y 0〜600） ----------
+  const PW = 600;
+  const L2X = lon => (lon - 118) * 15, L2Y = lat => (50 - lat) * 20;
+  const toPx = pts => pts.map(([lo, la]) => [L2X(lo), L2Y(la)]);
+  const CONT = toPx([[118, 50], [118, 20], [120, 22], [120.5, 25], [121, 27], [121.5, 29], [120.6, 32], [119.5, 34.5], [121, 36.5], [122.5, 37.5], [124.5, 39.8], [125, 38.5], [126.3, 37], [126.5, 34.6], [128, 34.8], [129.5, 35.2], [129.3, 37.3], [128.2, 38.6], [130.5, 42.3], [132.6, 43], [135, 43.5], [137, 45.3], [138.5, 46.5], [140.5, 48.5], [141.5, 50]]);
+  const ISLANDS = [
+    toPx([[130.0, 33.9], [131.0, 33.9], [131.8, 33.0], [131.5, 31.4], [130.6, 31.0], [130.0, 31.8], [129.6, 33.2]]),                      // 九州
+    toPx([[132.0, 33.9], [134.6, 34.2], [134.6, 33.5], [133.0, 33.0], [132.4, 33.3]]),                                                      // 四国
+    toPx([[131.0, 34.4], [132.5, 35.5], [133.5, 35.5], [135.0, 35.7], [136.0, 36.3], [137.0, 37.4], [138.5, 38.0], [139.5, 38.5], [140.0, 39.8], [140.0, 41.2], [141.3, 41.4], [141.5, 40.5], [141.0, 38.5], [140.8, 37.0], [140.4, 35.8], [139.8, 35.0], [138.9, 34.7], [137.3, 34.6], [136.8, 35.0], [136.0, 34.4], [135.3, 33.6], [135.0, 34.4], [133.0, 34.4], [131.5, 34.2]]), // 本州
+    toPx([[139.8, 41.8], [140.5, 43.0], [141.4, 43.5], [141.6, 45.2], [142.6, 44.4], [144.0, 44.0], [145.5, 44.3], [145.0, 43.2], [143.5, 42.2], [141.9, 42.5], [140.6, 42.3], [140.0, 41.5]]), // 北海道
+    toPx([[120.5, 25.2], [121.9, 25.2], [121.0, 22.0]]),                                                                                     // 台湾
+  ];
+  const SPINE = toPx([[129.8, 31.5], [131, 34.0], [133.5, 35.0], [136, 35.9], [138, 36.8], [139.5, 37.5], [140.3, 39.3], [141, 41.0], [142.5, 43.0], [145.5, 44.3]]); // 脊梁山脈（この線より北西が日本海側）
+  function inPoly(pts, x, y) { let c = false; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) { const [xi, yi] = pts[i], [xj, yj] = pts[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
+  function spineY(x) { if (x <= SPINE[0][0]) return SPINE[0][1]; for (let i = 1; i < SPINE.length; i++) { if (x <= SPINE[i][0]) { const [x0, y0] = SPINE[i - 1], [x1, y1] = SPINE[i]; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); } } return SPINE[SPINE.length - 1][1]; }
+  // 地域：cont 大陸 / jsea 日本海 / jsSide 日本海側 / pacSide 太平洋側 / pac 太平洋 / okhotsk オホーツク海
+  function regionOf(x, y) {
+    if (inPoly(CONT, x, y)) return 'cont';
+    const onJapan = ISLANDS.some(p => inPoly(p, x, y));
+    if (y < L2Y(44) && x > L2X(142.5)) return onJapan ? 'pacSide' : 'okhotsk';
+    const north = y < spineY(x);
+    if (onJapan) return north ? 'jsSide' : 'pacSide';
+    return north ? 'jsea' : 'pac';
+  }
+  const REGION_LABEL = { cont: '大陸', jsea: '日本海', jsSide: '日本海側', pacSide: '太平洋側', pac: '太平洋', okhotsk: 'オホーツク海' };
+
+  // ---------- 気圧のモデル ----------
+  const G = (x, y, cx, cy, sx, sy) => Math.exp(-(((x - cx) / sx) ** 2 + ((y - cy) / sy) ** 2) / 2);
+  // 台風の進路（経度, 緯度）：南の海上から北上し、太平洋高気圧のふちを回って偏西風で北東へ
+  const TY_PATH = [[0, 134.5, 21], [18, 132.5, 25.5], [30, 131.2, 29.3], [40, 131.8, 32.3], [50, 134.5, 34.8], [60, 138.5, 37], [72, 144.5, 40.5]];
+  function typhoonAt(t) {
+    for (let i = 1; i < TY_PATH.length; i++) {
+      if (t <= TY_PATH[i][0]) { const [t0, lo0, la0] = TY_PATH[i - 1], [t1, lo1, la1] = TY_PATH[i], u = (t - t0) / (t1 - t0); return { x: L2X(lo0 + (lo1 - lo0) * u), y: L2Y(la0 + (la1 - la0) * u) }; }
+    }
+    const [, lo, la] = TY_PATH[TY_PATH.length - 1]; return { x: L2X(lo), y: L2Y(la) };
+  }
+  // 台風の移動速度（px/h）。1 px ≒ 6 km なので m/s は ×1.67。進路の右側で回転の風と重なって強くなる
+  function typhoonVel(t) { const t0 = Math.max(0, t - 1), t1 = Math.min(72, t + 1), a = typhoonAt(t0), b = typhoonAt(t1); return { vx: (b.x - a.x) / (t1 - t0), vy: (b.y - a.y) / (t1 - t0) }; }
+  const PX_TO_MS = 1.67;
+  const baiuLat = s => 27 + 1.9 * s;                                    // 梅雨前線の緯度。勢力 5 で本州の上、10 で北海道の北（梅雨明け）
+  const frontY = (x, s) => L2Y(baiuLat(s)) + 10 * Math.sin(x / 80);
+  // 気圧系の一覧 {x, y, amp, sx, sy, kind, name}
+  function systems() {
+    const m = state.mode, s = val();
+    if (m === 'winter') return [
+      { x: L2X(100), y: L2Y(48), amp: 8 * s, sx: 330, sy: 420, kind: 'H', name: 'シベリア高気圧' },
+      { x: L2X(156.5), y: L2Y(49), amp: -6 * s, sx: 200, sy: 300, kind: 'L', name: '低気圧' }];
+    if (m === 'summer') return [
+      { x: L2X(157), y: L2Y(31), amp: 2.6 * s, sx: 330, sy: 260, kind: 'H', name: '太平洋高気圧' },
+      { x: L2X(106), y: L2Y(41), amp: -2.2 * s, sx: 260, sy: 230, kind: 'L', name: '低気圧' }];
+    if (m === 'baiu') return [
+      { x: L2X(150), y: L2Y(49), amp: 7, sx: 230, sy: 170, kind: 'H', name: 'オホーツク海高気圧' },
+      { x: L2X(150), y: L2Y(Math.min(29, 18 + 1.2 * s)), amp: 9 + 0.3 * s, sx: 320, sy: 200, kind: 'H', name: '太平洋高気圧' }];
+    if (m === 'typhoon') { const c = typhoonAt(s); return [
+      { x: c.x, y: c.y, amp: -62, sx: 55, sy: 55, kind: 'T', name: '台風' },
+      { x: c.x, y: c.y, amp: -8, sx: 170, sy: 170, kind: 'T2' },
+      { x: L2X(157), y: L2Y(30), amp: 6, sx: 280, sy: 210, kind: 'H', name: '太平洋高気圧' }]; }
+    // 春・秋：移動性高気圧と低気圧が交互に、偏西風で東へ（1 時間に 6 px ＝ 約 30 km）
+    const out = []; const base = -420 + 6 * s;
+    for (let k = -1; k <= 3; k++) {
+      const x = base + k * 320;
+      if (k % 2 === 0) out.push({ x, y: L2Y(37), amp: 10, sx: 120, sy: 105, kind: 'H', name: '移動性高気圧' });
+      else out.push({ x, y: L2Y(39.5), amp: -12, sx: 110, sy: 95, kind: 'L', name: '低気圧' });
+    }
+    return out;
+  }
+  function pressureAt(x, y) {
+    let p = BG; for (const s of systems()) p += s.amp * G(x, y, s.x, s.y, s.sx, s.sy);
+    if (state.mode === 'baiu') { const d = (y - frontY(x, val())) / 35; p -= 5 * Math.exp(-d * d); }
+    return p;
+  }
+  function windAt(x, y, noMove) {
+    const h = 2;
+    const dpdx = (pressureAt(x + h, y) - pressureAt(x - h, y)) / (2 * h), dpdy = (pressureAt(x, y + h) - pressureAt(x, y - h)) / (2 * h);
+    const n = Math.hypot(dpdx, dpdy); if (n < 1e-5) return { vx: 0, vy: 0, speed: 0 };
+    const gx = dpdy, gy = -dpdx;                                        // 北半球：低気圧を左に見て等圧線に沿う
+    const A = alpha();
+    const vx = Math.cos(A) * gx - Math.sin(A) * dpdx, vy = Math.cos(A) * gy - Math.sin(A) * dpdy;   // 低い方へ傾ける
+    let speed = Math.min(60, K * n), ox = vx / n * speed, oy = vy / n * speed;
+    if (state.mode === 'typhoon' && !noMove) {                          // 台風が進む速さを足す（中心から離れるほど効かない）
+      const c = typhoonAt(val()), r = Math.hypot(x - c.x, y - c.y), w = Math.exp(-((r / 220) ** 2) / 2), mv = typhoonVel(val());
+      ox += mv.vx * PX_TO_MS * w; oy += mv.vy * PX_TO_MS * w; speed = Math.hypot(ox, oy);
+    }
+    return { vx: ox, vy: oy, speed };
+  }
+  const BEAUFORT = [0.3, 1.6, 3.4, 5.5, 8.0, 10.8, 13.9, 17.2, 20.8, 24.5, 28.5, 32.7];
+  const beaufort = (ms) => { let f = 0; while (f < BEAUFORT.length && ms >= BEAUFORT[f]) f++; return f; };
+  const DIRS = ['北', '北北東', '北東', '東北東', '東', '東南東', '南東', '南南東', '南', '南南西', '南西', '西南西', '西', '西北西', '北西', '北北西'];
+  const DIRS8 = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'];
+  const bearingFrom = (vx, vy) => { let b = Math.atan2(-vx, vy) * 180 / Math.PI; if (b < 0) b += 360; return b; };
+  const dir16 = (b) => DIRS[Math.round(b / 22.5) % 16];
+  const dir8 = (b) => DIRS8[Math.round(b / 45) % 8];
+  const WX_LABEL = { fine: '晴れ', cloudy: 'くもり', rain: '雨', snow: '雪', eye: '晴れ（台風の目）' };
+
+  // 観測点の天気・気温・気団
+  function situation(x, y) {
+    const m = state.mode, s = val(), reg = regionOf(x, y), p = pressureAt(x, y), w = windAt(x, y);
+    let wx = 'fine', temp = 15, km = '—', note = '';
+    if (m === 'winter') {
+      km = 'シベリア気団（冷たく乾いた）';
+      if (reg === 'cont') { wx = 'fine'; temp = -12 + s * -0.6; note = '大陸の上：冷たく乾いた空気。晴れ'; }
+      else if (reg === 'jsea' || reg === 'jsSide') { wx = s >= 3 ? 'snow' : 'cloudy'; temp = 1 - s * 0.3; note = reg === 'jsea' ? '日本海の上：海から水蒸気をもらって雪雲ができる' : '日本海側：山にぶつかった雪雲から雪'; }
+      else if (reg === 'okhotsk') { wx = 'snow'; temp = -6; note = 'オホーツク海の上'; }
+      else { wx = 'fine'; temp = 8 - s * 0.3; note = reg === 'pacSide' ? '太平洋側：山を越えて乾いた風。晴れて乾燥' : '太平洋の上：乾いた季節風が吹き出している'; }
+    } else if (m === 'summer') {
+      km = '小笠原気団（あたたかく湿った）';
+      if (reg === 'cont') { wx = 'cloudy'; temp = 33; note = '大陸の上：温まって上昇気流、低気圧'; }
+      else if (reg === 'okhotsk') { wx = 'cloudy'; temp = 18; note = 'オホーツク海の上：冷たい海'; }
+      else { wx = 'fine'; temp = 30 + s * 0.2; note = '太平洋高気圧におおわれ、蒸し暑い晴れ'; }
+    } else if (m === 'baiu') {
+      const d = y - frontY(x, s);                                      // 正：前線より南
+      if (d < -110) { km = 'オホーツク海気団（冷たく湿った）'; wx = reg === 'cont' ? 'fine' : 'cloudy'; temp = 16; note = '前線の北：冷たく湿った空気。ひんやり'; }
+      else if (d < -15) { km = 'オホーツク海気団（冷たく湿った）'; wx = d > -70 ? 'rain' : 'cloudy'; temp = 19; note = '停滞前線の北側：暖気がはい上がり、乱層雲から長雨'; }
+      else if (d < 25) { km = '前線の上（2つの気団の境）'; wx = 'rain'; temp = 22; note = '梅雨前線の真上'; }
+      else { km = '小笠原気団（あたたかく湿った）'; wx = d < 60 ? 'cloudy' : 'fine'; temp = 27; note = '前線の南：あたたかく湿った空気。蒸し暑い'; }
+    } else if (m === 'typhoon') {
+      const c = typhoonAt(s), r = Math.hypot(x - c.x, y - c.y);
+      km = '熱帯の海でできた空気（前線はない）';
+      if (r < 16) { wx = 'eye'; temp = 27; note = '台風の目：下降気流で雲がなく、風も弱い'; }
+      else if (r < 110) { wx = 'rain'; temp = 25; note = '積乱雲の壁：暴風と強い雨'; }
+      else if (r < 180) { wx = 'rain'; temp = 26; note = '台風の雨の範囲'; }
+      else if (r < 250) { wx = 'cloudy'; temp = 27; note = '台風の外側の雲'; }
+      else { wx = 'fine'; temp = 28; note = '太平洋高気圧の中。晴れ'; }
+    } else {
+      km = '—（移動性高気圧と低気圧が交互に通る）';
+      const lows = systems().filter(q => q.kind === 'L'), highs = systems().filter(q => q.kind === 'H');
+      const dl = Math.min(...lows.map(q => Math.hypot(x - q.x, y - q.y))), dh = Math.min(...highs.map(q => Math.hypot(x - q.x, y - q.y)));
+      if (dl < 110) { wx = 'rain'; temp = 13; note = '低気圧の近く：上昇気流で雲ができ、雨'; }
+      else if (dl < 170) { wx = 'cloudy'; temp = 15; note = '低気圧が近づく（または遠ざかる）：くもり'; }
+      else { wx = 'fine'; temp = 18; note = dh < 130 ? '移動性高気圧の中：下降気流で晴れ、朝は冷えこむ' : '高気圧と低気圧の間'; }
+    }
+    return { reg, p, wx, temp, km, note, ...w };
+  }
+
+  // ---------- 描画の部品 ----------
+  function arrow(ctx, x1, y1, x2, y2, color, width) {
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy); if (L < 1) return;
+    const nx = dx / L, ny = dy / L;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - nx * 6, y2 - ny * 6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - nx * 10 - ny * 5, y2 - ny * 10 + nx * 5); ctx.lineTo(x2 - nx * 10 + ny * 5, y2 - ny * 10 - nx * 5); ctx.closePath(); ctx.fill();
+  }
+  function drawSymbol(ctx, x, y, size, wx, bearing, force) {
+    const ink = css('--ink');
+    ctx.save();
+    ctx.strokeStyle = ink; ctx.fillStyle = ink; ctx.lineWidth = Math.max(1.5, size * 0.06); ctx.lineCap = 'round';
+    const R = size * 0.22;
+    ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2);
+    if (wx === 'rain') ctx.fill(); else ctx.stroke();
+    if (wx === 'fine' || wx === 'eye') { ctx.beginPath(); ctx.moveTo(x, y - R); ctx.lineTo(x, y + R); ctx.stroke(); }
+    if (wx === 'cloudy') { ctx.beginPath(); ctx.arc(x, y, R * 0.55, 0, Math.PI * 2); ctx.stroke(); }
+    if (wx === 'snow') { ctx.lineWidth = Math.max(1.2, size * 0.045); for (let i = 0; i < 3; i++) { const a = i * Math.PI / 3; ctx.beginPath(); ctx.moveTo(x - Math.cos(a) * R * 0.75, y - Math.sin(a) * R * 0.75); ctx.lineTo(x + Math.cos(a) * R * 0.75, y + Math.sin(a) * R * 0.75); ctx.stroke(); } }
+    if (force > 0) {
+      const b = bearing * Math.PI / 180, dx = Math.sin(b), dy = -Math.cos(b), L = size * 0.9;
+      ctx.lineWidth = Math.max(1.5, size * 0.06);
+      ctx.beginPath(); ctx.moveTo(x + dx * R, y + dy * R); ctx.lineTo(x + dx * (R + L), y + dy * (R + L)); ctx.stroke();
+      let fx = -dy * 0.85 + dx * 0.5, fy = dx * 0.85 + dy * 0.5; const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
+      for (let i = 0; i < force; i++) { const t = L - i * size * 0.13; if (t < size * 0.2) break; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * size * 0.3, py + fy * size * 0.3); ctx.stroke(); }
+    }
+    ctx.restore();
+  }
+  function frontLine(ctx, x1, y1, x2, y2, kind, k0 = 0) {              // 4章と同じ記号。stationary は半円（北向き）と三角（南向き）を交互に（短い区間に分けて描くので k0 で続きの番号を渡す）
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = dx / L, ny = dy / L;
+    const warm = css('--warm'), cool = css('--cool');
+    ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = kind === 'warm' ? warm : cool;
+    if (kind === 'stationary') { ctx.strokeStyle = cool; }
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    const ang = Math.atan2(ny, nx);
+    let k = k0;
+    const side = kind === 'stationary' ? -1 : 1;                         // 停滞前線の三角は半円の反対側（南）
+    for (let s = 14; s < L - 6; s += 22, k++) {
+      const bx = x1 + nx * s, by = y1 + ny * s;
+      ctx.beginPath();
+      const type = kind === 'stationary' ? (k % 2 === 0 ? 'warm' : 'cold') : kind;
+      if (type === 'warm') { ctx.fillStyle = warm; ctx.arc(bx, by, 6, ang, ang + Math.PI, true); ctx.fill(); }
+      else { ctx.fillStyle = cool; ctx.moveTo(bx - nx * 6, by - ny * 6); ctx.lineTo(bx + side * ny * 10, by - side * nx * 10); ctx.lineTo(bx + nx * 6, by + ny * 6); ctx.closePath(); ctx.fill(); }
+    }
+  }
+  function badge(ctx, n, x, y, text, align, color) {
+    const ink = css('--ink');
+    if (xsNotes) {
+      const r = 9 * xk(); xsNotes.push({ n, text, color: color || ink });
+      if (y > GY + 10) y = GY + 16 + 14 * xk() + r + 4;
+      x = clearOfDots(x, y, r); keepOut(x - r, y - r, x + r, y + r);
+    }
+    ctx.save();
+    ctx.fillStyle = color || ink; ctx.beginPath(); ctx.arc(x, y, xsNotes ? 9 * xk() : 9, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = css('--panel'); ctx.font = '700 11px ' + css('--font-num'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(String(n), x, y + 0.5);
+    if (xsNotes) { ctx.restore(); return; }
+    ctx.fillStyle = color || ink; ctx.font = '700 12px ' + css('--font-body'); ctx.textBaseline = 'middle';
+    if (align === 'left') { ctx.textAlign = 'right'; ctx.fillText(text, x - 14, y); } else { ctx.textAlign = 'left'; ctx.fillText(text, x + 14, y); }
+    ctx.restore();
+  }
+  function badgeCentered(ctx, n, cx, y, text, color) {
+    if (xsNotes) return badge(ctx, n, cx, y, text, 'right', color);
+    ctx.save(); ctx.font = '700 12px ' + css('--font-body'); const w = ctx.measureText(text).width + 24; ctx.restore();
+    badge(ctx, n, cx - w / 2 + 9, y, text, 'right', color);
+  }
+  function cloud(ctx, x, y, w, alpha) {
+    const puffs = [[0, 0, .34], [-.28, .08, .24], [.28, .08, .26], [-.12, -.14, .22], [.14, -.16, .24]];
+    ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = css('--panel'); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1.5;
+    for (const [px, py, pr] of puffs) { ctx.beginPath(); ctx.arc(x + px * w, y + py * w, pr * w, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    ctx.fillStyle = css('--panel'); for (const [px, py, pr] of puffs) { ctx.beginPath(); ctx.arc(x + px * w, y + py * w, pr * w - 1, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
+  function tower(ctx, x, top, bottom, w) {                                // 積乱雲（縦にのびる雲）
+    ctx.save(); ctx.fillStyle = css('--panel'); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(x - w * 0.45, bottom); ctx.lineTo(x - w * 0.5, bottom - (bottom - top) * 0.55); ctx.lineTo(x - w * 0.2, top + 14); ctx.lineTo(x - w * 0.15, top); ctx.lineTo(x + w * 0.9, top); ctx.lineTo(x + w, top + 8); ctx.lineTo(x + w * 0.5, top + 22); ctx.lineTo(x + w * 0.45, bottom - (bottom - top) * 0.55); ctx.lineTo(x + w * 0.4, bottom); ctx.closePath(); ctx.fill(); ctx.stroke();
+    for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.arc(x - w * 0.3 + i * w * 0.25, bottom - 4, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    ctx.restore();
+  }
+  function rainDrops(ctx, x0, x1, yTop, yBottom, step, heavy) {
+    ctx.save(); ctx.strokeStyle = css('--rain'); ctx.lineWidth = heavy ? 2 : 1.2;
+    for (let x = x0; x < x1; x += step) for (let k = 0; k < 2; k++) { const y = yTop + k * ((yBottom - yTop) / 2) + ((x * 7) % 11); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 1.5, y + 9); ctx.stroke(); }
+    ctx.restore();
+  }
+  function snowDots(ctx, x0, x1, yTop, yBottom, step) {
+    ctx.save(); ctx.fillStyle = css('--panel'); ctx.strokeStyle = css('--snow'); ctx.lineWidth = 1;
+    for (let x = x0; x < x1; x += step) for (let k = 0; k < 3; k++) { const y = yTop + k * ((yBottom - yTop) / 3) + ((x * 5) % 9); ctx.beginPath(); ctx.arc(x + (k % 2) * 4, y, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    ctx.restore();
+  }
+  function sun(ctx, x, y) {
+    ctx.save(); ctx.strokeStyle = css('--warm'); ctx.fillStyle = css('--panel'); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * 13, y + Math.sin(a) * 13); ctx.lineTo(x + Math.cos(a) * 18, y + Math.sin(a) * 18); ctx.stroke(); }
+    ctx.restore();
+  }
+  function mountain(ctx, x0, x1, base, peakX, h, color) {
+    ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(x0, base); ctx.lineTo(peakX - (peakX - x0) * 0.35, base - h * 0.55); ctx.lineTo(peakX, base - h); ctx.lineTo(peakX + (x1 - peakX) * 0.4, base - h * 0.5); ctx.lineTo(x1, base); ctx.closePath(); ctx.fill();
+  }
+  function haloText(ctx, text, x, y, color, font, align) {
+    ctx.save(); ctx.font = font; ctx.textAlign = align || 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+    ctx.lineWidth = 4; ctx.strokeStyle = css('--map'); ctx.strokeText(text, x, y); ctx.fillStyle = color; ctx.fillText(text, x, y); ctx.restore();
+  }
+
+  // ---------- 気団の領域（季節ごとに関係する気団を濃く、ほかは薄く） ----------
+  function airMasses() {
+    const m = state.mode, s = val();
+    const og = m === 'baiu' ? { lon: 150, lat: Math.min(27, baiuLat(s) - 9), rx: 270, ry: 150 } : m === 'typhoon' ? { lon: 153, lat: 29, rx: 300, ry: 160 } : { lon: 150, lat: 27, rx: 270, ry: 150 };
+    return [
+      { key: 'siberia', x: L2X(112), y: L2Y(48), rx: 210, ry: 150, color: 'cool', name: 'シベリア気団', sub: '冷たく乾いた', on: m === 'winter' },
+      { key: 'okhotsk', x: L2X(149), y: L2Y(48.5), rx: 150, ry: 105, color: 'cool', name: 'オホーツク海気団', sub: '冷たく湿った', on: m === 'baiu' },
+      { key: 'ogasawara', x: L2X(og.lon), y: L2Y(og.lat), rx: og.rx, ry: og.ry, color: 'warm', name: m === 'typhoon' ? '太平洋高気圧（小笠原気団）' : '小笠原気団', sub: 'あたたかく湿った', on: m === 'summer' || m === 'baiu' || m === 'typhoon' },
+    ];
+  }
+  function drawAirMasses(ctx) {
+    for (const a of airMasses()) {
+      const col = css('--' + a.color);
+      ctx.save(); ctx.beginPath(); ctx.ellipse(a.x, a.y, a.rx, a.ry, 0, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.globalAlpha = a.on ? 0.13 : 0.045; ctx.fill();
+      ctx.globalAlpha = a.on ? 0.75 : 0.3; ctx.strokeStyle = col; ctx.lineWidth = a.on ? 1.5 : 1; ctx.setLineDash([6, 5]); ctx.stroke(); ctx.restore();
+      // 名前は地図の中に入るところへ（端に近い気団は端ぞろえ）
+      const align = a.x < 80 ? 'left' : a.x > PW - 120 ? 'right' : 'center';
+      const lx = align === 'left' ? 12 : align === 'right' ? PW - 12 : a.x;
+      const ly = a.key === 'okhotsk' ? a.y + 48 : a.key === 'siberia' ? a.y + 10 : state.mode === 'typhoon' ? a.y - 80 : a.y - 40;
+      haloText(ctx, a.name, lx, ly, a.on ? col : css('--muted'), `${a.on ? 700 : 500} ${a.on ? 13 : 11}px ` + css('--font-body'), align);
+      haloText(ctx, a.sub, lx, ly + 16, a.on ? col : css('--muted'), '11px ' + css('--font-body'), align);
+    }
+  }
+  // 台風：進路全体と太平洋高気圧のふち、左右の風の合成
+  function drawTyphoonGuide(ctx) {
+    const t = val(), muted = css('--muted'), ink = css('--ink'), warm = css('--warm');
+    ctx.save();
+    ctx.strokeStyle = muted; ctx.globalAlpha = 0.45; ctx.setLineDash([3, 5]); ctx.lineWidth = 1.5; ctx.beginPath();
+    for (let u = 0; u <= 72; u += 1) { const c = typhoonAt(u); if (u === 0) ctx.moveTo(c.x, c.y); else ctx.lineTo(c.x, c.y); } ctx.stroke();       // これから進む進路
+    ctx.globalAlpha = 1; ctx.setLineDash([3, 4]); ctx.lineWidth = 1.8; ctx.beginPath();
+    for (let u = 0; u <= t; u += 1) { const c = typhoonAt(u); if (u === 0) ctx.moveTo(c.x, c.y); else ctx.lineTo(c.x, c.y); } ctx.stroke();        // ここまで来た
+    ctx.restore();
+    const p1 = typhoonAt(10), p2 = typhoonAt(72);
+    haloText(ctx, '太平洋高気圧のふちを回って北上', p1.x - 14, p1.y, muted, '700 11px ' + css('--font-body'), 'right');
+    haloText(ctx, '偏西風に流されて北東へ', p2.x + 20, p2.y - 26, muted, '700 11px ' + css('--font-body'), 'left');
+    haloText(ctx, '偏西風 →  西から東へ', 300, 38, muted, '700 12px ' + css('--font-body'));
+    // 左右の風：回転の風（灰）＋進む向き（赤）＝合成（墨）。右側は重なって強く、左側は打ち消し合って弱い
+    const c = typhoonAt(t), mv = typhoonVel(t), ml = Math.hypot(mv.vx, mv.vy); if (ml < 0.1) return;
+    const mx = mv.vx / ml, my = mv.vy / ml, rx = -my, ry = mx, d = 78, k = 1.1;
+    for (const side of [1, -1]) {
+      const px = c.x + rx * d * side, py = c.y + ry * d * side;
+      const rot = windAt(px, py, true), tot = windAt(px, py);
+      const mvx = mv.vx * PX_TO_MS * Math.exp(-((d / 220) ** 2) / 2), mvy = mv.vy * PX_TO_MS * Math.exp(-((d / 220) ** 2) / 2);
+      ctx.save(); ctx.fillStyle = css('--map'); ctx.globalAlpha = 0.75; ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      arrow(ctx, px, py, px + rot.vx * k, py + rot.vy * k, muted, 2.2);
+      arrow(ctx, px + rot.vx * k, py + rot.vy * k, px + rot.vx * k + mvx * k, py + rot.vy * k + mvy * k, warm, 2.2);
+      arrow(ctx, px, py, px + tot.vx * k, py + tot.vy * k, ink, 3);
+      const lab = side === 1 ? `進路の右側：強い ${tot.speed.toFixed(0)} m/s` : `左側：弱い ${tot.speed.toFixed(0)} m/s`;
+      haloText(ctx, lab, px + (side === 1 ? 14 : -14), py + 22, side === 1 ? warm : muted, '700 11px ' + css('--font-body'), side === 1 ? 'left' : 'right');
+    }
+    haloText(ctx, '灰：回転の風　赤：進む向き　墨：合わせた風', 300, PW - 30, muted, '11px ' + css('--font-body'));
+  }
+
+  // ---------- 平面図（天気図） ----------
+  const plan = document.getElementById('plan'), pctx = plan.getContext('2d');
+  const OBS_MARGIN = 40;
+  function drawIsobars(ctx) {
+    const N = 60, h = PW / N, grid = [];
+    let mn = Infinity, mx = -Infinity;
+    for (let j = 0; j <= N; j++) { grid[j] = []; for (let i = 0; i <= N; i++) { const p = pressureAt(i * h, j * h); grid[j][i] = p; if (p < mn) mn = p; if (p > mx) mx = p; } }
+    const l0 = Math.ceil(mn / 4) * 4, l1 = Math.floor(mx / 4) * 4;
+    const every = (l1 - l0) / 4 > 12 ? 8 : 4;                          // 本数が多いときはラベルを 8 hPa ごとに
+    const segs = new Map(), labeled = new Set();
+    const lerp = (x0, y0, p0, x1, y1, p1, lev) => { const t = (lev - p0) / (p1 - p0); return [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]; };
+    for (let lev = l0; lev <= l1; lev += 4) {
+      const list = [];
+      for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+        const a = grid[j][i], b = grid[j][i + 1], c = grid[j + 1][i + 1], d = grid[j + 1][i];
+        const lo = Math.min(a, b, c, d), hi = Math.max(a, b, c, d); if (lev < lo || lev >= hi) continue;
+        const x0 = i * h, y0 = j * h, x1 = x0 + h, y1 = y0 + h, pts = [];
+        if ((a >= lev) !== (b >= lev)) pts.push(lerp(x0, y0, a, x1, y0, b, lev));
+        if ((b >= lev) !== (c >= lev)) pts.push(lerp(x1, y0, b, x1, y1, c, lev));
+        if ((c >= lev) !== (d >= lev)) pts.push(lerp(x1, y1, c, x0, y1, d, lev));
+        if ((d >= lev) !== (a >= lev)) pts.push(lerp(x0, y1, d, x0, y0, a, lev));
+        if (pts.length >= 2) list.push([pts[0], pts[1]]);
+        if (pts.length === 4) list.push([pts[2], pts[3]]);
+        // 値のラベル：上端・下端・左右の端を横切るところに一度だけ
+        const key = lev + ':';
+        if (lev % every !== 0) continue;
+        if (j === 0 && (a >= lev) !== (b >= lev) && !labeled.has(key + 't')) { labeled.add(key + 't'); labelAt(ctx, lev, pts[0][0], 12); }
+        else if (j === N - 1 && (c >= lev) !== (d >= lev) && !labeled.has(key + 'b')) { labeled.add(key + 'b'); const q = pts.find(p => p[1] > y1 - 0.01) || pts[0]; labelAt(ctx, lev, q[0], PW - 12); }
+        else if (i === 0 && (d >= lev) !== (a >= lev) && !labeled.has(key + 'l') && j > 2 && j < N - 3) { labeled.add(key + 'l'); const q = pts.find(p => p[0] < x0 + 0.01) || pts[0]; labelAt(ctx, lev, 16, q[1]); }
+        else if (i === N - 1 && (b >= lev) !== (c >= lev) && !labeled.has(key + 'r') && j > 2 && j < N - 3) { labeled.add(key + 'r'); const q = pts.find(p => p[0] > x1 - 0.01) || pts[0]; labelAt(ctx, lev, PW - 16, q[1]); }
+      }
+      segs.set(lev, list);
+    }
+    const ink = css('--isobar');
+    for (const [lev, list] of segs) {
+      const bold = lev % 20 === 0;
+      ctx.strokeStyle = ink; ctx.lineWidth = bold ? 2.2 : 1.1; ctx.globalAlpha = 1; ctx.lineCap = 'round';
+      ctx.beginPath(); for (const [p, q] of list) { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); } ctx.stroke();
+    }
+  }
+  const pendingLabels = [];
+  function labelAt(ctx, lev, x, y) { pendingLabels.push([lev, x, y]); }
+  function flushLabels(ctx) {
+    for (const [lev, x, y] of pendingLabels) haloText(ctx, String(lev), Math.max(14, Math.min(PW - 14, x)), y, css('--muted'), '600 11px ' + css('--font-num'));
+    pendingLabels.length = 0;
+  }
+  function drawPlan() {
+    const s = plan.width / PW; pctx.setTransform(s, 0, 0, s, 0, 0); pctx.clearRect(0, 0, PW, PW);
+    const ink = css('--ink'), muted = css('--muted'), warm = css('--warm'), cool = css('--cool'), m = state.mode, v = val();
+    // 海と陸
+    pctx.fillStyle = css('--map'); pctx.fillRect(0, 0, PW, PW);
+    pctx.fillStyle = css('--sea-soft'); pctx.globalAlpha = 0.55; pctx.fillRect(0, 0, PW, PW); pctx.globalAlpha = 1;
+    const poly = (pts) => { pctx.beginPath(); pts.forEach(([x, y], i) => i ? pctx.lineTo(x, y) : pctx.moveTo(x, y)); pctx.closePath(); };
+    pctx.fillStyle = css('--land'); pctx.strokeStyle = muted; pctx.lineWidth = 1;
+    poly(CONT); pctx.fill(); pctx.stroke();
+    for (const isl of ISLANDS) { poly(isl); pctx.fill(); pctx.stroke(); }
+    // 緯線・経線
+    pctx.strokeStyle = css('--line'); pctx.lineWidth = 1; pctx.setLineDash([2, 4]);
+    for (const lat of [30, 40]) { pctx.beginPath(); pctx.moveTo(0, L2Y(lat)); pctx.lineTo(PW, L2Y(lat)); pctx.stroke(); }
+    for (const lon of [130, 140, 150]) { pctx.beginPath(); pctx.moveTo(L2X(lon), 0); pctx.lineTo(L2X(lon), PW); pctx.stroke(); }
+    pctx.setLineDash([]);
+    drawAirMasses(pctx);
+    pctx.fillStyle = muted; pctx.font = '10px ' + css('--font-num'); pctx.textAlign = 'left'; pctx.textBaseline = 'bottom';
+    for (const lat of [30, 40]) pctx.fillText(lat + '°N', 4, L2Y(lat) - 2);
+    pctx.textAlign = 'center'; pctx.textBaseline = 'top'; for (const lon of [130, 140, 150]) pctx.fillText(lon + '°E', L2X(lon), PW - 14);
+    // 天気の範囲（雨・雪・くもり）
+    pctx.save();
+    for (let gx = 0; gx < PW; gx += 10) for (let gy = 0; gy < PW; gy += 10) {
+      const wx = situation(gx + 5, gy + 5).wx;
+      if (wx === 'rain') { pctx.fillStyle = css('--rain'); pctx.globalAlpha = 0.22; }
+      else if (wx === 'snow') { pctx.fillStyle = css('--snow'); pctx.globalAlpha = 0.5; }
+      else if (wx === 'cloudy') { pctx.fillStyle = muted; pctx.globalAlpha = 0.12; }
+      else continue;
+      pctx.fillRect(gx, gy, 10, 10);
+    }
+    pctx.restore();
+    // 冬：日本海の筋状の雲
+    if (m === 'winter' && v >= 3) {
+      pctx.save(); pctx.strokeStyle = css('--panel'); pctx.globalAlpha = 0.9; pctx.lineWidth = 2.5; pctx.lineCap = 'round';
+      for (let i = 0; i < 14; i++) for (let k = 0; k < 4; k++) {
+        const x0 = L2X(128) + i * 9 + k * 20, y0 = L2Y(44) + i * 14 + k * 8;
+        if (regionOf(x0, y0) !== 'jsea') continue;
+        pctx.beginPath(); pctx.moveTo(x0, y0); pctx.lineTo(x0 + 22, y0 + 20); pctx.stroke();
+      }
+      pctx.restore();
+    }
+    // 等圧線
+    drawIsobars(pctx); flushLabels(pctx);
+    // 前線
+    if (m === 'baiu') {
+      const pts = []; for (let x = 0; x <= PW; x += 6) pts.push([x, frontY(x, v)]);
+      for (let i = 0; i < pts.length - 4; i += 4) frontLine(pctx, pts[i][0], pts[i][1], pts[i + 4][0], pts[i + 4][1], 'stationary', i / 4);
+      haloText(pctx, '梅雨前線（停滞前線）', 150, frontY(150, v) + 22, ink, '700 12px ' + css('--font-body'));
+    }
+    if (m === 'spring') for (const q of systems()) if (q.kind === 'L') {
+      frontLine(pctx, q.x, q.y, q.x + 150 * Math.cos(25 * Math.PI / 180), q.y + 150 * Math.sin(25 * Math.PI / 180), 'warm');
+      frontLine(pctx, q.x, q.y, q.x - 0.6 * 150, q.y + 0.8 * 150, 'cold');
+    }
+    // 高・低・台風の記号
+    for (const q of systems()) {
+      if (q.kind === 'T2') continue;
+      if (q.x < -20 || q.x > PW + 20 || q.y < -20 || q.y > PW + 20) continue;
+      const p = Math.round(pressureAt(q.x, q.y)), hi = q.kind === 'H';
+      const color = hi ? cool : warm, mark = q.kind === 'T' ? '台風' : hi ? '高' : '低';
+      haloText(pctx, mark, q.x, q.y - 6, color, `700 ${q.kind === 'T' ? 16 : 22}px ` + css('--font-body'));
+      haloText(pctx, String(p), q.x, q.y + 13, color, '600 11px ' + css('--font-num'));
+      pctx.fillStyle = color; pctx.beginPath(); pctx.arc(q.x, q.y, q.kind === 'T' ? 3 : 2, 0, Math.PI * 2); pctx.fill();
+      if (q.name && q.kind !== 'T' && Math.abs(q.amp) >= 6 && q.x > 40 && q.x < PW - 40 && !(m === 'typhoon' && q.kind === 'H') && q.name !== 'オホーツク海高気圧') haloText(pctx, q.name, q.x, q.y + 30, color, '700 11px ' + css('--font-body'));
+    }
+    if (m === 'typhoon') {                                                 // 進路と、進む向きの矢印
+      drawTyphoonGuide(pctx);
+      const c = typhoonAt(v), c2 = typhoonAt(Math.min(72, v + 8)); if (v < 72) arrow(pctx, c.x + (c2.x - c.x) * 2.2, c.y + (c2.y - c.y) * 2.2, c.x + (c2.x - c.x) * 4.5, c.y + (c2.y - c.y) * 4.5, muted, 2);
+    }
+    if (m === 'spring') haloText(pctx, '偏西風 →  西から東へ', 300, 38, muted, '700 12px ' + css('--font-body'));
+    // 風の矢印
+    for (let gx = 30; gx < PW; gx += 60) for (let gy = 30; gy < PW; gy += 60) {
+      const w = windAt(gx, gy); if (w.speed < 0.8) continue;
+      const len = Math.min(26, 6 + w.speed * 1.2);
+      arrow(pctx, gx, gy, gx + w.vx / w.speed * len, gy + w.vy / w.speed * len, muted, 1.2);
+    }
+    // 方位
+    pctx.fillStyle = ink; pctx.font = '700 12px ' + css('--font-body'); pctx.textBaseline = 'top'; pctx.textAlign = 'center';
+    pctx.fillText('北', 300, 4); pctx.textBaseline = 'bottom'; pctx.fillText('南', 300, PW - 4);
+    pctx.textBaseline = 'middle'; pctx.textAlign = 'left'; pctx.fillText('西', 4, 300); pctx.textAlign = 'right'; pctx.fillText('東', PW - 4, 300);
+    // 観測点
+    const o = state.obs, d = situation(o.x, o.y);
+    pctx.strokeStyle = css('--focus'); pctx.lineWidth = 2; pctx.setLineDash([4, 4]); pctx.beginPath(); pctx.arc(o.x, o.y, 30, 0, Math.PI * 2); pctx.stroke(); pctx.setLineDash([]);
+    pctx.fillStyle = css('--map'); pctx.globalAlpha = 0.85; pctx.beginPath(); pctx.arc(o.x, o.y, 28, 0, Math.PI * 2); pctx.fill(); pctx.globalAlpha = 1;
+    drawSymbol(pctx, o.x, o.y, 42, d.wx, bearingFrom(d.vx, d.vy), beaufort(d.speed));
+    haloText(pctx, '観測点', o.x + 36, o.y, css('--focus'), '700 12px ' + css('--font-body'), 'left');
+    drawFocus('plan', pctx);
+  }
+
+  // ---------- 断面図 ----------
+  const xs = document.getElementById('xs'), xctx = xs.getContext('2d');
+  const XW = 600, XH = 300, GY = 235, TOP = 40;
+  // スマホ幅（表示幅 NARROW px 未満）：①〜⑥ の文は図の下に番号つきの一覧で描き、図の中は番号の丸だけにする（文が重ならず、縦長になる）
+  const NARROW = 560, XH_WIDE = XH;
+  const isNarrow = () => xs.clientWidth > 0 && xs.clientWidth < NARROW;
+  const xk = () => Math.min(2, Math.max(1, XW / (xs.clientWidth || XW)));   // fitCanvas と同じ拡大率
+  let xsNotes = null, xsDots = [];                                           // 狭い幅のとき、描いた番号の文と、丸・字の枠（避ける四角）をためる
+  // (x, y) を中心とする半径 r の丸（字なら半分の大きさ r）が、ためた四角と 3 px 以内に重なるあいだ右へずらす
+  function clearOfDots(x, y, r) { while (xsDots.some(d => x + r + 3 > d.x0 && x - r - 3 < d.x1 && y + r + 3 > d.y0 && y - r - 3 < d.y1)) x += 4; return x; }
+  const keepOut = (x0, y0, x1, y1) => { if (xsNotes) xsDots.push({ x0, y0, x1, y1 }); };
+  function drawXsNotes(ctx) {
+    const k = xk(), lh = 19 * k, r = 9 * k, x0 = 12 + r, tx = x0 + r + 8, maxW = XW - tx - 8;
+    let y = Math.max(XH_WIDE, ...xsDots.map(d => d.y1)) + 6 + lh / 2;
+    ctx.save(); ctx.textBaseline = 'middle';
+    for (const { n, text, color } of xsNotes) {
+      ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x0, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = css('--panel'); ctx.font = '700 11px ' + css('--font-num'); ctx.textAlign = 'center'; ctx.fillText(String(n), x0, y + 0.5);
+      ctx.fillStyle = css('--ink'); ctx.font = '12px ' + css('--font-body'); ctx.textAlign = 'left';
+      let line = '';
+      for (const ch of text) { if (line && ctx.measureText(line + ch).width > maxW) { ctx.fillText(line, tx, y); y += lh; line = ch; } else line += ch; }
+      ctx.fillText(line, tx, y); y += lh + 4 * k;
+    }
+    ctx.restore();
+    return y - lh / 2;
+  }
+  const XS_TITLE = {
+    winter: ['断面図（西 ← 大陸・日本海・日本列島・太平洋 → 東）', '冬の季節風が日本海で雪雲をつくり、山を越えて乾く'],
+    summer: ['断面図（北西 ← 大陸・日本列島・太平洋 → 南東）', '太平洋高気圧から、あたたかく湿った空気が海から陸へ'],
+    baiu: ['断面図（北 ← オホーツク海・日本列島・太平洋 → 南）', '2つの気団が押し合い、前線が動かない'],
+    spring: ['断面図（西 → 東）', '上空の偏西風が、高気圧と低気圧を東へ流す'],
+    typhoon: ['断面図（台風の中心を通る）', 'あたたかい海の上で、積乱雲が壁のように取り囲む'],
+  };
+  // 観測点を断面図のどこに置くか
+  function obsXsX() {
+    const o = state.obs, reg = regionOf(o.x, o.y), m = state.mode;
+    if (m === 'winter') return { cont: 80, jsea: 240, jsSide: 362, pacSide: 432, pac: 530, okhotsk: 530 }[reg];
+    if (m === 'summer') return { cont: 110, jsea: 300, jsSide: 352, pacSide: 398, pac: 520, okhotsk: 520 }[reg];
+    if (m === 'baiu') return Math.max(14, Math.min(XW - 14, (o.y - L2Y(47)) / (L2Y(23) - L2Y(47)) * XW));
+    if (m === 'typhoon') { const c = typhoonAt(val()); const r = Math.hypot(o.x - c.x, o.y - c.y); return Math.max(14, Math.min(XW - 14, 300 + Math.sign(o.x - c.x || 1) * r)); }
+    return o.x;
+  }
+  function obsMarker(ctx) {
+    const x = obsXsX(); if (x === undefined) return;
+    ctx.save(); ctx.strokeStyle = css('--focus'); ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(x, TOP); ctx.lineTo(x, GY); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = css('--focus'); ctx.beginPath(); ctx.arc(x, GY, 5, 0, Math.PI * 2); ctx.fill();
+    const right = x < XW - 70; haloText(ctx, '観測点', x + (right ? 9 : -9), GY - 10, css('--focus'), '700 11px ' + css('--font-body'), right ? 'left' : 'right'); ctx.restore();
+  }
+  function baseSky() { xctx.fillStyle = css('--sky'); xctx.fillRect(0, 0, XW, GY); }
+  function groundLabel(text, x, color) { xctx.fillStyle = color || css('--muted'); xctx.font = '12px ' + css('--font-body'); xctx.textAlign = 'center'; xctx.textBaseline = 'top'; xctx.fillText(text, x, GY + 16); const w = xctx.measureText(text).width; keepOut(x - w / 2, GY + 16, x + w / 2, GY + 16 + 14 * xk()); }
+  function edgeLabels(l, r) { xctx.fillStyle = css('--muted'); xctx.font = '700 12px ' + css('--font-body'); xctx.textBaseline = 'top'; xctx.textAlign = 'left'; xctx.fillText(l, 8, TOP - 30); xctx.textAlign = 'right'; xctx.fillText(r, XW - 8, TOP - 30); keepOut(8, TOP - 30, 8 + xctx.measureText(l).width, TOP - 30 + 14 * xk()); keepOut(XW - 8 - xctx.measureText(r).width, TOP - 30, XW - 8, TOP - 30 + 14 * xk()); }
+
+  function drawXsWinter() {
+    const s = val(), cool = css('--cool'), muted = css('--muted'), ink = css('--ink');
+    baseSky();
+    xctx.fillStyle = css('--ground'); xctx.fillRect(0, GY, 150, 14); xctx.fillRect(330, GY, 120, 14);
+    xctx.fillStyle = css('--sea'); xctx.fillRect(150, GY, 180, 14); xctx.fillRect(450, GY, 150, 14);
+    mountain(xctx, 330, 450, GY, 398, 100, css('--ground'));
+    // 冷たく乾いた空気（大陸）
+    arrow(xctx, 20, GY - 28, 140, GY - 28, cool, 3); arrow(xctx, 20, GY - 70, 140, GY - 70, cool, 2);
+    // 日本海：水蒸気と熱をもらう（ゆらぎ）
+    xctx.save(); xctx.strokeStyle = css('--sea'); xctx.lineWidth = 1.5; xctx.setLineDash([2, 3]);
+    for (let i = 0; i < 7; i++) { const x = 165 + i * 24; xctx.beginPath(); xctx.moveTo(x, GY - 4); xctx.quadraticCurveTo(x + 6, GY - 20, x, GY - 34); xctx.stroke(); }
+    xctx.restore();
+    arrow(xctx, 160, GY - 28, 320, GY - 40, cool, 3);
+    // 雪雲：日本海の上で育ち、山にぶつかる
+    const n = Math.max(1, Math.min(4, Math.round(s / 2.5)));
+    for (let i = 0; i < n + 1; i++) { const x = 200 + i * 42, w = 28 + i * 8 + s * 0.8; cloud(xctx, x, GY - 60 - i * 8 - s, w, 0.95); }
+    if (s >= 3) snowDots(xctx, 300, 400, GY - 50, GY - 8, 12);
+    // 山を上がる・下りる
+    arrow(xctx, 330, GY - 50, 388, GY - 120, cool, 3);
+    arrow(xctx, 408, GY - 118, 468, GY - 50, muted, 3); arrow(xctx, 470, GY - 40, 585, GY - 40, muted, 3);
+    sun(xctx, 575, TOP + 100);
+    // ①〜④
+    badge(xctx, 1, 20, GY + 44, '大陸で冷えた空気が高気圧から吹き出す', 'right', cool);
+    badge(xctx, 2, 150, GY - 150, '日本海で水蒸気と熱をもらい、雪雲が育つ', 'right', ink);
+    badge(xctx, 3, 360, TOP + 24, '山にぶつかって上昇 → 日本海側に雪', 'right', cool);
+    badge(xctx, 4, 372, TOP + 72, '山を越えて乾く → 太平洋側は晴れ', 'right', ink);
+    groundLabel('大陸（シベリア）', 75); groundLabel('日本海', 240); groundLabel('日本列島', 390); groundLabel('太平洋', 525);
+    haloText(xctx, '北西の季節風', 80, GY - 94, cool, '700 13px ' + css('--font-body'));
+    edgeLabels('西', '東');
+  }
+  function drawXsSummer() {
+    const s = val(), warm = css('--warm'), muted = css('--muted'), ink = css('--ink'), cool = css('--cool');
+    baseSky();
+    xctx.fillStyle = css('--ground'); xctx.fillRect(0, GY, 240, 14); xctx.fillRect(330, GY, 90, 14);
+    xctx.fillStyle = css('--sea'); xctx.fillRect(240, GY, 90, 14); xctx.fillRect(420, GY, 180, 14);
+    mountain(xctx, 330, 420, GY, 372, 40, css('--ground'));
+    // 大陸は温まる（赤いゆらぎ）
+    const g = xctx.createRadialGradient(120, GY, 4, 120, GY, 60 + s * 8); g.addColorStop(0, warm); g.addColorStop(1, 'rgba(0,0,0,0)');
+    xctx.globalAlpha = 0.3 + s * 0.03; xctx.fillStyle = g; xctx.fillRect(0, GY - 70, 240, 84); xctx.globalAlpha = 1;
+    // 太平洋高気圧：下降気流
+    arrow(xctx, 520, TOP + 30, 520, TOP + 30 + 80, cool, 3);
+    // 海から陸へ（南東の季節風）、湿った空気の点
+    arrow(xctx, 560, GY - 30, 150, GY - 30, warm, 3);
+    xctx.save(); xctx.fillStyle = css('--sea'); for (let i = 0; i < 24; i++) { xctx.globalAlpha = 0.7; xctx.beginPath(); xctx.arc(170 + i * 17, GY - 44 - (i % 3) * 7, 1.8, 0, Math.PI * 2); xctx.fill(); } xctx.restore();
+    // 大陸で上昇、上空で戻る
+    arrow(xctx, 120, GY - 40, 120, TOP + 40, warm, 3); arrow(xctx, 140, TOP + 24, 500, TOP + 24, muted, 2);
+    sun(xctx, 400, TOP + 50);
+    badge(xctx, 1, 330, GY + 44, '太平洋高気圧（小笠原気団）：下降気流で晴れ', 'right', cool);
+    badge(xctx, 2, 300, GY - 72, 'あたたかく湿った空気が海から陸へ ＝ 南東の季節風', 'right', warm);
+    badge(xctx, 3, 134, TOP + 60, '大陸は温まって上昇気流 → 低気圧', 'right', warm);
+    badge(xctx, 4, 372, TOP + 100, '日本は蒸し暑い晴れ', 'right', ink);
+    groundLabel('大陸', 120); groundLabel('日本列島', 375); groundLabel('太平洋', 510);
+    edgeLabels('北西', '南東');
+  }
+  function drawXsBaiu() {
+    const s = val(), warm = css('--warm'), cool = css('--cool'), ink = css('--ink');
+    baseSky();
+    const xf = 300 - (s - 5) * 24;                                        // 前線が地面に接する位置（勢力が強いほど北＝左へ）
+    xctx.fillStyle = css('--sea'); xctx.fillRect(0, GY, XW, 14);
+    xctx.fillStyle = css('--ground'); xctx.fillRect(250, GY, 100, 14);
+    // 寒気のくさび（北＝左）、暖気がその上にはい上がる
+    xctx.fillStyle = css('--sea-soft'); xctx.beginPath(); xctx.moveTo(0, GY); xctx.lineTo(xf, GY); xctx.lineTo(0, GY - 150); xctx.closePath(); xctx.fill();
+    xctx.fillStyle = css('--warm-soft'); xctx.beginPath(); xctx.moveTo(xf, GY); xctx.lineTo(XW, GY); xctx.lineTo(XW, TOP); xctx.lineTo(0, TOP); xctx.lineTo(0, GY - 150); xctx.closePath(); xctx.fill();
+    xctx.strokeStyle = cool; xctx.lineWidth = 2; xctx.beginPath(); xctx.moveTo(xf, GY); xctx.lineTo(0, GY - 150); xctx.stroke();
+    // 暖気の矢印（南から北へ、前線面に沿って上がる）と寒気（北から）
+    arrow(xctx, XW - 30, GY - 30, xf + 30, GY - 30, warm, 3); arrow(xctx, xf + 20, GY - 36, xf - 140, GY - 36 - 140 * 0.5, warm, 3);
+    arrow(xctx, 20, GY - 20, Math.max(60, xf - 60), GY - 20, cool, 2.5);
+    // 乱層雲（前線の北側に広く）と雨
+    for (let i = 0; i < 5; i++) { const x = xf - 150 + i * 42; cloud(xctx, x, GY - 60 - i * 14, 44, 0.95); }
+    rainDrops(xctx, xf - 170, xf + 10, GY - 44, GY - 6, 9, false);
+    badge(xctx, 1, 20, TOP + 16, 'オホーツク海気団：冷たく湿った', 'right', cool);
+    badge(xctx, 2, XW - 230, TOP + 16, '小笠原気団：あたたかく湿った', 'right', warm);
+    badgeCentered(xctx, 3, xf, GY + 44, '勢力がつり合い、前線が動かない ＝ 停滞前線（梅雨前線）', ink);
+    badge(xctx, 4, Math.max(40, xf - 180), TOP + 46, '暖気が寒気の上にはい上がり、前線の北側に長雨', 'right', ink);
+    groundLabel(s >= 10 ? '日本列島（梅雨明け）' : '日本列島', 300);
+    edgeLabels('北（オホーツク海）', '南（太平洋）');
+  }
+  function drawXsSpring() {
+    const warm = css('--warm'), cool = css('--cool'), muted = css('--muted'), ink = css('--ink');
+    baseSky();
+    xctx.fillStyle = css('--ground'); xctx.fillRect(0, GY, XW, 14);
+    // 上空の偏西風
+    for (let i = 0; i < 3; i++) arrow(xctx, 40 + i * 190, TOP + 16, 180 + i * 190, TOP + 16, muted, 4);
+    for (const q of systems()) {
+      if (q.x < -60 || q.x > XW + 60) continue;
+      if (q.kind === 'H') {
+        arrow(xctx, q.x, GY - 150, q.x, GY - 50, cool, 3); arrow(xctx, q.x - 10, GY - 28, q.x - 90, GY - 28, muted, 2); arrow(xctx, q.x + 10, GY - 28, q.x + 90, GY - 28, muted, 2);
+        sun(xctx, q.x + 50, GY - 150); haloText(xctx, '高', q.x + 26, GY - 100, cool, '700 20px ' + css('--font-body'));
+        groundLabel('下降気流 → 晴れ', q.x, cool);
+      } else {
+        arrow(xctx, q.x, GY - 50, q.x, GY - 150, warm, 3); arrow(xctx, q.x - 90, GY - 28, q.x - 10, GY - 28, muted, 2); arrow(xctx, q.x + 90, GY - 28, q.x + 10, GY - 28, muted, 2);
+        cloud(xctx, q.x, GY - 130, 60, 0.95); rainDrops(xctx, q.x - 40, q.x + 40, GY - 100, GY - 40, 10, false);
+        haloText(xctx, '低', q.x + 26, GY - 100, warm, '700 20px ' + css('--font-body'));
+        groundLabel('上昇気流 → 雲・雨', q.x, warm);
+      }
+      arrow(xctx, q.x + 12, GY - 200, q.x + 52, GY - 200, muted, 2);
+    }
+    edgeLabels('西', '東');   // 番号の丸が方角の字を避けられるよう、先に描く
+    badge(xctx, 1, 20, TOP - 2, '上空を偏西風が西から東へ吹いている（一年中）', 'right', ink);
+    badge(xctx, 2, 20, GY + 44, '高気圧と低気圧が交互に東へ流され、天気は西から変わる（数日の周期）', 'right', ink);
+  }
+  function drawXsTyphoon() {
+    const warm = css('--warm'), cool = css('--cool'), muted = css('--muted'), ink = css('--ink');
+    baseSky();
+    xctx.fillStyle = css('--sea'); xctx.fillRect(0, GY, XW, 14);
+    // 海からの水蒸気
+    xctx.save(); xctx.strokeStyle = css('--sea'); xctx.lineWidth = 1.5; xctx.setLineDash([2, 3]);
+    for (let i = 0; i < 20; i++) { const x = 40 + i * 28; if (Math.abs(x - 300) < 40) continue; xctx.beginPath(); xctx.moveTo(x, GY - 4); xctx.quadraticCurveTo(x + 6, GY - 16, x, GY - 28); xctx.stroke(); }
+    xctx.restore();
+    // 外側の雲（らせん状の雲の帯）と積乱雲の壁
+    for (const [x, w] of [[90, 40], [150, 48], [450, 48], [510, 40]]) { cloud(xctx, x, GY - 70, w, 0.9); rainDrops(xctx, x - w * 0.4, x + w * 0.4, GY - 50, GY - 10, 10, false); }
+    tower(xctx, 232, TOP + 6, GY - 30, 56); tower(xctx, 332, TOP + 6, GY - 30, 56);
+    rainDrops(xctx, 196, 262, GY - 30, GY - 4, 7, true); rainDrops(xctx, 336, 402, GY - 30, GY - 4, 7, true);
+    // 風：地上で中心へ吹きこみ、壁で上昇、上空で外へ、目の中は下降
+    arrow(xctx, 30, GY - 24, 190, GY - 24, warm, 3); arrow(xctx, 570, GY - 24, 410, GY - 24, warm, 3);
+    arrow(xctx, 220, GY - 50, 220, TOP + 20, warm, 3); arrow(xctx, 380, GY - 50, 380, TOP + 20, warm, 3);
+    arrow(xctx, 200, TOP + 10, 60, TOP + 10, muted, 2); arrow(xctx, 400, TOP + 10, 540, TOP + 10, muted, 2);
+    arrow(xctx, 300, TOP + 40, 300, GY - 60, cool, 2.5);
+    sun(xctx, 300, TOP + 16);
+    badgeCentered(xctx, 1, 300, GY + 44, 'あたたかい海面から大量の水蒸気をもらって発達する', warm);
+    badge(xctx, 2, 100, TOP + 60, '強い上昇気流で積乱雲が壁のように', 'right', warm);
+    badge(xctx, 3, 312, GY - 90, '中心は「目」：下降気流で雲がなく、風も弱い', 'right', cool);
+    badge(xctx, 4, 420, GY - 120, '前線はない。風は反時計回り', 'right', ink);
+    groundLabel('あたたかい海', 110); groundLabel('台風の中心', 300); groundLabel('あたたかい海', 490);
+    edgeLabels('西', '東');
+  }
+  function drawXs() {
+    const s = xs.width / XW; xctx.setTransform(s, 0, 0, s, 0, 0); xctx.clearRect(0, 0, XW, xs.height / s);
+    xsNotes = isNarrow() ? [] : null; xsDots = [];
+    ({ winter: drawXsWinter, summer: drawXsSummer, baiu: drawXsBaiu, spring: drawXsSpring, typhoon: drawXsTyphoon })[state.mode]();
+    obsMarker(xctx);
+    drawFocus('xs', xctx);
+    // 狭い幅：番号の文を図の下に並べ、その高さに canvas を合わせる（高さが変わったときだけ描き直す）
+    const h = xsNotes ? Math.ceil(drawXsNotes(xctx) + 8) : XH_WIDE;
+    xsNotes = null;
+    if (xs.height !== Math.round(h * s)) { xs.height = Math.round(h * s); drawXs(); return; }
+    const [t, c] = XS_TITLE[state.mode]; document.getElementById('xs-title').textContent = t; document.getElementById('xs-cap').textContent = c;
+  }
+
+  // ---------- 記録と説明 ----------
+  const sym = document.getElementById('symbol'), sctx = sym.getContext('2d');
+  const STEPS = {
+    winter: ['大陸は海より<strong class="cool">冷めやすい</strong>：大陸上の空気が冷えて重くなり、<strong class="cool">シベリア高気圧</strong>ができる（陸風と同じしくみ）',
+      '高気圧から海へ、<strong>北西の季節風</strong>が吹き出す → 天気図は<strong>西高東低</strong>、等圧線は南北にのびる',
+      '冷たく乾いた風が日本海を渡るとき、海面から<strong>水蒸気と熱</strong>をもらって雪雲ができる',
+      '雪雲が山にぶつかって上昇 → <strong class="cool">日本海側に雪</strong>',
+      '山を越えると水蒸気を落とした乾いた風 → <strong>太平洋側は晴れて乾燥</strong>'],
+    spring: ['上空では<strong>偏西風</strong>が西から東へ一年中吹いている',
+      '大陸からの<strong>移動性高気圧</strong>と低気圧が、偏西風に流されて交互に東へ進む',
+      '高気圧の中は下降気流で<strong>晴れ</strong>、低気圧が近づくと<strong>雲・雨</strong>',
+      '天気は<strong>西から変わり</strong>、晴れと雨が数日の周期でくり返す'],
+    baiu: ['北東の<strong class="cool">オホーツク海気団</strong>（冷たく湿った）と、南の<strong class="warm">小笠原気団</strong>（あたたかく湿った）がぶつかる',
+      '2つの勢力がつり合うと前線が動かない → <strong>停滞前線（梅雨前線）</strong>',
+      '暖気が寒気の上にはい上がり、前線の北側に<strong>乱層雲</strong> → 長雨',
+      '小笠原気団が強まって前線を北へ押し上げると<strong>梅雨明け</strong>。秋は逆に南下して<strong>秋雨前線</strong>'],
+    summer: ['大陸は海より<strong class="warm">温まりやすい</strong>：大陸上で上昇気流、低気圧になる（海風と同じしくみ）',
+      '日本の南では<strong class="warm">太平洋高気圧</strong>（小笠原気団）が強まる → 天気図は<strong>南高北低</strong>',
+      '高気圧から低気圧へ、<strong>南東の季節風</strong>が吹く',
+      'あたたかく湿った空気におおわれ、<strong>蒸し暑い晴れ</strong>が続く'],
+    typhoon: ['熱帯のあたたかい海で<strong>熱帯低気圧</strong>ができ、水蒸気の熱で発達。最大風速が約 17 m/s 以上になると<strong>台風</strong>',
+      '等圧線はほぼ<strong>同心円</strong>で間隔がせまく、<strong>前線はない</strong>。風は反時計回りに吹きこむ',
+      '<strong class="warm">太平洋高気圧のふち</strong>を回って北上し、日本付近では<strong>偏西風</strong>に流されて北東へ進む',
+      '進路の<strong>右側（東側）</strong>では、反時計回りの風と<strong>進む向きが重なって</strong>風が強い（平面図の左右の矢印：灰＋赤＝墨）。左側は打ち消し合って弱い。通過時、右側では風向が時計回りに変わる'],
+  };
+  const WHY = {
+    winter: ['cool', 'なぜ冬は北西の季節風か', '水は温まりにくく冷めにくい（2章「海陸風」）。冬は大陸の方が先に冷えるので、大陸上の空気が重くなって高気圧（シベリア高気圧）になり、海へ向かって風が吹き出す。夜の陸風を、大陸と海のスケール・季節のスケールで見たものが冬の季節風。'],
+    spring: ['cool', 'なぜ天気は西から変わるのか', '中緯度の上空には、地球の自転と南北の温度差によって西から東へ向かう強い風（偏西風）がある。高気圧も低気圧もこの流れに乗って東へ運ばれるので、西の空の天気が、やがて自分の所の天気になる。'],
+    baiu: ['cool', 'なぜ前線が動かないのか', '前線は、寒気と暖気の境目。どちらかが強ければ寒冷前線や温暖前線として動くが、オホーツク海気団と小笠原気団の勢力がつり合っていると境目がその場にとどまる。これが停滞前線で、同じ場所に雨が降り続く。'],
+    summer: ['warm', 'なぜ夏は南東の季節風か', '夏は大陸の方が先に温まり、大陸上の空気が軽くなって低気圧になる。海（太平洋）の上は相対的に気圧が高い。昼の海風を大陸と海のスケールで見たものが夏の季節風で、海の上を通ってくるので湿っている。'],
+    typhoon: ['warm', 'なぜ台風は前線をともなわないのか', '温帯低気圧は寒気と暖気がぶつかってできるので前線がある。台風は熱帯のあたたかい海の上で、あたたかく湿った空気だけからできる。気団の境目がないので前線はなく、水蒸気が水滴になるときに出る熱でうずが強まる。'],
+  };
+  const MODE_LABEL = { winter: '冬（西高東低）', spring: '春・秋（移動性高気圧）', baiu: '梅雨（停滞前線）', summer: '夏（南高北低）', typhoon: '台風' };
+  function updateReadout() {
+    const o = state.obs, d = situation(o.x, o.y), f = beaufort(d.speed), b = bearingFrom(d.vx, d.vy), name = dir16(b);
+    sctx.setTransform(2, 0, 0, 2, 0, 0); sctx.clearRect(0, 0, 112, 112); drawSymbol(sctx, 56, 56, 44, d.wx, b, f);
+    const diff = d.p - BG;
+    document.getElementById('r-p').innerHTML = `${d.p.toFixed(1)} hPa<small>${Math.abs(diff) < 1 ? '周りと同じくらい' : `周りより ${Math.abs(diff).toFixed(0)} hPa ${diff < 0 ? '低い' : '高い'}`}</small>`;
+    document.getElementById('r-dir').innerHTML = f === 0 ? '静穏' : `${name}の風<small>${name}から吹いてくる</small>`;
+    document.getElementById('r-force').innerHTML = `${f}<small>${d.speed.toFixed(1)} m/s</small>`;
+    document.getElementById('r-wx').textContent = WX_LABEL[d.wx];
+    document.getElementById('r-t').textContent = `${d.temp.toFixed(0)} ℃`;
+    document.getElementById('r-km').textContent = d.km;
+    document.getElementById('now').innerHTML = `<strong>いまの観測点：${REGION_LABEL[d.reg]}</strong><span>${MODE_LABEL[state.mode]}。${d.note}。</span>`;
+    document.getElementById('steps').innerHTML = STEPS[state.mode].map(t => `<li>${t}</li>`).join('');
+    const why = document.getElementById('why'), w = WHY[state.mode]; why.className = 'why ' + w[0]; why.innerHTML = `<strong>${w[1]}</strong>${w[2]}`;
+    document.querySelectorAll('table.km tr[data-season]').forEach(tr => tr.classList.toggle('on', tr.dataset.season === state.mode));
+    const kmKey = { winter: 'siberia', baiu: 'okhotsk', summer: 'ogasawara' }[state.mode];
+    document.querySelectorAll('table.km tr[data-km]').forEach(tr => tr.classList.toggle('on', tr.dataset.km === kmKey));
+    const sy = systems().filter(q => q.kind !== 'T2').map(q => `${q.name} ${Math.round(pressureAt(q.x, q.y))} hPa`);
+    document.getElementById('hint').textContent = state.mode === 'spring' ? '高気圧と低気圧が 1 時間に約 30 km 東へ進む設定' : state.mode === 'baiu' ? `前線はおよそ北緯 ${baiuLat(val()).toFixed(0)}°${val() >= 10 ? '（梅雨明け）' : ''}` : sy.slice(0, 2).join('　');
+  }
+  // ---------- スマホ幅：Canvas の文字と線を拡大し、文字を図の内側に収める（座標はそのまま） ----------
+  // 図の表示幅が狭いと 1 論理 px が 1 CSS px より小さくなる。ctx.font の px を k 倍、lineWidth を (1+k)/2 倍して描く。
+  // k は「11 px の文字が TEXT_MIN CSS px を下回らない」倍率（1〜2）。logicalW は論理幅を返す関数（狭い幅で論理幅が変わる図があるため）。
+  // fillText / strokeText は、文字が canvas の左右の端からはみ出すとき内側へ押し戻す（回転していない文字だけ）。
+  // 文字の基準点が図の外（切り出した窓の外の前線名など）なら描かない：押し戻すと端で文字が重なるため。
+  const TEXT_MIN = 11;
+  function fitCanvas(cv, ctx, logicalW) {
+    const P = CanvasRenderingContext2D.prototype, fd = Object.getOwnPropertyDescriptor(P, 'font'), ld = Object.getOwnPropertyDescriptor(P, 'lineWidth');
+    let k = 1;
+    Object.defineProperty(ctx, 'font', { configurable: true, get() { return fd.get.call(this); }, set(v) { fd.set.call(this, k === 1 ? v : v.replace(/([\d.]+)px/, (_, n) => (n * k).toFixed(1) + 'px')); } });
+    Object.defineProperty(ctx, 'lineWidth', { configurable: true, get() { return ld.get.call(this); }, set(v) { ld.set.call(this, v * (1 + (k - 1) / 2)); } });
+    const inside = (c, text, x) => {
+      const m = c.getTransform(); if (m.b || m.c) return x;
+      const w = c.measureText(text).width, a = c.textAlign, left = a === 'right' || a === 'end' ? x - w : a === 'center' ? x - w / 2 : x;
+      const L = -m.e / m.a + 4, R = (cv.width - m.e) / m.a - 4;
+      if (x < L - 8 || x > R + 8) return null;
+      return w > R - L ? x + L - left : x + Math.max(0, L - left) - Math.max(0, left + w - R);
+    };
+    ctx.fillText = function (t, x, y, mw) { const x2 = inside(this, t, x); if (x2 !== null) P.fillText.call(this, t, x2, y, mw); };
+    ctx.strokeText = function (t, x, y, mw) { const x2 = inside(this, t, x); if (x2 !== null) P.strokeText.call(this, t, x2, y, mw); };
+    const update = () => { const L = logicalW(), w = cv.clientWidth || L; k = Math.min(2, Math.max(1, TEXT_MIN * L / (11 * w))); };
+    update(); return update;
+  }
+  const FITS = [fitCanvas(xs, xctx, () => XW), fitCanvas(plan, pctx, () => PW)];
+  let lastW = innerWidth;
+  addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; FITS.forEach(f => f()); renderAll(); });
+  function renderAll() { drawXs(); drawPlan(); updateReadout(); }
+
+  // ---------- 操作 ----------
+  const slider = document.getElementById('param'), out = document.getElementById('param-out'), play = document.getElementById('play');
+  function syncSlider() {
+    const c = PARAM[state.mode]; slider.min = c.min; slider.max = c.max; slider.step = c.step; slider.value = val(); out.value = c.fmt(val());
+    document.getElementById('param-label').textContent = c.label; play.hidden = !c.time;
+    document.getElementById('minus').disabled = val() <= c.min; document.getElementById('plus').disabled = val() >= c.max;
+  }
+  function setVal(v, fromSlider) { const c = PARAM[state.mode]; state.val[state.mode] = Math.max(c.min, Math.min(c.max, v)); if (!fromSlider) slider.value = val(); out.value = c.fmt(Math.round(val())); document.getElementById('minus').disabled = val() <= c.min; document.getElementById('plus').disabled = val() >= c.max; renderAll(); }
+  function setMode(m) { stopPlay(); state.mode = m; document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m))); syncSlider(); renderAll(); }
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', () => { setMode(b.dataset.goto); document.getElementById('plan').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' }); }));
+  slider.addEventListener('input', () => setVal(+slider.value, true));
+  document.getElementById('minus').addEventListener('click', () => setVal(val() - PARAM[state.mode].step));
+  document.getElementById('plus').addEventListener('click', () => setVal(val() + PARAM[state.mode].step));
+  function stopPlay() { state.playing = false; play.setAttribute('aria-pressed', 'false'); play.textContent = '▶ 動かす'; }
+  play.addEventListener('click', () => {
+    if (state.playing) { stopPlay(); return; }
+    const c = PARAM[state.mode]; if (val() >= c.max) state.val[state.mode] = c.min;
+    state.playing = true; play.setAttribute('aria-pressed', 'true'); play.textContent = '❚❚ 止める';
+    last = performance.now(); requestAnimationFrame(tick);
+  });
+  let last = 0;
+  function tick(now) {
+    if (!state.playing) return;
+    const dt = Math.min(0.1, (now - last) / 1000); last = now;
+    const c = PARAM[state.mode], rate = (c.max - c.min) / (reduced ? 40 : 14);
+    setVal(val() + dt * rate);
+    if (val() >= c.max) { stopPlay(); return; }
+    requestAnimationFrame(tick);
+  }
+  function pointToPlan(ev) { const r = plan.getBoundingClientRect(), clamp = (v) => Math.max(OBS_MARGIN, Math.min(PW - OBS_MARGIN, v)); return { x: clamp((ev.clientX - r.left) / r.width * PW), y: clamp((ev.clientY - r.top) / r.height * PW) }; }
+  plan.addEventListener('pointerdown', ev => { state.dragging = true; plan.setPointerCapture(ev.pointerId); state.obs = pointToPlan(ev); renderAll(); });
+  plan.addEventListener('pointermove', ev => { if (!state.dragging) return; state.obs = pointToPlan(ev); renderAll(); });
+  plan.addEventListener('pointerup', () => { state.dragging = false; });
+  plan.addEventListener('pointercancel', () => { state.dragging = false; });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderAll);
+
+  // ---------- ナビ ----------
+  const NAV = window.UNIT_NAV || [];
+  document.getElementById('crumbs').innerHTML = NAV.map(([label, href]) => href ? `<a href="${href}">${label}</a>` : `<span>${label}</span>`).join('');
+
+  // ---------- 問題（入試形式） ----------
+  // 問題を開くと図が setup の状態になる。答えると正誤と「図のどこを見るか」。「図をこの状態にして見る」で focus の部分を点線枠で強調する（reveal があればその状態にして見せる）。
+  // 難易度は3段階（level: easy／std／hard、各 7 問）。風向・風力・観測記録・速さの答えはモデルから計算する（モデルを変えても答えがずれない）。
+  const KEYS = ['ア', 'イ', 'ウ', 'エ'];
+  const LEVELS = [['easy', 'イージー', '用語・記号・しくみの一問一答（入試の小問1〜2の型）'], ['std', 'スタンダード', '図・グラフの読み取り（入試の標準的な小問の型）'], ['hard', 'ハード', '観測記録の表・計算・理由（正答率が下がる小問の型）']];
+  const NIIGATA = { x: L2X(139.0), y: L2Y(37.9) }, TOKYO = { x: L2X(139.7), y: L2Y(35.7) };
+  // 問題の状態（季節・スライダーの値）でモデルを計算する
+  function withModel(mode, v, fn) {
+    const keep = { m: state.mode, v: state.val[mode] };
+    state.mode = mode; state.val[mode] = v;
+    try { return fn(); } finally { state.mode = keep.m; state.val[mode] = keep.v; }
+  }
+  function dirIn(mode, v, o) { return withModel(mode, v, () => { const w = windAt(o.x, o.y); return dir8(bearingFrom(w.vx, w.vy)); }); }
+  const forceIn = (mode, v, o) => withModel(mode, v, () => beaufort(windAt(o.x, o.y).speed));
+  const WINTER_DIR = dirIn('winter', 6, NIIGATA);
+  // 台風：東京の西側を通る時間帯で、通過前・通過中・通過後の風向
+  const TY_T = [38, 58, 66], TY_DIRS = TY_T.map(t => dirIn('typhoon', t, TOKYO));
+  const tySeq = (arr) => arr.join(' → ');
+  // スタンダード：冬の季節風の強さと新潟の風力
+  const WF3 = forceIn('winter', 3, NIIGATA), WF8 = forceIn('winter', 8, NIIGATA);
+  // ハード：冬の新潟と東京の記録
+  const WREC = withModel('winter', 6, () => [['新潟（日本海側）', NIIGATA], ['東京（太平洋側）', TOKYO]].map(([name, o]) => { const d = situation(o.x, o.y); return { name, wx: WX_LABEL[d.wx], temp: d.temp, dir: dir16(bearingFrom(d.vx, d.vy)), f: beaufort(d.speed) }; }));
+  const [WN, WT] = WREC;
+  const wrecTable = () => `<table class="qt"><tr><th>地点</th><th>天気</th><th>気温</th><th>風向</th><th>風力</th></tr>` +
+    WREC.map(r => `<tr><th>${r.name}</th><td>${r.wx}</td><td>${r.temp.toFixed(0)} ℃</td><td>${r.dir}</td><td>${r.f}</td></tr>`).join('') + '</table>';
+  // ハード：台風の進路の右側・左側の風速（平面図の矢印と同じ点：中心から進む向きの左右 78 px）
+  const TY_SIDE_T = 50;
+  const TY_SIDE = withModel('typhoon', TY_SIDE_T, () => {
+    const c = typhoonAt(TY_SIDE_T), mv = typhoonVel(TY_SIDE_T), ml = Math.hypot(mv.vx, mv.vy), rx = -mv.vy / ml, ry = mv.vx / ml;
+    const [right, left] = [1, -1].map(s => Math.round(windAt(c.x + rx * 78 * s, c.y + ry * 78 * s).speed));
+    return { right, left, move: Math.round(ml * PX_TO_MS * Math.exp(-((78 / 220) ** 2) / 2)) };
+  });
+  // ハード：春・秋の高気圧の間隔と進む速さ（systems() から測る）。1 px ≒ 5 km（1 時間に 6 px ≒ 30 km）
+  const SP = (() => {
+    const highs = (v) => withModel('spring', v, () => systems().filter(q => q.kind === 'H').map(q => q.x));
+    const h0 = highs(0), h10 = highs(10), gap = h0[1] - h0[0], speed = (h10[0] - h0[0]) / 10;
+    return { km: Math.round(gap * 5 / 100) * 100, kmh: Math.round(speed * 5), days: gap / speed / 24 };
+  })();
+  const BAIU_LAT = [5, 10].map(s => Math.round(baiuLat(s)));
+  const QUIZ = [
+    // ---- イージー：用語・記号・しくみ ----
+    { level: 'easy', setup: { mode: 'winter', v: 6, obs: NIIGATA },
+      q: '冬によく見られる天気図の特徴として正しいものはどれか。',
+      choices: ['日本の南に高気圧があり、等圧線の間隔が広い', '日本付近に東西にのびる停滞前線がある', '西に高気圧、東に低気圧があり、等圧線が南北にのびて間隔がせまい', '高気圧と低気圧が交互に並んでいる'], answer: 2,
+      explain: '平面図：大陸にシベリア高気圧、日本の東に低気圧の「西高東低」。等圧線が縦じま（南北）になり、間隔がせまいほど季節風が強い。「シベリア高気圧の強さ」を上げると等圧線の間隔がせまくなる。',
+      focus: { plan: 'isobars' } },
+    { level: 'easy', setup: { mode: 'winter', v: 6, obs: NIIGATA },
+      q: '冬の季節風は、ふつうどの方位から吹くか。',
+      choices: [WINTER_DIR, '南東', '北東', '南西'].map((d, i) => i === 0 ? d : d === WINTER_DIR ? '北' : d), answer: 0,
+      explain: '平面図の風の矢印と観測点の記号：大陸の高気圧から東の低気圧へ、等圧線を横切って吹き出す。北半球では高気圧から時計回りに吹き出すので、日本付近では北西の風になる。',
+      focus: { plan: 'wind' } },
+    { level: 'easy', setup: { mode: 'baiu', v: 5, obs: TOKYO },
+      q: '梅雨前線をつくる2つの気団の組み合わせとして正しいものはどれか。',
+      choices: ['シベリア気団と小笠原気団', 'オホーツク海気団と小笠原気団', 'シベリア気団とオホーツク海気団', '小笠原気団と赤道気団'], answer: 1,
+      explain: '平面図：北東のオホーツク海気団（冷たく湿った）と南の小笠原気団（あたたかく湿った）の境目に停滞前線ができる。「小笠原気団の勢力」を上げると前線が北へ押し上げられ、梅雨明けになる。',
+      focus: { plan: 'front' } },
+    { level: 'easy', setup: { mode: 'summer', v: 6, obs: TOKYO },
+      q: '夏の日本の天気に大きく影響する小笠原気団の性質はどれか。',
+      choices: ['あたたかく、湿っている', 'あたたかく、乾いている', '冷たく、湿っている', '冷たく、乾いている'], answer: 0,
+      explain: '平面図：日本の南の太平洋高気圧の中でできる気団。南の海の上でできるので、あたたかく湿っている。大陸でできる気団は乾き（シベリア）、海でできる気団は湿る（オホーツク海・小笠原）。',
+      focus: { plan: 'ogasawara' } },
+    { level: 'easy', setup: { mode: 'typhoon', v: 36, obs: TOKYO },
+      q: '台風について正しく述べたものはどれか。',
+      choices: ['寒気と暖気がぶつかってでき、前線をともなう', '熱帯の海上で発生した熱帯低気圧のうち、最大風速がおよそ 17 m/s 以上に発達したもの', '中心付近では強い上昇気流のため、雲がもっとも厚い', 'シベリア気団が南下してできる'], answer: 1,
+      explain: '断面図：あたたかい海からの水蒸気で発達した熱帯低気圧で、前線はない。中心は「目」で、下降気流のため雲がなく風も弱い。平面図：等圧線は同心円で間隔がせまい。太平洋高気圧のふちを回って北上し、偏西風で北東へ。',
+      focus: { xs: 'eye' } },
+    { level: 'easy', setup: { mode: 'winter', v: 6, obs: NIIGATA },
+      q: '冬に日本の天気に大きく影響するシベリア気団の性質はどれか。',
+      choices: ['あたたかく、湿っている', 'あたたかく、乾いている', '冷たく、湿っている', '冷たく、乾いている'], answer: 3,
+      explain: '平面図の左上、濃く塗った楕円がシベリア気団。冬の大陸の上でできるので、冷たく（高緯度・大陸が冷える）乾いている（陸の上でできる）。',
+      focus: { plan: 'siberia' } },
+    { level: 'easy', setup: { mode: 'baiu', v: 5, obs: TOKYO },
+      q: '梅雨のころ、日本の北東の海上に発達するオホーツク海気団の性質はどれか。',
+      choices: ['あたたかく、湿っている', 'あたたかく、乾いている', '冷たく、湿っている', '冷たく、乾いている'], answer: 2,
+      explain: '平面図の右上、濃く塗った楕円がオホーツク海気団。北の冷たい海の上でできるので、冷たく湿っている。南の小笠原気団（あたたかく湿った）との境に梅雨前線ができる。',
+      focus: { plan: 'okhotsk' } },
+    // ---- スタンダード：図・グラフの読み取り ----
+    { level: 'std', setup: { mode: 'winter', v: 6, obs: NIIGATA },
+      q: '冬に日本海側で雪が多く、太平洋側で晴れの日が多い理由として正しいものはどれか。',
+      choices: ['太平洋側の方が気温が低く、雲ができないから', '日本海側の方が低気圧が多く通るから', '季節風が太平洋から吹いてくるから', '乾いた季節風が日本海で水蒸気をもらって雪雲をつくり、山を越えると乾いた風になるから'], answer: 3,
+      explain: '断面図の②〜④：大陸の冷たく乾いた空気が、日本海で水蒸気と熱をもらって雪雲になる。山にぶつかって上昇し、日本海側に雪を降らせる。水蒸気を落とした風は山を越えて乾き、太平洋側は晴れる。',
+      focus: { xs: 'snow' } },
+    { level: 'std', setup: { mode: 'spring', v: 30, obs: TOKYO },
+      q: '春や秋に、日本付近の低気圧や移動性高気圧が西から東へ動くのはなぜか。',
+      choices: ['地球が東から西へ自転しているから', '太平洋高気圧に押されるから', '上空を西から東へ吹く偏西風に流されるから', '季節風が西から吹くから'], answer: 2,
+      explain: '断面図の上の矢印：上空およそ 1 万 m では、西から東への偏西風が一年中吹いている。地上の高気圧も低気圧もこの流れに乗って東へ進む。だから天気は西から変わる。「動かす」で確かめられる。',
+      focus: { xs: 'jet' } },
+    { level: 'std', setup: { mode: 'typhoon', v: TY_T[1], obs: TOKYO },
+      q: `台風が観測点（東京）の西側を北東へ通りすぎた。観測点の風向はどの順に変わったか。`,
+      choices: [tySeq([TY_DIRS[0], TY_DIRS[2], TY_DIRS[1]]), tySeq([TY_DIRS[2], TY_DIRS[1], TY_DIRS[0]]), tySeq([TY_DIRS[0], dir8((DIRS8.indexOf(TY_DIRS[0]) - 2 + 8) % 8 * 45), TY_DIRS[2]]), tySeq(TY_DIRS)], answer: 3,
+      explain: `平面図：台風の風は反時計回りに吹きこむ。台風が西側を通ると、観測点は進路の右側（東側）になり、風向は ${tySeq(TY_DIRS)} と時計回りに変わる。右側では進む向きと風が重なるので風も強い（左右の矢印）。時間を ${TY_T[0]} → ${TY_T[1]} → ${TY_T[2]} 時間と動かして観測点の記録を見る。`,
+      focus: { plan: 'obsWind' } },
+    { level: 'std', setup: { mode: 'baiu', v: 5, obs: TOKYO },
+      q: '平面図の天気図で、日本付近に東西にのびている前線の名前と、この天気図が見られる時期の組み合わせとして正しいものはどれか。',
+      choices: ['寒冷前線・6 月〜7 月', '停滞前線・6 月〜7 月', '停滞前線・12 月〜2 月', '温暖前線・7 月〜8 月'], answer: 1,
+      explain: '平面図の、半円と▲が交互についた線が停滞前線。北のオホーツク海気団と南の小笠原気団の勢力がつり合って、ほとんど動かない。6 月〜7 月の梅雨の天気図（梅雨前線）。秋の長雨のころにも見られる（秋雨前線）。',
+      focus: { plan: 'front' } },
+    { level: 'std', setup: { mode: 'summer', v: 6, obs: TOKYO },
+      q: '平面図は夏の天気図である。等圧線と気圧配置の特徴として正しいものはどれか。',
+      choices: ['南東に太平洋高気圧、北西の大陸に低気圧があり、等圧線の間隔が広い（南高北低）', '西に高気圧、東に低気圧があり、等圧線の間隔がせまい（西高東低）', '日本付近に東西にのびる停滞前線がある', '高気圧と低気圧が交互に並び、西から東へ動く'], answer: 0,
+      explain: '平面図：日本の南東に太平洋高気圧、大陸に低気圧の「南高北低」。等圧線の間隔が広いので季節風は冬より弱く、南東から吹く。冬の「西高東低」と並べて覚える。',
+      focus: { plan: 'summerHL' } },
+    { level: 'std', setup: { mode: 'baiu', v: 5, obs: TOKYO },
+      q: '平面図の梅雨前線（停滞前線）の記号として正しいものはどれか。',
+      choices: ['▲だけが、前線の南側に並ぶ', '半円だけが、前線の北側に並ぶ', '半円と▲が交互に、線の反対側につく', '半円と▲が交互に、線の同じ側につく'], answer: 2,
+      explain: '平面図の前線：半円（北側）と▲（南側）が交互に、線の反対側についている。暖気と寒気がおし合って、どちらにも進まないことを表す。半円だけなら温暖前線、▲だけなら寒冷前線（4章）。',
+      focus: { plan: 'front' } },
+    { level: 'std', setup: { mode: 'winter', v: 3, obs: NIIGATA },
+      q: '観測点（新潟）の位置はそのままで、シベリア高気圧の強さを 3 から 8 にすると、日本付近の等圧線の間隔と観測点の風力はどうなるか。',
+      choices: [`等圧線の間隔が広くなり、風力は ${WF8} から ${WF3} に小さくなる`, `等圧線の間隔がせまくなり、風力は ${WF3} から ${WF8} に大きくなる`, '等圧線の間隔も風力も変わらない', `等圧線の間隔がせまくなるが、風力は ${WF3} のまま変わらない`], answer: 1,
+      explain: `強さを＋で 8 まで上げて比べる。西の高気圧と東の低気圧の気圧の差が大きくなり、日本付近の縦じまの等圧線が混んでくる。観測点の記号の矢羽根は ${WF3} 本から ${WF8} 本に増える（北西の季節風が強くなる）。`,
+      focus: { plan: 'isobars' }, reveal: { v: 8 } },
+    // ---- ハード：記録の表・計算・理由 ----
+    { level: 'hard', setup: { mode: 'winter', v: 6, obs: NIIGATA },
+      q: `冬の西高東低の日に、日本海側の新潟と太平洋側の東京で観測した記録である。${wrecTable()}2 地点の天気のちがいを説明したものとして正しいものはどれか。`,
+      choices: [`新潟は${WN.wx}、東京は${WT.wx}。東京には太平洋から湿った南東の風が吹きこむから`, `新潟は${WT.wx}、東京は${WN.wx}。季節風が東京に先に届くから`, `新潟は${WN.wx}、東京は${WT.wx}。同じ${WN.dir}の季節風が、日本海で水蒸気をもらって山の手前で${WN.wx}を降らせ、山を越えると乾くから`, `どちらも${WN.wx}。シベリア気団が日本全体をおおうから`], answer: 2,
+      explain: `表の風向は${WN.dir === WT.dir ? `どちらも${WN.dir}` : `${WN.dir}と${WT.dir}`}。同じ季節風なのに天気がちがうのは、間に山脈があるから。断面図の②〜④：日本海側で雲が山にぶつかって${WN.wx}を降らせ、水蒸気を落とした風が太平洋側へ吹き下りる。観測点を東京へ動かすと記録が変わる。`,
+      focus: { plan: 'twoObs', xs: 'snow' } },
+    { level: 'hard', setup: { mode: 'baiu', v: 5, obs: TOKYO },
+      q: `小笠原気団の勢力を 5 から 10 にすると、梅雨前線は北緯 ${BAIU_LAT[0]} 度付近から北緯 ${BAIU_LAT[1]} 度付近へ動く。梅雨明けのしくみとして正しいものはどれか。`,
+      choices: ['オホーツク海気団が勢力を増して、前線を南へ押し下げるから', '小笠原気団（太平洋高気圧）が勢力を増して、前線を北へ押し上げるから', 'シベリア気団が強まって、前線が消えるから', '偏西風に流されて、前線が東の海上へぬけるから'], answer: 1,
+      explain: `勢力を＋で 10 まで上げると、前線が本州の上（北緯 ${BAIU_LAT[0]} 度）から北海道の北（北緯 ${BAIU_LAT[1]} 度）へ押し上げられ、日本は小笠原気団におおわれて晴れる（梅雨明け）。停滞前線は気団の勢力がつり合っている間だけ動かない。`,
+      focus: { plan: 'front' }, reveal: { v: 10 } },
+    { level: 'hard', setup: { mode: 'typhoon', v: TY_SIDE_T, obs: TOKYO },
+      q: `平面図の台風では、進路の右側の風速が約 ${TY_SIDE.right} m/s、左側が約 ${TY_SIDE.left} m/s である。右側の風が強いのはなぜか。`,
+      choices: ['右側の方が中心の気圧が低いから', '右側には太平洋高気圧があり、その風が加わるから', '左側では山にぶつかって風が弱まるから', '右側では、反時計回りに吹きこむ風の向きと台風が進む向きが同じになり、速さが足し合わされるから'], answer: 3,
+      explain: `平面図の左右の矢印：灰が回転の風、赤が台風の進む向き（約 ${TY_SIDE.move} m/s）、墨が合わせた風。右側は回転の風と進む向きがそろって足し合わされ、左側は逆向きで打ち消し合う。だから進路の右側（台風が西側を通る地点）は特に警戒が必要。`,
+      focus: { plan: 'sides' } },
+    { level: 'hard', setup: { mode: 'typhoon', v: 30, obs: TOKYO },
+      q: '日本の南の海上で北へ進んできた台風が、日本付近で北東へ向きを変えることが多いのはなぜか。',
+      choices: ['北上して偏西風の吹く緯度に入ると、西から東への流れに流されるから', 'シベリア気団に押されるから', '地球の自転で、台風は必ず右へ曲がるから', '日本列島の山脈にぶつかって曲がるから'], answer: 0,
+      explain: '平面図の点線の進路：はじめは太平洋高気圧のふちを回るように北上し、日本付近で上空の偏西風に流されて北東へ進む。「動かす」で 72 時間まで進めると、向きが変わるのが見える。',
+      focus: { plan: 'path' }, reveal: { v: 60 } },
+    { level: 'hard', setup: { mode: 'spring', v: 30, obs: TOKYO },
+      q: `春・秋は、移動性高気圧と低気圧が交互に並び、1 時間に約 ${SP.kmh} km の速さで東へ進む。高気圧の中心から次の高気圧の中心までが約 ${SP.km} km のとき、晴れの日はおよそ何日ごとにめぐってくるか。`,
+      choices: ['約 1 日ごと', '約 2 日ごと', `約 ${Math.floor(SP.days)}〜${Math.ceil(SP.days)} 日ごと`, '約 10 日ごと'], answer: 2,
+      explain: `${SP.km} km ÷ ${SP.kmh} km/h ≒ ${Math.round(SP.km / SP.kmh)} 時間 ≒ ${SP.days.toFixed(1)} 日。高気圧（晴れ）と低気圧（雨）が交互に西から来るので、天気は数日ごとに変わる。「動かす」で観測点の天気が晴れ → くもり → 雨 → 晴れとめぐるのを確かめる。`,
+      focus: { plan: 'springRow' } },
+    { level: 'hard', setup: { mode: 'winter', v: 6, obs: TOKYO },
+      q: '冬の季節風は大陸を出たときは冷たく乾いているが、日本海側に大雪を降らせる。山を越えて太平洋側に吹き下りてくる風の性質と、その理由の組み合わせとして正しいものはどれか。',
+      choices: ['あたたかく湿っている。太平洋から水蒸気をもらうから', '冷たく湿っている。日本海で水蒸気をもらったままだから', 'あたたかく乾いている。シベリア気団が太平洋側には届かないから', '冷たく乾いている。日本海でもらった水蒸気を、山を越える前に雪として日本海側に落としたから'], answer: 3,
+      explain: '断面図の①→④：大陸（乾）→ 日本海で水蒸気をもらう（湿）→ 山にぶつかって上昇し雪を降らせる → 太平洋側へ乾いた風（からっ風）。観測点の記録で、東京の天気は晴れ。',
+      focus: { xs: 'snow' } },
+    { level: 'hard', setup: { mode: 'typhoon', v: 50, obs: TOKYO },
+      q: '台風と、4章で学んだ温帯低気圧のちがいとして正しいものはどれか。',
+      choices: ['台風には寒冷前線と温暖前線がある', '台風には前線がなく、等圧線がほぼ同心円で間隔がせまい', '温帯低気圧は熱帯の海上で発生する', '台風の中心は気圧が最も高い'], answer: 1,
+      explain: '平面図：台風の等圧線は丸く（同心円）、中心に近いほど混んでいて風が強い。前線はない。温帯低気圧は寒気と暖気の境ででき、寒冷前線と温暖前線をともなう（4章）。台風も北の冷たい空気の中へ進むと前線ができ、温帯低気圧に変わる。',
+      focus: { plan: 'tyIsobars' } },
+  ];
+  function hl(ctx, draw) { ctx.save(); ctx.strokeStyle = css('--focus'); ctx.fillStyle = css('--focus'); ctx.lineWidth = 3; ctx.setLineDash([8, 6]); draw(); ctx.restore(); }
+  function hlRing(ctx, x, y, r) { hl(ctx, () => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.globalAlpha = .12; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke(); }); }
+  function hlRect(ctx, x, y, w, h) { hl(ctx, () => { ctx.globalAlpha = .12; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; ctx.strokeRect(x, y, w, h); }); }
+  const massRing = (ctx, key) => { const a = airMasses().find(m => m.key === key); hl(ctx, () => { ctx.beginPath(); ctx.ellipse(a.x, a.y, a.rx + 10, a.ry + 10, 0, 0, Math.PI * 2); ctx.globalAlpha = .12; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke(); }); };
+  const FOCUS = {
+    plan: {
+      isobars: (ctx) => hlRect(ctx, L2X(128), L2Y(46), L2X(148) - L2X(128), L2Y(30) - L2Y(46)),
+      wind: (ctx) => hlRing(ctx, state.obs.x, state.obs.y, 70),
+      front: (ctx) => hlRect(ctx, 20, frontY(300, val()) - 60, PW - 40, 120),
+      ogasawara: (ctx) => { const q = systems().find(s => s.name === '太平洋高気圧'); if (q) hlRing(ctx, Math.min(q.x, PW - 60), q.y, 120); },
+      obsWind: (ctx) => { const c = typhoonAt(val()); hlRing(ctx, state.obs.x, state.obs.y, 60); hlRing(ctx, c.x, c.y, 40); },
+      siberia: (ctx) => massRing(ctx, 'siberia'),
+      okhotsk: (ctx) => massRing(ctx, 'okhotsk'),
+      summerHL: (ctx) => systems().forEach(q => hlRing(ctx, Math.max(60, Math.min(q.x, PW - 60)), q.y, 90)),
+      twoObs: (ctx) => { hlRing(ctx, NIIGATA.x, NIIGATA.y, 34); hlRing(ctx, TOKYO.x, TOKYO.y, 34); },
+      sides: (ctx) => { const c = typhoonAt(val()); hlRing(ctx, c.x, c.y, 110); },
+      path: (ctx) => { const a = typhoonAt(0), b = typhoonAt(72); hlRect(ctx, Math.min(a.x, typhoonAt(30).x) - 30, b.y - 30, b.x - Math.min(a.x, typhoonAt(30).x) + 60, a.y - b.y + 60); },
+      springRow: (ctx) => hlRect(ctx, 10, L2Y(44), PW - 20, L2Y(33) - L2Y(44)),
+      tyIsobars: (ctx) => { const c = typhoonAt(val()); hlRing(ctx, c.x, c.y, 90); },
+    },
+    xs: {
+      snow: (ctx) => hlRect(ctx, 150, TOP, 320, GY - TOP + 12),
+      jet: (ctx) => hlRect(ctx, 20, TOP - 6, XW - 40, 50),
+      eye: (ctx) => hlRect(ctx, 250, TOP - 6, 100, GY - TOP + 18),
+    },
+  };
+  function drawFocus(which, ctx) { const key = state.focus && state.focus[which]; if (key) FOCUS[which][key](ctx); }
+
+  const quizEl = document.getElementById('panel-quiz');
+  const quiz = { level: 'easy', i: { easy: 0, std: 0, hard: 0 }, picked: QUIZ.map(() => null) };
+  const levelList = () => QUIZ.map((q, k) => [q, k]).filter(([q]) => q.level === quiz.level);
+  const current = () => levelList()[quiz.i[quiz.level]];
+  function applySetup(s) { stopPlay(); if (s.obs) state.obs = { ...s.obs }; state.mode = s.mode; state.val[s.mode] = s.v; document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === s.mode))); syncSlider(); renderAll(); }
+  function renderQuiz() {
+    const list = levelList(), n = list.length, i = quiz.i[quiz.level], [q, qi] = list[i], picked = quiz.picked[qi];
+    const answered = list.filter(([, k]) => quiz.picked[k] !== null).length, correct = list.filter(([qq, k]) => quiz.picked[k] === qq.answer).length;
+    const levels = LEVELS.map(([id, name]) => { const c = QUIZ.filter((qq, k) => qq.level === id && quiz.picked[k] === qq.answer).length, m = QUIZ.filter(qq => qq.level === id).length; return `<button type="button" role="tab" data-level="${id}" aria-selected="${id === quiz.level}">${name}<small>${c}/${m}</small></button>`; }).join('');
+    const dots = list.map(([qq, k], j) => { const p = quiz.picked[k], cls = p === null ? '' : p === qq.answer ? 'ok' : 'ng'; return `<button type="button" class="dot ${cls}" data-go="${j}" aria-current="${j === i}" aria-label="問${j + 1}">${j + 1}</button>`; }).join('');
+    const choices = q.choices.map((c, k) => { const mark = picked === null ? '' : k === q.answer ? 'ok' : k === picked ? 'ng' : ''; return `<button type="button" data-pick="${k}" data-mark="${mark}"${picked === null ? '' : ' disabled'}><span class="k">${KEYS[k]}</span><span>${c}</span></button>`; }).join('');
+    const explain = picked === null ? '' : `<div class="explain"><div class="verdict ${picked === q.answer ? 'ok' : 'ng'}">${picked === q.answer ? '正解' : `ちがう。正解は ${KEYS[q.answer]}`}</div><div><strong>図のどこを見るか：</strong>${q.explain}</div><button type="button" class="qbtn focus" data-focus="1">図をこの状態にして見る</button></div>`;
+    quizEl.innerHTML = `<div class="levels" role="tablist" aria-label="難易度">${levels}</div><p class="ldesc">${LEVELS.find(l => l[0] === quiz.level)[2]}</p><div class="qnav"><span>問 ${i + 1} / ${n}</span><div class="dots">${dots}</div></div><div class="q">${q.q}</div><div class="choices">${choices}</div>${explain}<div class="qfoot"><button type="button" class="qbtn" data-step="-1"${i === 0 ? ' disabled' : ''}>← 前</button><button type="button" class="qbtn" data-step="1"${i === n - 1 ? ' disabled' : ''}>次 →</button><span class="score">${answered} 問中 ${correct} 問正解</span><button type="button" class="qbtn" data-retry="1"${answered ? '' : ' disabled'}>やり直す</button></div>`;
+  }
+  function goQuestion(j) { const list = levelList(); quiz.i[quiz.level] = Math.max(0, Math.min(list.length - 1, j)); state.focus = null; applySetup(current()[0].setup); renderQuiz(); }
+  quizEl.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button'); if (!b || b.disabled) return;
+    const d = b.dataset;
+    if (d.pick !== undefined) { quiz.picked[current()[1]] = +d.pick; renderQuiz(); }
+    else if (d.level) { quiz.level = d.level; goQuestion(quiz.i[quiz.level]); }
+    else if (d.go !== undefined) goQuestion(+d.go);
+    else if (d.step !== undefined) goQuestion(quiz.i[quiz.level] + +d.step);
+    else if (d.retry) { levelList().forEach(([, k]) => { quiz.picked[k] = null; }); goQuestion(0); }
+    else if (d.focus) {
+      const q = current()[0]; state.focus = q.focus; applySetup({ ...q.setup, ...q.reveal });
+      const target = document.getElementById(q.focus.xs ? 'xs' : 'plan');
+      target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    }
+  });
+  const tabs = [['tab-rec', 'panel-rec'], ['tab-km', 'panel-km'], ['tab-quiz', 'panel-quiz']];
+  tabs.forEach(([t, p]) => document.getElementById(t).addEventListener('click', () => {
+    tabs.forEach(([t2, p2]) => { document.getElementById(t2).setAttribute('aria-selected', String(t2 === t)); document.getElementById(p2).hidden = p2 !== p; });
+    if (p === 'panel-quiz') goQuestion(quiz.i[quiz.level]); else { state.focus = null; renderAll(); }
+  }));
+  renderQuiz();
+
+  window.NK = { pressureAt, windAt, situation, regionOf, typhoonAt, state, setMode, setVal, dir8, dir16, bearingFrom, L2X, L2Y };   // 動作確認用
+  syncSlider(); renderAll();
+})();
+</script>

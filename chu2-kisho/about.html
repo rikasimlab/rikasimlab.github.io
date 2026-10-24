@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>この教材について｜中2 理科 気象とその変化</title>
+<meta name="description" content="中2理科「気象とその変化」の動かして確かめる教材について。無料・ログイン不要・広告なし。出典（気象庁・教科書会社の資料など）、作者。">
+<link rel="canonical" href="https://rikasimlab.github.io/chu2-kisho/about.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="中2 理科 気象とその変化">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="この教材について｜中2 理科 気象とその変化">
+<meta property="og:description" content="中2理科「気象とその変化」の動かして確かめる教材について。無料・ログイン不要・広告なし。出典（気象庁・教科書会社の資料など）、作者。">
+<meta property="og:url" content="https://rikasimlab.github.io/chu2-kisho/about.html">
+<meta property="og:image" content="https://rikasimlab.github.io/chu2-kisho/ogp/mokuji.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: 単元の目次。上に地上天気図（温帯低気圧が東へ進む）、左上の表題枠に単元名、下に章の一覧を表の形で */
+  :root {
+    --paper: #eef1f4; --map: #f7f9fa; --panel: #ffffff; --ink: #17202a; --muted: #5f6b78; --line: #cfd6dd; --isobar: #8a96a3;
+    --warm: #d6451e; --cool: #1f63b3; --focus: #2a5d8f;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b; --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b; --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .app { max-width: 880px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 56px; }
+
+  /* 天気図 */
+  .hero { position: relative; height: clamp(230px, 34vw, 340px); border: 1.5px solid var(--ink); background: var(--map); overflow: hidden; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .cartouche { position: absolute; left: 14px; top: 14px; max-width: calc(100% - 28px); padding: 12px 18px 12px 16px; background: var(--panel); border: 1.5px solid var(--ink); }
+  .cartouche h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); font-weight: 700; line-height: 1.25; letter-spacing: .02em; text-wrap: balance; }
+  .cartouche p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+  .lead { margin: 16px 0 0; max-width: 46em; font-size: 15px; }
+
+  /* 章の一覧 */
+  .chapters { list-style: none; margin: 28px 0 0; padding: 0; border-top: 2px solid var(--ink); }
+  .ch { position: relative; display: grid; grid-template-columns: 3em 1fr auto; column-gap: 14px; align-items: baseline; padding: 18px 4px; border-bottom: 1px solid var(--line); min-width: 0; }
+  .ch .num { font-family: var(--font-num); font-weight: 600; font-size: 22px; line-height: 1; color: var(--ink); }
+  .ch h2 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; }
+  .ch h2 a { color: var(--focus); text-decoration: none; }
+  .ch h2 a::after { content: ""; position: absolute; inset: 0; }
+  .ch:hover h2 a { text-decoration: underline; text-underline-offset: .18em; }
+  .ch h2 a:focus-visible { outline: none; }
+  .ch h2 a:focus-visible::after { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .ch .sum { margin: 4px 0 0; font-size: 14.5px; }
+  .ch .kw { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  .ch .state { font-size: 14px; white-space: nowrap; color: var(--muted); }
+  .ch .state.open { color: var(--focus); font-weight: 700; text-decoration: underline; text-underline-offset: .18em; }
+  .ch.todo .num, .ch.todo h2 { color: var(--muted); }
+  .note { margin: 20px 0 0; font-size: 13px; color: var(--muted); max-width: 46em; }
+  @media (max-width: 520px) {
+    .hero { height: 240px; }
+    .ch { grid-template-columns: 2.4em 1fr; row-gap: 6px; }
+    .ch .state { grid-column: 2; justify-self: start; }
+  }
+</style>
+<style>
+  .crumbs { font-size: 14px; margin-bottom: 14px; }
+  .crumbs a { color: var(--focus); }
+  .cartouche.static { position: static; display: inline-block; max-width: 100%; }
+  .facts { margin: 28px 0 0; border-top: 2px solid var(--ink); border-collapse: collapse; width: 100%; }
+  .facts th, .facts td { text-align: left; vertical-align: top; padding: 14px 4px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .facts th { width: 8em; font-weight: 700; white-space: nowrap; padding-right: 14px; }
+  .facts ul { margin: 0; padding-left: 1.2em; }
+  .facts li + li { margin-top: 4px; }
+  .facts .grp { margin: 10px 0 4px; font-weight: 700; }
+  .facts .grp:first-child { margin-top: 0; }
+  .facts a { color: var(--focus); overflow-wrap: anywhere; }
+  @media (max-width: 520px) {
+    .facts th, .facts td { display: block; width: auto; border-bottom: 0; }
+    .facts th { padding-bottom: 0; }
+    .facts tr { display: block; border-bottom: 1px solid var(--line); }
+  }
+  @media (pointer: coarse) {
+    .crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+</style>
+<div class="app">
+  <nav class="crumbs"><a href="./">← 目次（気象とその変化）</a></nav>
+  <div class="cartouche static"><h1>この教材について</h1><p>中学2年 理科　第2分野　気象とその変化</p></div>
+  <p class="lead"><strong>無料・ログイン不要・広告なし。</strong>個人情報は集めない。ブラウザで開くだけで、学校の端末やスマホでも使える。</p>
+  <table class="facts">
+    <tr><th scope="row">何をする教材か</th><td>中学2年理科「気象とその変化」で、確実にこうなると決まっている現象（上昇気流と低気圧、露点と雲、前線の通過、季節風と台風）を、断面図・平面図・観測点の記録を動かして確かめる。各章に入試形式の問題（難易度 3 段階）、最後に入試形式の大問 5 つの総まとめがある。</td></tr>
+    <tr><th scope="row">正確さ</th><td>数値と定義は気象庁の資料と教科書の範囲に合わせた。章名と用語は現行（令和7年度版）の教科書の目次と突き合わせて揃えた。中学で習う約束（上昇する空気は 100 m で 1℃ 下がる、露点は高さで変えない など）に従い、高校で習うくわしい扱いは混ぜない。図の数値・記号・時刻を答える問題は、図と同じ計算から答えを出している。</td></tr>
+    <tr><th scope="row">主な出典</th><td>
+      <p class="grp">気象庁</p>
+      <ul>
+        <li><a href="https://www.jma.go.jp/jma/kishou/info/150th/image/wm2.pdf">天気記号解説（日本式）</a></li>
+        <li><a href="https://www.jma.go.jp/jma/kishou/know/yougo_hp/kaze.html">風の強さと吹き方（気象庁風力階級表）</a></li>
+        <li><a href="https://www.jma.go.jp/jma/kids/kids/faq/a2_06.html">はれるんライブラリー「雲量と天気」</a>、<a href="https://www.jma.go.jp/jma/kids/kids/faq/b1_19.html">「天気はなぜ西から変わるの？」</a></li>
+        <li><a href="https://www.data.jma.go.jp/cpd/j_climate/tohoku/winter.html">東北地方の気候 〜四季の天気〜 冬</a></li>
+        <li><a href="https://www.jma.go.jp/jma/kishou/know/typhoon/1-1.html">台風とは</a></li>
+      </ul>
+      <p class="grp">教科書会社の指導計画資料（章名・用語の確認）</p>
+      <ul>
+        <li><a href="https://ten.tokyo-shoseki.co.jp/text/chu/rika/download/documents/R7rika_plan2.pdf">東京書籍「年間指導計画作成資料【２年】」</a></li>
+        <li><a href="https://www.shinko-keirin.co.jp/keirinkan/chu_r7/science/curriculum.html">啓林館 カリキュラム作成資料</a></li>
+        <li><a href="https://www.dainippon-tosho.co.jp/science/curriculum.html">大日本図書 指導計画</a></li>
+      </ul>
+      <p class="grp">教育委員会・教育センターの公開教材</p>
+      <ul>
+        <li><a href="https://www.pref.osaka.lg.jp/documents/25642/rika_2nen_17_1kaku_kai.pdf">大阪府教育委員会「中学2年理科 確認プリント 17 気象観測，天気の変化」</a></li>
+        <li><a href="https://www.kitokito.tym.ed.jp/wp-content/uploads/2020/05/allH30Btyuu_ri.pdf">富山県総合教育センター 中学校理科 教材（フェーン現象）</a></li>
+        <li><a href="https://www1.iwate-ed.jp/07tantou/kagaku/h26_chigakukiso/05_taikitokaiyo/015shitsudo.pdf">岩手県立総合教育センター「湿度（相対湿度）の測定」</a></li>
+      </ul>
+      <p class="grp">表の値</p>
+      <ul>
+        <li>飽和水蒸気量の表は、教科書準拠のワークブックに載っている値と照合した。</li>
+        <li>湿度表は乾湿計の式から計算し、高校入試の解説の値（乾球 21℃・示度の差 3℃ → 湿度 73%）と一致することを確かめた。</li>
+      </ul>
+    </td></tr>
+    <tr><th scope="row">作者</th><td>rikasimlab</td></tr>
+    <tr><th scope="row">問い合わせ</th><td>準備中</td></tr>
+    <tr><th scope="row">更新</th><td>2026-10-24</td></tr>
+  </table>
+</div>

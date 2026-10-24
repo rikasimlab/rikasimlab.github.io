@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>総まとめ（入試形式）｜中2 理科 気象とその変化</title>
+<meta name="description" content="入試形式の大問5つで「気象とその変化」の単元全体を確かめる。図・表の読み取り、計算、理由を選ぶ問題。">
+<link rel="canonical" href="https://rikasimlab.github.io/chu2-kisho/matome.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="中2 理科 気象とその変化">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="総まとめ（入試形式）｜中2 理科 気象とその変化">
+<meta property="og:description" content="入試形式の大問5つで「気象とその変化」の単元全体を確かめる。図・表の読み取り、計算、理由を選ぶ問題。">
+<meta property="og:url" content="https://rikasimlab.github.io/chu2-kisho/matome.html">
+<meta property="og:image" content="https://rikasimlab.github.io/chu2-kisho/ogp/matome.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: 単元の総まとめ。上に表題枠と得点表、下に入試形式の大問 5 つ（文章 → 図 → 表 → 小問）を全幅で縦に並べる */
+  :root {
+    --paper: #eef1f4;
+    --map: #f7f9fa;
+    --panel: #ffffff;
+    --ink: #17202a;
+    --muted: #5f6b78;
+    --line: #cfd6dd;
+    --isobar: #8a96a3;
+    --warm: #d6451e;
+    --cool: #1f63b3;
+    --sky: #eef3f8;
+    --cold-air: #d9e7f5;
+    --warm-air: #f8e1d6;
+    --rain: #4e7fb8;
+    --ground: #c9bba3;
+    --sea-soft: #dbe9f4;
+    --land: #e3e8d6;
+    --cloud: #ffffff;
+    --focus: #2a5d8f;
+    --cell: #f3f5f7;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
+      --warm: #ff7d52; --cool: #63a6ff; --sky: #1a2430; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #5a4e3c;
+      --sea-soft: #1f3344; --land: #2a3326; --cloud: #d7dee6; --focus: #7fb3ff; --cell: #1f2b38; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
+    --warm: #ff7d52; --cool: #63a6ff; --sky: #1a2430; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #5a4e3c;
+    --sea-soft: #1f3344; --land: #2a3326; --cloud: #d7dee6; --focus: #7fb3ff; --cell: #1f2b38; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .app {
+    max-width: 960px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 56px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  nav.crumbs { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+  nav.crumbs a { color: var(--focus); text-decoration: none; }
+  nav.crumbs a:hover { text-decoration: underline; }
+  /* 表題枠：天気図の凡例枠に見立てた墨線の枠（目次・章ページと同じ形） */
+  header { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-start; }
+  .cartouche { flex: 0 0 auto; max-width: 100%; padding: 12px 18px 12px 16px; background: var(--panel); border: 1.5px solid var(--ink); }
+  .cartouche h1 { margin: 0; font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; line-height: 1.25; letter-spacing: .02em; }
+  .cartouche p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  header .intro { flex: 1 1 360px; min-width: 0; }
+  header h2 { margin: 2px 0 6px; font-size: clamp(18px, 2.4vw, 22px); font-weight: 700; line-height: 1.35; text-wrap: balance; }
+  header .intro p { margin: 0; max-width: 60ch; color: var(--muted); font-size: 14px; }
+
+  /* 得点表：上に太罫、行は細罫 */
+  table.board { border-collapse: collapse; width: 100%; font-size: 14px; border-top: 2px solid var(--ink); }
+  table.board th, table.board td { border-bottom: 1px solid var(--line); padding: 7px 6px; text-align: left; }
+  table.board th { color: var(--muted); font-weight: 500; font-size: 12px; }
+  table.board td.n, table.board td.s { font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.board td.n { width: 2.4em; font-weight: 600; }
+  table.board td.s { text-align: right; width: 5em; }
+  table.board a { color: var(--focus); text-decoration: none; }
+  table.board a:hover { text-decoration: underline; }
+  table.board tr.total td { font-weight: 700; border-bottom: 0; }
+  .boardfoot { display: flex; justify-content: flex-end; margin-top: 6px; }
+
+  /* 大問 */
+  section.daimon { border-top: 2px solid var(--ink); padding-top: 14px; display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 12px; }
+  section.daimon > h2 { margin: 0; font-size: clamp(19px, 2.6vw, 23px); font-weight: 700; line-height: 1.35; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .55em; }
+  section.daimon > h2 .num { font-family: var(--font-num); font-weight: 600; color: var(--muted); }
+  section.daimon > h2 small { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .lead { margin: 0; max-width: 62em; font-size: 15px; }
+  figure.fig { margin: 0; background: var(--panel); border: 1px solid var(--line); padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  figcaption { font-size: 13px; font-weight: 700; }
+  figcaption span { font-weight: 400; color: var(--muted); margin-left: .6em; }
+  canvas { display: block; width: 100%; height: auto; }
+  .maps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .maps > div { min-width: 0; }
+  .fig2 { max-width: 560px; }
+  .tables { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-start; }
+  .tblwrap { max-width: 100%; overflow-x: auto; }
+  .tblwrap p { margin: 0 0 4px; font-size: 13px; font-weight: 700; }
+  table.qt { border-collapse: collapse; font-size: 13px; border-top: 2px solid var(--ink); }
+  table.qt th, table.qt td { border-bottom: 1px solid var(--line); padding: 4px 7px; text-align: center; white-space: nowrap; }
+  table.qt th { color: var(--muted); font-weight: 600; }
+  table.qt td { font-variant-numeric: tabular-nums; }
+  table.qt th.corner { text-align: left; font-weight: 500; font-size: 12px; }
+
+  /* 小問 */
+  ol.qs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .sq { display: flex; flex-direction: column; gap: 8px; }
+  .q { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.55; max-width: 62em; }
+  .q .qn { font-family: var(--font-num); font-weight: 600; margin-right: .4em; }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .choices button { text-align: left; font: inherit; font-size: 14px; line-height: 1.45; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; display: flex; gap: 8px; align-items: baseline; }
+  .choices button .k { font-family: var(--font-num); color: var(--muted); flex: none; }
+  .choices button:hover:not(:disabled) { border-color: var(--ink); }
+  .choices button:focus-visible { outline: 2px solid var(--focus); }
+  .choices button:disabled { cursor: default; }
+  .choices button[data-mark="ok"] { border-color: var(--cool); background: var(--cold-air); }
+  .choices button[data-mark="ng"] { border-color: var(--warm); background: var(--warm-air); }
+  .choices button[data-mark="ok"] .k, .choices button[data-mark="ng"] .k { color: inherit; font-weight: 600; }
+  .choices.long { grid-template-columns: 1fr; }
+  .explain { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--cell); font-size: 14px; display: grid; gap: 6px; max-width: 62em; }
+  .verdict { font-weight: 700; }
+  .verdict.ok { color: var(--cool); }
+  .verdict.ng { color: var(--warm); }
+  .model { border-left: 3px solid var(--ink); padding-left: 10px; }
+  .qbtn { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .qbtn:focus-visible { outline: 2px solid var(--focus); }
+  .qbtn:disabled { opacity: .35; cursor: default; }
+  .qbtn.focus { border-color: var(--focus); color: var(--focus); justify-self: start; }
+  .dfoot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 13px; color: var(--muted); padding-top: 10px; border-top: 1px solid var(--line); }
+  .dfoot a { color: var(--focus); }
+  .dfoot .score { font-family: var(--font-num); font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+  .dfoot .retry { margin-left: auto; }
+  footer { font-size: 12px; color: var(--muted); }
+  @media (max-width: 640px) {
+    .maps { grid-template-columns: 1fr; }
+    .choices { grid-template-columns: 1fr; }
+  }
+  /* タッチ端末：押せるものは 44px 四方以上。マウスの見た目は変えない */
+  @media (pointer: coarse) {
+    .choices button, .qbtn { min-height: 44px; }
+    nav.crumbs { row-gap: 0; }
+    nav.crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
+    table.board a, .dfoot a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+</style>
+
+<div class="app">
+  <nav class="crumbs" id="crumbs"></nav>
+  <header>
+    <div class="cartouche"><h1>総まとめ（入試形式）</h1><p>中学2年 理科　第2分野　気象とその変化</p></div>
+    <div class="intro"><h2>入試の大問 5 つで、単元全体を確かめる</h2><p>高校入試と同じ「文章・図・表・小問」の形。小問は、用語 → 図や表の読み取り → 計算 → 理由の順に難しくなる。選ぶとすぐに正誤と考え方が出る。理由を書く問題は選択式にして、記述で答えるときの模範解答をつけた。図はどれも各章と同じモデルで描いている。</p></div>
+  </header>
+
+  <section aria-label="得点">
+    <table class="board" id="board"></table>
+    <div class="boardfoot"><button type="button" class="qbtn" id="retry-all">すべてやり直す</button></div>
+  </section>
+
+  <main id="daimon"></main>
+
+  <footer>図は教科書の模式図にそって単純化したモデルで描いている。数値（気温・気圧・水蒸気量・距離）は入試によく出る形にそろえた例で、実際の観測ごとにちがう。飽和水蒸気量は教科書の表の値、湿度表は乾湿計の式から計算した値（1章と同じ）。</footer>
+</div>
+
+<script>
+window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象観測", "kansoku.html"], ["2 気圧と風", "kiatsu-to-kaze.html"], ["3 空気中の水の変化", "suijoki.html"], ["4 前線と天気の変化", "zensen.html"], ["5 日本の気象", "nihon-no-kisho.html"]];
+</script>
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const fb = (w, px) => `${w ? w + ' ' : ''}${px}px ` + css('--font-body');
+  const fn = (w, px) => `${w ? w + ' ' : ''}${px}px ` + css('--font-num');
+  const NAV = window.UNIT_NAV || [];
+  const CH = Object.fromEntries(NAV.slice(1).map(([label, href]) => [label[0], [label.slice(2), href]]));
+  const r1 = (v) => Math.round(v * 10) / 10;
+  const f1 = (v) => r1(v).toFixed(1);
+
+  // ---------- 共通の部品（各章と同じ） ----------
+  const BEAUFORT = [0.3, 1.6, 3.4, 5.5, 8.0, 10.8, 13.9, 17.2, 20.8, 24.5, 28.5, 32.7];
+  const beaufort = (ms) => { let f = 0; while (f < BEAUFORT.length && ms >= BEAUFORT[f]) f++; return f; };
+  const DIRS = ['北', '北北東', '北東', '東北東', '東', '東南東', '南東', '南南東', '南', '南南西', '南西', '西南西', '西', '西北西', '北西', '北北西'];
+  const DIRS8 = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'];
+  const bearingFrom = (vx, vy) => { let b = Math.atan2(-vx, vy) * 180 / Math.PI; if (b < 0) b += 360; return b; };
+  const dir16 = (b) => DIRS[Math.round(b / 22.5) % 16];
+  const dir8 = (b) => DIRS8[Math.round(b / 45) % 8];
+  const WX_LABEL = { fine: '晴れ', cloudy: 'くもり', rain: '雨', snow: '雪' };
+  function drawSymbol(ctx, x, y, size, wx, bearing, force) {
+    const ink = css('--ink');
+    ctx.save();
+    ctx.strokeStyle = ink; ctx.fillStyle = ink; ctx.lineWidth = Math.max(1.5, size * 0.06); ctx.lineCap = 'round';
+    const R = size * 0.22;
+    ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2);
+    if (wx === 'rain') ctx.fill(); else ctx.stroke();
+    if (wx === 'fine') { ctx.beginPath(); ctx.moveTo(x, y - R); ctx.lineTo(x, y + R); ctx.stroke(); }
+    if (wx === 'cloudy') { ctx.beginPath(); ctx.arc(x, y, R * 0.55, 0, Math.PI * 2); ctx.stroke(); }
+    if (force > 0) {
+      const b = bearing * Math.PI / 180, dx = Math.sin(b), dy = -Math.cos(b), L = size * 0.9;
+      ctx.beginPath(); ctx.moveTo(x + dx * R, y + dy * R); ctx.lineTo(x + dx * (R + L), y + dy * (R + L)); ctx.stroke();
+      let fx = -dy * 0.85 + dx * 0.5, fy = dx * 0.85 + dy * 0.5; const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
+      for (let i = 0; i < force; i++) { const t = L - i * size * 0.13; if (t < size * 0.2) break; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * size * 0.3, py + fy * size * 0.3); ctx.stroke(); }
+    }
+    ctx.restore();
+  }
+  function arrow(ctx, x1, y1, x2, y2, color, width) {
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy); if (L < 1) return;
+    const nx = dx / L, ny = dy / L;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - nx * 6, y2 - ny * 6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - nx * 10 - ny * 5, y2 - ny * 10 + nx * 5); ctx.lineTo(x2 - nx * 10 + ny * 5, y2 - ny * 10 - nx * 5); ctx.closePath(); ctx.fill();
+  }
+  // 前線の記号（4章・5章と同じ形）。入試の図と同じく墨一色で描く（色で前線の種類がわかってしまうため）
+  function frontLine(ctx, x1, y1, x2, y2, kind, k0 = 0) {
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = dx / L, ny = dy / L, ink = css('--ink');
+    ctx.strokeStyle = ink; ctx.fillStyle = ink; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    const ang = Math.atan2(ny, nx), side = kind === 'stationary' ? -1 : 1;
+    let k = k0;
+    for (let s = 14; s < L - 6; s += 22, k++) {
+      const bx = x1 + nx * s, by = y1 + ny * s, type = kind === 'stationary' ? (k % 2 === 0 ? 'warm' : 'cold') : kind;
+      ctx.beginPath();
+      if (type === 'warm') { ctx.arc(bx, by, 6, ang, ang + Math.PI, true); ctx.fill(); }
+      else { ctx.moveTo(bx - nx * 6, by - ny * 6); ctx.lineTo(bx + side * ny * 10, by - side * nx * 10); ctx.lineTo(bx + nx * 6, by + ny * 6); ctx.closePath(); ctx.fill(); }
+    }
+  }
+  function haloText(ctx, text, x, y, color, font, align, base) {
+    ctx.save(); ctx.font = font; ctx.textAlign = align || 'center'; ctx.textBaseline = base || 'middle'; ctx.lineJoin = 'round';
+    ctx.lineWidth = 4; ctx.strokeStyle = css('--map'); ctx.strokeText(text, x, y); ctx.fillStyle = color; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function cloudPuffs(ctx, x, y, w, h, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = css('--cloud'); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1.2;
+    const n = Math.max(3, Math.round(w / 14));
+    for (let i = 0; i < n; i++) { const px = x - w / 2 + (i + 0.5) * w / n, r = h * (0.35 + 0.25 * Math.abs(Math.sin(i * 2.3 + x))); ctx.beginPath(); ctx.arc(px, y + h * 0.1 - r * 0.2, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    ctx.restore();
+  }
+  const dot = (ctx, x, y, r, color) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
+
+  // ---------- 3章：飽和水蒸気量（教科書の値、docs/reference/suijoki.md） ----------
+  const SAT = [4.8, 5.2, 5.6, 6.0, 6.4, 6.8, 7.3, 7.8, 8.3, 8.8, 9.4, 10.0, 10.7, 11.4, 12.1, 12.8, 13.6, 14.5, 15.4, 16.3, 17.3, 18.3, 19.4, 20.6, 21.8, 23.1, 24.4, 25.8, 27.2, 28.8, 30.4, 32.1, 33.8, 35.7, 37.6, 39.6, 41.7, 43.9, 46.2, 48.6, 51.1];
+  function sat(T) { T = Math.max(0, Math.min(40, T)); const i = Math.floor(T), f = T - i; return i >= 40 ? SAT[40] : SAT[i] + (SAT[i + 1] - SAT[i]) * f; }
+  function dewPoint(e) { if (e <= SAT[0]) return 0; for (let i = 0; i < 40; i++) if (e <= SAT[i + 1]) return i + (e - SAT[i]) / (SAT[i + 1] - SAT[i]); return 40; }
+  // 1章：湿度表 HUM[乾球℃][示度の差℃] の 18〜23 ℃ の行（乾湿計の式から計算した値、docs/reference/kanshitsukei.md）
+  const HUM = { 18: [100, 90, 80, 71, 62, 53], 19: [100, 90, 81, 72, 63, 54], 20: [100, 91, 81, 72, 64, 56], 21: [100, 91, 82, 73, 65, 57], 22: [100, 91, 82, 74, 66, 58], 23: [100, 91, 83, 75, 67, 59] };
+  const satTable = (no) => `<div class="tblwrap"><p>表${no}　気温と飽和水蒸気量〔g/m³〕</p><table class="qt"><tr><th class="corner">気温〔℃〕</th>${Array.from({ length: 10 }, (_, k) => `<th>${k}</th>`).join('')}</tr>` +
+    [0, 10, 20, 30].map(d => `<tr><th>${d}〜</th>${Array.from({ length: 10 }, (_, k) => `<td>${d + k <= 35 ? SAT[d + k].toFixed(1) : ''}</td>`).join('')}</tr>`).join('') + '</table></div>';
+
+  // ---------- 大問1：3日間の観測記録（3時間ごと、t = 0〜72 h） ----------
+  // 湿度は「水蒸気量 ÷ 飽和水蒸気量」で計算する（3章のモデル）。1日目は晴れ、2日目は低気圧が通って雨、3日目は寒気が入って晴れ。
+  const D1 = (() => {
+    const T = [17.0, 16.5, 16.2, 18.4, 20.4, 21.0, 19.4, 18.0, 17.2, 17.0, 16.8, 17.0, 17.4, 17.2, 16.8, 16.5, 14.0, 12.0, 10.6, 13.5, 17.5, 19.0, 16.5, 14.0, 12.5];
+    const E = [13.4, 13.4, 13.4, 13.4, 13.4, 13.4, 13.4, 13.4, 13.6, 13.8, 13.9, 14.0, 14.2, 14.1, 13.9, 13.0, 11.0, 10.0, 9.2, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0];
+    const P = [1015, 1015, 1016, 1015, 1013, 1012, 1012, 1011, 1010, 1008, 1006, 1004, 1002, 1001, 1003, 1005, 1008, 1010, 1012, 1013, 1013, 1013, 1014, 1015, 1015];
+    const WX = 'ffffffffccrrrrccfffffffff'.split('').map(c => ({ f: 'fine', c: 'cloudy', r: 'rain' })[c]);
+    return T.map((t, i) => ({ t: i * 3, T: t, e: E[i], rh: E[i] / sat(t) * 100, p: P[i], wx: WX[i] }));
+  })();
+  const D1_READ = D1[5];                                         // 1日目 15 時（乾湿計を読む時刻）
+  const D1_WET = D1_READ.T - 3;                                   // 湿球の示度（示度の差 3 ℃）
+  const D1_RH = HUM[D1_READ.T][3], D1_E = SAT[D1_READ.T] * D1_RH / 100;
+  const D1_PMIN = D1.reduce((m, d) => d.p < m.p ? d : m);
+  const D1_DAWN = D1.slice(16).reduce((m, d) => d.T < m.T ? d : m);   // 3日目で最も気温が低い時刻
+  const hourOf = (t) => t % 24, dayOf = (t) => Math.floor(t / 24) + 1;
+  const G1 = { L: 48, R: 46, wxY: 30, y0: 66, y1: 216, p0: 252, p1: 332, H: 380 };
+  const g1X = (t, W) => G1.L + t / 72 * (W - G1.L - G1.R);
+  function drawG1(ctx, W) {
+    const ink = css('--ink'), muted = css('--muted'), line = css('--line'), X = (t) => g1X(t, W);
+    ctx.fillStyle = css('--map'); ctx.fillRect(0, 0, W, G1.H);
+    // 日の区切りと時刻
+    const step = W < 500 ? 12 : 6;
+    ctx.font = fn('', 10); ctx.fillStyle = muted; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    for (let t = 0; t <= 72; t += step) {
+      ctx.strokeStyle = line; ctx.lineWidth = t % 24 === 0 ? 1.4 : 1; ctx.beginPath(); ctx.moveTo(X(t), G1.y0 - 6); ctx.lineTo(X(t), G1.p1); ctx.stroke();
+      ctx.fillText(String(hourOf(t)), X(t), G1.p1 + 5);
+    }
+    ctx.font = fb('700', 12); ctx.fillStyle = ink;
+    for (let d = 0; d < 3; d++) ctx.fillText(`${d + 1}日目`, X(d * 24 + 12), G1.p1 + 22);
+    ctx.font = fb('', 10); ctx.fillStyle = muted; ctx.textAlign = 'right'; ctx.fillText('〔時〕', W - 4, G1.p1 + 5);
+    // 天気
+    ctx.font = fb('', 11); ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillStyle = muted; ctx.fillText('天気', G1.L - 8, G1.wxY);
+    for (const d of D1) drawSymbol(ctx, X(d.t), G1.wxY, W < 500 ? 18 : 22, d.wx, 0, 0);
+    // 気温・湿度の目盛り（左が気温 0〜25 ℃、右が湿度 0〜100 %）
+    const yT = (v) => G1.y1 - v / 25 * (G1.y1 - G1.y0), yH = (v) => G1.y1 - v / 100 * (G1.y1 - G1.y0);
+    ctx.font = fn('', 10);
+    for (let k = 0; k <= 5; k++) {
+      const y = yT(k * 5); ctx.strokeStyle = line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(G1.L, y); ctx.lineTo(W - G1.R, y); ctx.stroke();
+      ctx.fillStyle = muted; ctx.textAlign = 'right'; ctx.fillText(String(k * 5), G1.L - 6, y); ctx.textAlign = 'left'; ctx.fillText(String(k * 20), W - G1.R + 6, y);
+    }
+    ctx.font = fb('', 11); ctx.textBaseline = 'bottom'; ctx.textAlign = 'left'; ctx.fillText('気温〔℃〕', 4, G1.y0 - 8); ctx.textAlign = 'right'; ctx.fillText('湿度〔%〕', W - 4, G1.y0 - 8);
+    // A：湿度（実線）、B：気温（破線）。どちらがどちらかは問題で問う
+    const plot = (key, y, dash, marks) => {
+      ctx.save(); ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.setLineDash(dash); ctx.beginPath();
+      D1.forEach((d, i) => { if (i === 0) ctx.moveTo(X(d.t), y(d[key])); else ctx.lineTo(X(d.t), y(d[key])); }); ctx.stroke(); ctx.restore();
+      if (marks) D1.forEach(d => dot(ctx, X(d.t), y(d[key]), 2.6, ink));
+    };
+    plot('rh', yH, [], true); plot('T', yT, [6, 4], false);
+    const last = D1[D1.length - 1];
+    haloText(ctx, 'A', X(72) - 8, yH(last.rh) - 14, ink, fb('700', 14), 'right');      // 右の目盛りと重ならないよう、線の終わりの内側に
+    haloText(ctx, 'B', X(72) - 8, yT(last.T) + 14, ink, fb('700', 14), 'right');
+    // 気圧（1000〜1020 hPa）
+    const yP = (v) => G1.p1 - (v - 1000) / 20 * (G1.p1 - G1.p0);
+    ctx.font = fn('', 10); ctx.textBaseline = 'middle';
+    for (let v = 1000; v <= 1020; v += 5) { const y = yP(v); ctx.strokeStyle = line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(G1.L, y); ctx.lineTo(W - G1.R, y); ctx.stroke(); ctx.fillStyle = muted; ctx.textAlign = 'right'; ctx.fillText(String(v), G1.L - 6, y); }
+    ctx.font = fb('', 11); ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillStyle = muted; ctx.fillText('気圧〔hPa〕', 4, G1.p0 - 8);
+    ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.beginPath(); D1.forEach((d, i) => { if (i === 0) ctx.moveTo(X(d.t), yP(d.p)); else ctx.lineTo(X(d.t), yP(d.p)); }); ctx.stroke();
+    D1.forEach(d => dot(ctx, X(d.t), yP(d.p), 2.2, ink));
+  }
+
+  // ---------- 大問2：2章のモデル（地面を温めてできた低気圧、強さ 6） ----------
+  const A2 = 24, SIG2 = 110, ALPHA2 = 30 * Math.PI / 180;
+  const p2 = (x, y) => 1012 - A2 * Math.exp(-((x - 300) ** 2 + (y - 300) ** 2) / (2 * SIG2 * SIG2));
+  function wind2(x, y) {
+    const dx = x - 300, dy = y - 300, r = Math.hypot(dx, dy); if (r < 1) return { vx: 0, vy: 0, speed: 0 };
+    const speed = 0.8 * A2 * (r / SIG2) * Math.exp(-(r * r) / (2 * SIG2 * SIG2)), ux = dx / r, uy = dy / r;
+    const tx = uy, ty = -ux, rx = -ux, ry = -uy;                                 // 反時計回り + 中心へ
+    return { vx: (Math.cos(ALPHA2) * tx + Math.sin(ALPHA2) * rx) * speed, vy: (Math.cos(ALPHA2) * ty + Math.sin(ALPHA2) * ry) * speed, speed };
+  }
+  const rIso = (n) => SIG2 * Math.sqrt(2 * Math.log(A2 / (4 * n)));            // 1012 − 4n hPa の等圧線の半径
+  const at2 = (r, deg) => ({ x: 300 + r * Math.sin(deg * Math.PI / 180), y: 300 - r * Math.cos(deg * Math.PI / 180) });
+  const PTS2 = { A: at2(40, 45), B: at2(115, 270), C: at2(190, 180), D: at2(250, 60) };
+  const P2 = at2(rIso(4), 225), R2 = at2(160, 120);
+  const P2_VAL = Math.round(p2(P2.x, P2.y));
+  const W2 = Object.fromEntries(Object.entries(PTS2).map(([k, o]) => [k, wind2(o.x, o.y).speed]));
+  const STRONG2 = Object.keys(W2).reduce((a, b) => W2[a] >= W2[b] ? a : b);
+  const R2W = wind2(R2.x, R2.y), R2_DIR = dir16(bearingFrom(R2W.vx, R2W.vy)), R2_F = beaufort(R2W.speed);
+  function drawG2(ctx, W) {
+    const ink = css('--ink'), muted = css('--muted');
+    ctx.fillStyle = css('--map'); ctx.fillRect(0, 0, W, W);
+    for (let n = 1; 4 * n < A2; n++) {
+      const r = rIso(n), val = 1012 - 4 * n, bold = val % 20 === 0;
+      ctx.strokeStyle = css('--isobar'); ctx.lineWidth = bold ? 2.4 : 1.2; ctx.beginPath(); ctx.arc(300, 300, r, 0, Math.PI * 2); ctx.stroke();
+      if (n === 1) haloText(ctx, String(val), 300, 300 - r, muted, fn('600', 12));
+    }
+    haloText(ctx, '低', 300, 300, css('--warm'), fb('700', 28));
+    for (const [k, o] of Object.entries(PTS2)) { dot(ctx, o.x, o.y, 4, ink); haloText(ctx, k, o.x + 9, o.y - 11, ink, fb('700', 15), 'left'); }
+    dot(ctx, P2.x, P2.y, 4, ink); haloText(ctx, 'P', P2.x - 9, P2.y + 12, ink, fb('700', 15), 'right');
+    drawSymbol(ctx, R2.x, R2.y, 46, 'rain', bearingFrom(R2W.vx, R2W.vy), R2_F);
+    haloText(ctx, 'R', R2.x + 16, R2.y + 18, ink, fb('700', 15), 'left');
+    arrow(ctx, W - 34, 74, W - 34, 30, ink, 2); haloText(ctx, '北', W - 34, 16, ink, fb('700', 12));
+  }
+
+  // ---------- 大問3：4章のモデル（温帯低気圧が東へ進む） ----------
+  const Z = { BG: 1012, A: 24, SIG: 140, CY: 200, SPEED: 25, ALPHA: 40 * Math.PI / 180 };
+  const norm = (x, y) => { const l = Math.hypot(x, y); return [x / l, y / l]; };
+  const DW = norm(Math.cos(25 * Math.PI / 180), Math.sin(25 * Math.PI / 180)), DC = norm(-0.6, 0.8);
+  const NW = [DW[1], -DW[0]], NC = [-DC[1], DC[0]];
+  const cxAt = (t) => -150 + Z.SPEED * t;
+  function situation(x, y, t) {
+    const cx = cxAt(t), dx = x - cx, dy = y - Z.CY, r = Math.hypot(dx, dy);
+    const p = Z.BG - Z.A * Math.exp(-(r * r) / (2 * Z.SIG * Z.SIG));
+    const aheadW = dx * NW[0] + dy * NW[1], behindC = dx * NC[0] + dy * NC[1];
+    let wx, temp;
+    if (dy <= 0) { wx = r < 120 ? 'rain' : r < 220 ? 'cloudy' : 'fine'; temp = 8; }
+    else if (aheadW < 0 && behindC < 0) { wx = aheadW > -40 ? 'cloudy' : 'fine'; temp = 18; }
+    else if (aheadW >= behindC) { wx = aheadW < 70 ? 'rain' : aheadW < 170 ? 'cloudy' : 'fine'; temp = 8 + (aheadW < 25 ? 10 * (1 - aheadW / 25) : 0); }
+    else { wx = behindC < 35 ? 'rain' : behindC < 70 ? 'cloudy' : 'fine'; temp = 7 + (behindC < 15 ? 11 * (1 - behindC / 15) : 0); }
+    if (wx === 'rain') temp -= 1;
+    let vx = 0, vy = 0, speed = 0;
+    if (r > 1) {
+      speed = 0.8 * Z.A * (r / Z.SIG) * Math.exp(-(r * r) / (2 * Z.SIG * Z.SIG)) + 2;
+      const ux = dx / r, uy = dy / r, tx = uy, ty = -ux, rx = -ux, ry = -uy;
+      vx = (Math.cos(Z.ALPHA) * tx + Math.sin(Z.ALPHA) * rx) * speed; vy = (Math.cos(Z.ALPHA) * ty + Math.sin(Z.ALPHA) * ry) * speed;
+    }
+    return { p, temp, wx, vx, vy, speed };
+  }
+  function passTimes(o) {
+    const sW = (o.y - Z.CY) / DW[1], sC = (o.y - Z.CY) / DC[1];
+    return { warm: (o.x - sW * DW[0] + 150) / Z.SPEED, cold: (o.x - sC * DC[0] + 150) / Z.SPEED };
+  }
+  const O3 = { x: 300, y: 320 }, PT3 = passTimes(O3);              // 温暖前線は約 8 時、寒冷前線は約 22 時に通過
+  const T3 = 13, REC3 = [13, 16, 19, 22, 25];                       // 図の時刻と、表の時刻（3 時間ごと）
+  const clock = (t) => t < 24 ? `${t} 時` : `翌 ${t - 24} 時`;
+  const obs3 = (t) => { const d = situation(O3.x, O3.y, t), f = beaufort(d.speed); return { ...d, f, dir: f === 0 ? '静穏' : dir16(bearingFrom(d.vx, d.vy)) }; };
+  const rec3Table = () => `<div class="tblwrap"><p>表3　地点 O の気象観測の記録</p><table class="qt"><tr><th class="corner">時刻</th>${REC3.map(t => `<th>${clock(t)}</th>`).join('')}</tr>` +
+    [['気温〔℃〕', (d) => d.temp.toFixed(0)], ['気圧〔hPa〕', (d) => d.p.toFixed(0)], ['風向', (d) => d.dir], ['風力', (d) => d.f], ['天気', (d) => WX_LABEL[d.wx]]]
+      .map(([k, f]) => `<tr><th class="corner">${k}</th>${REC3.map(t => `<td>${f(obs3(t))}</td>`).join('')}</tr>`).join('') + '</table></div>';
+  const COLD3 = REC3.slice(0, -1).findIndex((t, k) => PT3.cold >= t && PT3.cold < REC3[k + 1]);
+  const H3W = Math.round(PT3.warm), H3 = Math.round(PT3.cold - PT3.warm), KM3 = H3 * 40;
+  const T3L = REC3[REC3.length - 1] + 6, LATER3 = obs3(T3L);
+  function drawG3(ctx, W) {
+    const ink = css('--ink'), muted = css('--muted'), t = T3, cx = cxAt(t), CY = Z.CY;
+    ctx.fillStyle = css('--map'); ctx.fillRect(0, 0, W, W);
+    ctx.fillStyle = css('--rain'); ctx.globalAlpha = 0.16;
+    for (let gx = 0; gx < W; gx += 10) for (let gy = 0; gy < W; gy += 10) if (situation(gx + 5, gy + 5, t).wx === 'rain') ctx.fillRect(gx, gy, 10, 10);
+    ctx.globalAlpha = 1;
+    for (let n = 1; 4 * n < Z.A; n++) {
+      const r = Z.SIG * Math.sqrt(2 * Math.log(Z.A / (4 * n))), val = Z.BG - 4 * n, bold = val % 20 === 0;
+      ctx.strokeStyle = css('--isobar'); ctx.lineWidth = bold ? 2.2 : 1.1; ctx.beginPath(); ctx.arc(cx, CY, r, 0, Math.PI * 2); ctx.stroke();
+      if (CY - r > 10) haloText(ctx, String(val), cx, CY - r, muted, fn('600', 11));
+    }
+    frontLine(ctx, cx, CY, cx + DW[0] * 560, CY + DW[1] * 560, 'warm');
+    frontLine(ctx, cx, CY, cx + DC[0] * 520, CY + DC[1] * 520, 'cold');
+    haloText(ctx, 'X', cx + DW[0] * 230 + 4, CY + DW[1] * 230 - 22, ink, fb('700', 17));
+    haloText(ctx, 'Y', cx + DC[0] * 170 - 22, CY + DC[1] * 170 - 4, ink, fb('700', 17));
+    haloText(ctx, '低', cx, CY - 4, css('--warm'), fb('700', 26));
+    haloText(ctx, `${Z.BG - Z.A}`, cx, CY + 18, css('--warm'), fn('600', 11));
+    dot(ctx, O3.x, O3.y, 5, ink); haloText(ctx, 'O', O3.x + 10, O3.y + 2, ink, fb('700', 16), 'left');
+    ctx.fillStyle = ink; ctx.font = fb('700', 12); ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText('北', W / 2, 6);
+    ctx.textBaseline = 'bottom'; ctx.fillText('南', W / 2, W - 6);
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillText('西', 6, W / 2); ctx.textAlign = 'right'; ctx.fillText('東', W - 6, W / 2);
+    ctx.font = fn('', 11); ctx.textBaseline = 'top'; ctx.fillStyle = muted; ctx.fillText(`${clock(t)}`, W - 8, 8);
+    ctx.font = fb('', 11); ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText('うすい青：雨の範囲', 8, W - 8);
+  }
+
+  // ---------- 大問4：5章のモデル（日本付近の天気図） ----------
+  const M5 = { mode: 'winter', v: 6 };
+  const L2X = lon => (lon - 118) * 15, L2Y = lat => (50 - lat) * 20;
+  const toPx = pts => pts.map(([lo, la]) => [L2X(lo), L2Y(la)]);
+  const CONT = toPx([[118, 50], [118, 20], [120, 22], [120.5, 25], [121, 27], [121.5, 29], [120.6, 32], [119.5, 34.5], [121, 36.5], [122.5, 37.5], [124.5, 39.8], [125, 38.5], [126.3, 37], [126.5, 34.6], [128, 34.8], [129.5, 35.2], [129.3, 37.3], [128.2, 38.6], [130.5, 42.3], [132.6, 43], [135, 43.5], [137, 45.3], [138.5, 46.5], [140.5, 48.5], [141.5, 50]]);
+  const ISLANDS = [
+    toPx([[130.0, 33.9], [131.0, 33.9], [131.8, 33.0], [131.5, 31.4], [130.6, 31.0], [130.0, 31.8], [129.6, 33.2]]),
+    toPx([[132.0, 33.9], [134.6, 34.2], [134.6, 33.5], [133.0, 33.0], [132.4, 33.3]]),
+    toPx([[131.0, 34.4], [132.5, 35.5], [133.5, 35.5], [135.0, 35.7], [136.0, 36.3], [137.0, 37.4], [138.5, 38.0], [139.5, 38.5], [140.0, 39.8], [140.0, 41.2], [141.3, 41.4], [141.5, 40.5], [141.0, 38.5], [140.8, 37.0], [140.4, 35.8], [139.8, 35.0], [138.9, 34.7], [137.3, 34.6], [136.8, 35.0], [136.0, 34.4], [135.3, 33.6], [135.0, 34.4], [133.0, 34.4], [131.5, 34.2]]),
+    toPx([[139.8, 41.8], [140.5, 43.0], [141.4, 43.5], [141.6, 45.2], [142.6, 44.4], [144.0, 44.0], [145.5, 44.3], [145.0, 43.2], [143.5, 42.2], [141.9, 42.5], [140.6, 42.3], [140.0, 41.5]]),
+    toPx([[120.5, 25.2], [121.9, 25.2], [121.0, 22.0]]),
+  ];
+  const G5 = (x, y, cx, cy, sx, sy) => Math.exp(-(((x - cx) / sx) ** 2 + ((y - cy) / sy) ** 2) / 2);
+  const baiuLat = s => 27 + 1.9 * s;
+  const frontY = (x, s) => L2Y(baiuLat(s)) + 10 * Math.sin(x / 80);
+  function systems5() {
+    const m = M5.mode, s = M5.v;
+    if (m === 'winter') return [{ x: L2X(100), y: L2Y(48), amp: 8 * s, sx: 330, sy: 420, kind: 'H' }, { x: L2X(156.5), y: L2Y(49), amp: -6 * s, sx: 200, sy: 300, kind: 'L' }];
+    if (m === 'summer') return [{ x: L2X(157), y: L2Y(31), amp: 2.6 * s, sx: 330, sy: 260, kind: 'H' }, { x: L2X(106), y: L2Y(41), amp: -2.2 * s, sx: 260, sy: 230, kind: 'L' }];
+    if (m === 'baiu') return [{ x: L2X(150), y: L2Y(49), amp: 7, sx: 230, sy: 170, kind: 'H' }, { x: L2X(150), y: L2Y(Math.min(29, 18 + 1.2 * s)), amp: 9 + 0.3 * s, sx: 320, sy: 200, kind: 'H' }];
+    const out = [], base = -420 + 6 * s;                             // 春・秋：移動性高気圧と低気圧が交互に東へ
+    for (let k = -1; k <= 3; k++) { const x = base + k * 320; out.push(k % 2 === 0 ? { x, y: L2Y(37), amp: 10, sx: 120, sy: 105, kind: 'H' } : { x, y: L2Y(39.5), amp: -12, sx: 110, sy: 95, kind: 'L' }); }
+    return out;
+  }
+  function pressure5(x, y) {
+    let p = 1012; for (const s of systems5()) p += s.amp * G5(x, y, s.x, s.y, s.sx, s.sy);
+    if (M5.mode === 'baiu') { const d = (y - frontY(x, M5.v)) / 35; p -= 5 * Math.exp(-d * d); }
+    return p;
+  }
+  function wind5(x, y) {
+    const h = 2, dpdx = (pressure5(x + h, y) - pressure5(x - h, y)) / (2 * h), dpdy = (pressure5(x, y + h) - pressure5(x, y - h)) / (2 * h);
+    const n = Math.hypot(dpdx, dpdy); if (n < 1e-5) return { vx: 0, vy: 0, speed: 0 };
+    const A = (M5.mode === 'summer' ? 65 : 30) * Math.PI / 180, gx = dpdy, gy = -dpdx;
+    const vx = Math.cos(A) * gx - Math.sin(A) * dpdx, vy = Math.cos(A) * gy - Math.sin(A) * dpdy, speed = Math.min(60, 60 * n);
+    return { vx: vx / n * speed, vy: vy / n * speed, speed };
+  }
+  function withModel5(mode, v, fn) { const keep = { ...M5 }; M5.mode = mode; M5.v = v; try { return fn(); } finally { Object.assign(M5, keep); } }
+  const MAPS4 = [['g4a', 'ア', 'spring', 88], ['g4b', 'イ', 'summer', 6], ['g4c', 'ウ', 'winter', 6], ['g4d', 'エ', 'baiu', 5]];
+  const MAP_OF = Object.fromEntries(MAPS4.map(([, k, mode]) => [mode, k]));
+  const TOKYO = { x: L2X(139.7), y: L2Y(35.7) }, NIIGATA = { x: L2X(139.0), y: L2Y(37.9) };
+  const SUMMER_DIR = withModel5('summer', 6, () => { const w = wind5(TOKYO.x, TOKYO.y); return dir8(bearingFrom(w.vx, w.vy)); });
+  const WINTER_DIR = withModel5('winter', 6, () => { const w = wind5(NIIGATA.x, NIIGATA.y); return dir8(bearingFrom(w.vx, w.vy)); });
+  function drawIsobars5(ctx, W) {
+    const N = 60, h = W / N, grid = [], labels = [];
+    let mn = Infinity, mx = -Infinity;
+    for (let j = 0; j <= N; j++) { grid[j] = []; for (let i = 0; i <= N; i++) { const p = pressure5(i * h, j * h); grid[j][i] = p; if (p < mn) mn = p; if (p > mx) mx = p; } }
+    const l0 = Math.ceil(mn / 4) * 4, l1 = Math.floor(mx / 4) * 4, every = (l1 - l0) / 4 > 12 ? 8 : 4;
+    const lerp = (x0, y0, p0, x1, y1, p1, lev) => { const t = (lev - p0) / (p1 - p0); return [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]; };
+    ctx.strokeStyle = css('--isobar'); ctx.lineCap = 'round';
+    for (let lev = l0; lev <= l1; lev += 4) {
+      const done = new Set(); ctx.lineWidth = lev % 20 === 0 ? 2.2 : 1.1; ctx.beginPath();
+      for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+        const a = grid[j][i], b = grid[j][i + 1], c = grid[j + 1][i + 1], d = grid[j + 1][i];
+        if (lev < Math.min(a, b, c, d) || lev >= Math.max(a, b, c, d)) continue;
+        const x0 = i * h, y0 = j * h, x1 = x0 + h, y1 = y0 + h, pts = [];
+        if ((a >= lev) !== (b >= lev)) pts.push(lerp(x0, y0, a, x1, y0, b, lev));
+        if ((b >= lev) !== (c >= lev)) pts.push(lerp(x1, y0, b, x1, y1, c, lev));
+        if ((c >= lev) !== (d >= lev)) pts.push(lerp(x1, y1, c, x0, y1, d, lev));
+        if ((d >= lev) !== (a >= lev)) pts.push(lerp(x0, y1, d, x0, y0, a, lev));
+        if (pts.length >= 2) { ctx.moveTo(pts[0][0], pts[0][1]); ctx.lineTo(pts[1][0], pts[1][1]); }
+        if (pts.length === 4) { ctx.moveTo(pts[2][0], pts[2][1]); ctx.lineTo(pts[3][0], pts[3][1]); }
+        if (lev % every !== 0) continue;                                // 値のラベル：上下左右の端を横切るところに一度だけ
+        if (j === 0 && (a >= lev) !== (b >= lev) && !done.has('t')) { done.add('t'); labels.push([lev, pts[0][0], 12]); }
+        else if (j === N - 1 && (c >= lev) !== (d >= lev) && !done.has('b')) { done.add('b'); const q = pts.find(p => p[1] > y1 - 0.01) || pts[0]; labels.push([lev, q[0], W - 12]); }
+        else if (i === 0 && (d >= lev) !== (a >= lev) && !done.has('l') && j > 2 && j < N - 3) { done.add('l'); const q = pts.find(p => p[0] < x0 + 0.01) || pts[0]; labels.push([lev, 16, q[1]]); }
+        else if (i === N - 1 && (b >= lev) !== (c >= lev) && !done.has('r') && j > 2 && j < N - 3) { done.add('r'); const q = pts.find(p => p[0] > x1 - 0.01) || pts[0]; labels.push([lev, W - 16, q[1]]); }
+      }
+      ctx.stroke();
+    }
+    for (const [lev, x, y] of labels) haloText(ctx, String(lev), Math.max(14, Math.min(W - 14, x)), y, css('--muted'), fn('600', 11));
+  }
+  function drawMap5(ctx, W, tag, mode, v) {
+    withModel5(mode, v, () => {
+      const ink = css('--ink'), muted = css('--muted');
+      ctx.fillStyle = css('--map'); ctx.fillRect(0, 0, W, W);
+      ctx.fillStyle = css('--sea-soft'); ctx.globalAlpha = 0.55; ctx.fillRect(0, 0, W, W); ctx.globalAlpha = 1;
+      const poly = (pts) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); };
+      ctx.fillStyle = css('--land'); ctx.strokeStyle = muted; ctx.lineWidth = 1;
+      poly(CONT); ctx.fill(); ctx.stroke(); for (const isl of ISLANDS) { poly(isl); ctx.fill(); ctx.stroke(); }
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.setLineDash([2, 4]);
+      for (const lat of [30, 40]) { ctx.beginPath(); ctx.moveTo(0, L2Y(lat)); ctx.lineTo(W, L2Y(lat)); ctx.stroke(); }
+      for (const lon of [130, 140, 150]) { ctx.beginPath(); ctx.moveTo(L2X(lon), 0); ctx.lineTo(L2X(lon), W); ctx.stroke(); }
+      ctx.setLineDash([]);
+      drawIsobars5(ctx, W);
+      if (mode === 'baiu') { const pts = []; for (let x = 0; x <= W; x += 6) pts.push([x, frontY(x, v)]); for (let i = 0; i < pts.length - 4; i += 4) frontLine(ctx, pts[i][0], pts[i][1], pts[i + 4][0], pts[i + 4][1], 'stationary', i / 4); }
+      if (mode === 'spring') for (const q of systems5()) if (q.kind === 'L') {
+        frontLine(ctx, q.x, q.y, q.x + 150 * Math.cos(25 * Math.PI / 180), q.y + 150 * Math.sin(25 * Math.PI / 180), 'warm');
+        frontLine(ctx, q.x, q.y, q.x - 0.6 * 150, q.y + 0.8 * 150, 'cold');
+      }
+      for (const q of systems5()) {
+        if (q.x < -20 || q.x > W + 20 || q.y < -20 || q.y > W + 20) continue;
+        const hi = q.kind === 'H', color = hi ? css('--cool') : css('--warm');
+        haloText(ctx, hi ? '高' : '低', q.x, q.y - 6, color, fb('700', 24));
+        haloText(ctx, String(Math.round(pressure5(q.x, q.y))), q.x, q.y + 14, color, fn('600', 12));
+      }
+      ctx.fillStyle = css('--panel'); ctx.strokeStyle = ink; ctx.lineWidth = 1.5; ctx.fillRect(10, 10, 52, 46); ctx.strokeRect(10, 10, 52, 46);
+      ctx.fillStyle = ink; ctx.font = fb('700', 28); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(tag, 36, 34);
+    });
+  }
+
+  // ---------- 大問5：3章のモデル（山を越える空気） ----------
+  const T5 = 20, E5 = 12.8, PEAK5 = 1700;                          // 地点 A の気温・水蒸気量、山頂の標高
+  const TD5 = dewPoint(E5), HC5 = (T5 - TD5) * 100;                 // 露点 15 ℃、雲ができ始める高さ 500 m
+  const TPEAK5 = TD5 - 0.5 * (PEAK5 - HC5) / 100, EPEAK5 = sat(TPEAK5);   // 山頂 9 ℃、8.8 g/m³
+  const DROP5 = E5 - EPEAK5, TB5 = TPEAK5 + PEAK5 / 100, RHB5 = EPEAK5 / sat(TB5) * 100, RHA5 = E5 / sat(T5) * 100;
+  const G5X = { GY: 236, K: 0.1 };
+  function g5Geom(W) { const xA = 44, xB = W - 44, xP = W / 2; return { xA, xB, xP, yh: (h) => G5X.GY - h * G5X.K, xUp: (h) => xA + (xP - xA) * h / PEAK5, xDown: (h) => xB - (xB - xP) * h / PEAK5 }; }
+  function drawG5(ctx, W, H) {
+    const ink = css('--ink'), muted = css('--muted'), cool = css('--cool'), g = g5Geom(W), GY = G5X.GY;
+    ctx.fillStyle = css('--sky'); ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = css('--ground'); ctx.beginPath(); ctx.moveTo(0, GY); ctx.lineTo(g.xA, GY); ctx.lineTo(g.xP, g.yh(PEAK5)); ctx.lineTo(g.xB, GY); ctx.lineTo(W, GY); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+    // 風上の斜面の雲（雲ができ始める点 P から山頂まで）と雨
+    for (let h = HC5; h <= PEAK5; h += 200) cloudPuffs(ctx, g.xUp(h) - 18, g.yh(h) - 24, 60, 26, 0.95);
+    ctx.strokeStyle = css('--rain'); ctx.lineWidth = 1.2;
+    for (let h = HC5 + 500; h <= PEAK5; h += 250) for (let k = 0; k < 3; k++) { const x0 = g.xUp(h) - 34 + k * 10, y0 = g.yh(h) - 6 + (k % 2) * 5; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 - 1.5, y0 + 9); ctx.stroke(); }
+    // 空気の流れ
+    const off = 30;
+    arrow(ctx, g.xUp(20) - off * 0.4, g.yh(20) - off, g.xUp(HC5 - 220) - off * 0.4, g.yh(HC5 - 220) - off, muted, 2);   // 雲より下で止める
+    arrow(ctx, g.xDown(PEAK5 - 150) + off * 0.4, g.yh(PEAK5 - 150) - off, g.xDown(150) + off * 0.4, g.yh(150) - off, muted, 2);
+    // 点と名前
+    const yP = g.yh(HC5), xPp = g.xUp(HC5);
+    dot(ctx, xPp, yP, 4.5, ink); haloText(ctx, 'P', xPp + 12, yP + 4, ink, fb('700', 15), 'left', 'middle');
+    dot(ctx, g.xP, g.yh(PEAK5), 4, ink); haloText(ctx, `山頂（標高 ${PEAK5} m）`, g.xP + 12, g.yh(PEAK5) - 10, ink, fb('700', 12), 'left');   // 風上の雲と重ならないよう右へ
+    dot(ctx, g.xA, GY, 4.5, ink); dot(ctx, g.xB, GY, 4.5, ink);
+    ctx.fillStyle = ink; ctx.font = fb('700', 15); ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillText('A', g.xA, GY + 8); ctx.fillText('B', g.xB, GY + 8);
+    ctx.font = fb('', 11); ctx.fillStyle = muted;
+    ctx.fillText('標高 0 m', g.xA, GY + 28); ctx.fillText('標高 0 m', g.xB, GY + 28);
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillStyle = muted; ctx.font = fb('', 11);
+    ctx.fillText('空気の流れ →', 8, 8);
+    haloText(ctx, '雲', g.xUp(HC5 + 600) - 70, g.yh(HC5 + 600) - 30, cool, fb('700', 12));
+  }
+
+  // ---------- 図を canvas に描く（スマホ幅：文字と線の拡大、横長の図は縦長に） ----------
+  // fillText / strokeText は、文字が canvas の左右の端からはみ出すとき内側へ押し戻す（4章と同じ fitCanvas）。
+  const TEXT_MIN = 11, NARROW = 560;
+  function fitCanvas(cv, ctx, logicalW) {
+    const P = CanvasRenderingContext2D.prototype, fd = Object.getOwnPropertyDescriptor(P, 'font'), ld = Object.getOwnPropertyDescriptor(P, 'lineWidth');
+    let k = 1;
+    Object.defineProperty(ctx, 'font', { configurable: true, get() { return fd.get.call(this); }, set(v) { fd.set.call(this, k === 1 ? v : v.replace(/([\d.]+)px/, (_, n) => (n * k).toFixed(1) + 'px')); } });
+    Object.defineProperty(ctx, 'lineWidth', { configurable: true, get() { return ld.get.call(this); }, set(v) { ld.set.call(this, v * (1 + (k - 1) / 2)); } });
+    const inside = (c, text, x) => {
+      const m = c.getTransform(); if (m.b || m.c) return x;
+      const w = c.measureText(text).width, a = c.textAlign, left = a === 'right' || a === 'end' ? x - w : a === 'center' ? x - w / 2 : x;
+      const L = -m.e / m.a + 4, R = (cv.width - m.e) / m.a - 4;
+      if (x < L - 8 || x > R + 8) return null;
+      return w > R - L ? x + L - left : x + Math.max(0, L - left) - Math.max(0, left + w - R);
+    };
+    ctx.fillText = function (t, x, y, mw) { const x2 = inside(this, t, x); if (x2 !== null) P.fillText.call(this, t, x2, y, mw); };
+    ctx.strokeText = function (t, x, y, mw) { const x2 = inside(this, t, x); if (x2 !== null) P.strokeText.call(this, t, x2, y, mw); };
+    const update = () => { const L = logicalW(), w = cv.clientWidth || L; k = Math.min(2, Math.max(1, TEXT_MIN * L / (11 * w))); };
+    update(); return update;
+  }
+  const FIGS = {};
+  const narrow = (cv) => cv.clientWidth > 0 && cv.clientWidth < NARROW;
+  const FIG_DEFS = {
+    g1: { lw: (cv) => narrow(cv) ? 360 : 600, lh: () => G1.H, draw: drawG1 },
+    g2: { lw: () => 600, lh: () => 600, draw: drawG2 },
+    g3: { lw: () => 600, lh: () => 600, draw: drawG3 },
+    g5: { lw: (cv) => narrow(cv) ? 380 : 600, lh: () => 300, draw: drawG5 },
+    ...Object.fromEntries(MAPS4.map(([id, tag, mode, v]) => [id, { lw: () => 600, lh: () => 600, draw: (ctx, W) => drawMap5(ctx, W, tag, mode, v) }]))
+  };
+  function setupFigs() {
+    for (const [id, d] of Object.entries(FIG_DEFS)) {
+      const cv = document.getElementById(id), ctx = cv.getContext('2d');
+      FIGS[id] = { cv, ctx, ...d, fit: fitCanvas(cv, ctx, () => d.lw(cv)) };
+    }
+  }
+  function renderFig(id) {
+    const f = FIGS[id], W = f.lw(f.cv), H = f.lh(), h = Math.round(f.cv.width * H / W);
+    if (f.cv.height !== h) f.cv.height = h;
+    f.fit();
+    const s = f.cv.width / W; f.ctx.setTransform(s, 0, 0, s, 0, 0); f.ctx.clearRect(0, 0, W, H);
+    f.draw(f.ctx, W, H);
+    if (focus && focus.fig === id) FOCUS[id][focus.key](f.ctx, W);
+  }
+  const renderAllFigs = () => Object.keys(FIGS).forEach(renderFig);
+
+  // ---------- 「図で確かめる」の強調（章と同じ --focus の点線枠） ----------
+  let focus = null;
+  function hl(ctx, draw) { ctx.save(); ctx.strokeStyle = css('--focus'); ctx.fillStyle = css('--focus'); ctx.lineWidth = 3; ctx.setLineDash([8, 6]); draw(); ctx.restore(); }
+  function hlRing(ctx, x, y, r) { hl(ctx, () => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.globalAlpha = .12; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke(); }); }
+  function hlRect(ctx, x, y, w, h) { hl(ctx, () => { ctx.globalAlpha = .12; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; ctx.strokeRect(x, y, w, h); }); }
+  const FOCUS = {
+    g1: {
+      top: (ctx, W) => hlRect(ctx, G1.L - 4, G1.y0 - 8, W - G1.L - G1.R + 8, G1.y1 - G1.y0 + 16),
+      day2: (ctx, W) => hlRect(ctx, g1X(24, W) - 6, G1.wxY - 16, g1X(48, W) - g1X(24, W) + 12, G1.p1 - G1.wxY + 22),
+      read: (ctx, W) => hlRect(ctx, g1X(D1_READ.t, W) - 12, G1.y0 - 8, 24, G1.y1 - G1.y0 + 16),
+      dawn: (ctx, W) => hlRect(ctx, g1X(D1_DAWN.t, W) - 12, G1.wxY - 16, 24, G1.y1 - G1.wxY + 24)
+    },
+    g2: {
+      center: (ctx) => hlRing(ctx, 300, 300, 150),
+      P: (ctx) => hlRing(ctx, P2.x, P2.y, 30),
+      strong: (ctx) => hlRing(ctx, PTS2[STRONG2].x, PTS2[STRONG2].y, 34),
+      R: (ctx) => hlRing(ctx, R2.x, R2.y, 48)
+    },
+    g3: {
+      fronts: (ctx) => { const cx = cxAt(T3); hlRing(ctx, cx + DW[0] * 220, Z.CY + DW[1] * 220, 70); hlRing(ctx, cx + DC[0] * 170, Z.CY + DC[1] * 170, 70); },
+      Y: (ctx) => { const cx = cxAt(T3); hlRing(ctx, cx + DC[0] * 170, Z.CY + DC[1] * 170, 80); },
+      O: (ctx) => hlRing(ctx, O3.x, O3.y, 36)
+    },
+    g4a: { all: (ctx) => hlRect(ctx, 6, 70, 588, 300) },
+    g4b: { tokyo: (ctx) => hlRing(ctx, TOKYO.x, TOKYO.y, 60) },
+    g4c: { jp: (ctx) => hlRing(ctx, L2X(140), L2Y(39), 120), jsea: (ctx) => hlRing(ctx, L2X(136), L2Y(39.5), 95) },
+    g4d: { front: (ctx) => hlRect(ctx, 6, frontY(300, 5) - 60, 588, 120) },
+    g5: {
+      P: (ctx, W) => { const g = g5Geom(W); hlRing(ctx, g.xUp(HC5), g5Geom(W).yh(HC5), 28); },
+      peak: (ctx, W) => { const g = g5Geom(W); hlRing(ctx, g.xP, g.yh(PEAK5), 34); },
+      up: (ctx, W) => { const g = g5Geom(W); hlRect(ctx, g.xA - 10, g.yh(PEAK5) - 30, g.xP - g.xA + 20, G5X.GY - g.yh(PEAK5) + 40); },
+      B: (ctx, W) => { const g = g5Geom(W); hlRing(ctx, g.xB, G5X.GY, 30); }
+    }
+  };
+
+  // ---------- 大問の文章・図・表・小問 ----------
+  // 小問は { q, choices[4], answer, explain, model?（記述の模範解答）, focus?: [図, 強調] }。数値・記号の答えはモデルから計算する。
+  const KEYS = ['ア', 'イ', 'ウ', 'エ'];
+  const otherDir = (d) => DIRS[(DIRS.indexOf(d) + 8) % 16];
+  const DAIMON = [
+    { title: '気象観測と空気中の水蒸気', ch: ['1', '3'],
+      lead: `ある地点で、3 日間、3 時間ごとに天気・気温・湿度・気圧を観測した。図1 はその記録で、グラフの A・B は気温と湿度のどちらかを表している。表1 は湿度表の一部、表2 は気温と飽和水蒸気量の関係である。`,
+      figs: `<figure class="fig"><figcaption>図1<span>3 日間の気象観測の記録（3 時間ごと）</span></figcaption><canvas id="g1" width="1200" height="760" aria-label="3日間の天気・気温・湿度・気圧のグラフ"></canvas></figure>`,
+      tables: () => `<div class="tblwrap"><p>表1　湿度表の一部〔%〕</p><table class="qt"><tr><th class="corner">乾球〔℃〕＼差〔℃〕</th>${[0, 1, 2, 3, 4, 5].map(d => `<th>${d}</th>`).join('')}</tr>${[18, 19, 20, 21, 22, 23].map(t => `<tr><th>${t}</th>${HUM[t].map(v => `<td>${v}</td>`).join('')}</tr>`).join('')}</table></div>` + satTable(2),
+      qs: [
+        { q: '図1 で、湿度を表しているのは A・B のどちらか。また、そう判断できる理由として正しいものはどれか。',
+          choices: ['B：晴れた日は、昼に高く夜に低くなり、気温と同じ変化をしているから', 'A：晴れた日は、昼に低く夜に高くなり、気温と逆の変化をしているから', 'A：雨の日に最も低くなっているから', 'B：3 日間ほとんど変化していないから'], answer: 1,
+          explain: `晴れた 1 日目・3 日目を見る。B は昼に上がり明け方に下がる（気温）。A はその逆で、昼に下がり夜に上がる。空気中の水蒸気の量がほぼ同じなら、気温が上がると飽和水蒸気量が大きくなるので、湿度は下がる。雨の 2 日目は、A がずっと 90 % 以上と高い。`,
+          focus: ['g1', 'top'] },
+        { q: '2 日目の天気と気圧の変化について述べたものとして、正しいものはどれか。',
+          choices: ['気圧が上がり、晴れた。高気圧が近づくと上昇気流が生じるから', '気圧はほとんど変わらず、雨が降った', '気圧が下がり、雨が降った。低気圧が近づくと上昇気流が生じて雲ができやすいから', '気圧が下がり、晴れた。気圧が低いと雲ができにくいから'], answer: 2,
+          explain: `図1 の気圧のグラフは 2 日目に下がり、${dayOf(D1_PMIN.t)} 日目の ${hourOf(D1_PMIN.t)} 時に最も低い ${D1_PMIN.p} hPa になった。同じころ天気は雨。低気圧の中心付近では上昇気流が生じ、空気が冷えて雲ができる（2章・3章）。低気圧が去って気圧が上がり始めると雨がやみ、3 日目は晴れた。`,
+          focus: ['g1', 'day2'] },
+        { q: `1 日目の 15 時に乾湿計で観測すると、乾球の示度は ${D1_READ.T.toFixed(1)} ℃、湿球の示度は ${D1_WET.toFixed(1)} ℃ だった。表1 を使うと、このときの湿度は何 % か。`,
+          choices: [`${HUM[D1_READ.T][2]} %`, `${HUM[D1_WET][3]} %`, `${HUM[D1_READ.T][4]} %`, `${D1_RH} %`], answer: 3,
+          explain: `乾球と湿球の示度の差は ${D1_READ.T} − ${D1_WET} ＝ 3 ℃。表1 で、乾球 ${D1_READ.T} ℃ の行と差 3 ℃ の列が交わるところを読むと ${D1_RH} %。図1 の A の線も、この時刻に約 ${Math.round(D1_READ.rh)} % を示している。湿球の示度（${D1_WET} ℃）の行を読むまちがいに注意（1章「乾湿計で湿度を読む」）。`,
+          focus: ['g1', 'read'] },
+        { q: '(3) のとき、空気 1 m³ 中にふくまれている水蒸気の質量は約何 g か。表2 を使い、小数第 1 位まで求めよ。',
+          choices: [`${f1(SAT[D1_READ.T] - D1_E)} g`, `${f1(SAT[D1_READ.T] / D1_RH * 100)} g`, `${f1(SAT[D1_READ.T])} g`, `${f1(D1_E)} g`], answer: 3,
+          explain: `水蒸気量 ＝ 飽和水蒸気量 × 湿度 ÷ 100。表2 で ${D1_READ.T} ℃ の飽和水蒸気量は ${SAT[D1_READ.T].toFixed(1)} g/m³ なので、${SAT[D1_READ.T].toFixed(1)} × ${D1_RH} ÷ 100 ＝ ${D1_E.toFixed(2)} → 約 ${f1(D1_E)} g。湿度の式「水蒸気量 ÷ 飽和水蒸気量 × 100」を逆に使う（3章）。` },
+        { q: `3 日目は ${hourOf(D1_DAWN.t)} 時ごろに気温が最も低くなった。晴れた日の明け方に気温が下がる理由として、最も適当なものはどれか。`,
+          choices: ['夜は気圧が上がり、空気が圧縮されるから', '夜は湿度が下がり、空気が乾燥するから', '夜の間、地面の熱が宇宙へ逃げ続ける（放射冷却）。雲がないと熱が逃げやすいから', '夜は風が強くなり、北から冷たい空気が運ばれるから'], answer: 2,
+          explain: `図1 の 3 日目は晴れ。夜の間は太陽からの熱がなく、地面の熱は宇宙へ逃げ続けるので、日の出前に最も冷える（放射冷却）。雲があると熱が逃げにくいので、くもりや雨の 2 日目は、夜もあまり冷えていない。気温が下がると飽和水蒸気量が小さくなるので、湿度（A）は明け方に高くなる。`,
+          model: '晴れて雲がないため、夜の間に地面の熱が宇宙へ逃げ（放射冷却）、日の出前に最も温度が下がるから。',
+          focus: ['g1', 'dawn'] }
+      ] },
+    { title: '気圧と風', ch: ['2'],
+      lead: `図2 は、ある日の地上の天気図の一部で、中心に低気圧がある。等圧線は 4 hPa ごとに引かれ、20 hPa ごとに太い線になっている。地点 R には、そこで観測した天気・風向・風力を天気図記号で示した。`,
+      figs: `<figure class="fig fig2"><figcaption>図2<span>等圧線 4 hPa ごと、20 hPa ごとに太線</span></figcaption><canvas id="g2" width="1200" height="1200" aria-label="低気圧の等圧線と地点 A〜D・P・R"></canvas></figure>`,
+      tables: () => '',
+      qs: [
+        { q: '図2 の低気圧の地上付近で、風はどのように吹くか。',
+          choices: ['中心から、時計回りに吹き出す', '中心に向かって、反時計回りに吹きこむ', '中心に向かって、時計回りに吹きこむ', '中心から、反時計回りに吹き出す'], answer: 1,
+          explain: '北半球の低気圧では、まわりから中心に向かって反時計回りに風が吹きこむ。高気圧はその逆で、中心から時計回りに吹き出す。2章で「温める」を選ぶと、空気の粒がこの向きに流れる。',
+          focus: ['g2', 'center'] },
+        { q: '地点 P の気圧は何 hPa か。',
+          choices: [`${P2_VAL - 4} hPa`, `${1008 + (1008 - P2_VAL)} hPa`, `${P2_VAL} hPa`, `${P2_VAL + 4} hPa`], answer: 2,
+          explain: `値が書いてある いちばん外側の等圧線が 1008 hPa。低気圧なので、内側へ 1 本ごとに 4 hPa ずつ低くなる：1008 → 1004 → 1000（太線）→ ${P2_VAL}。P は外側から 4 本目の線の上にある。20 hPa ごとの太線（1000 hPa）を目印にすると数えまちがえにくい。`,
+          focus: ['g2', 'P'] },
+        { q: '地点 A〜D のうち、風が最も強いと考えられる地点はどれか。',
+          choices: ['地点 A', '地点 B', '地点 C', '地点 D'], answer: ['A', 'B', 'C', 'D'].indexOf(STRONG2),
+          explain: `等圧線の間隔がせまいところほど、気圧の差が大きく、風が強い。地点 ${STRONG2} は等圧線が最もこみ合っているところにある。中心に近い A は、いちばん内側の等圧線よりさらに内側で、気圧の差が小さい。モデルの風速は A ${W2.A.toFixed(0)}・B ${W2.B.toFixed(0)}・C ${W2.C.toFixed(0)}・D ${W2.D.toFixed(0)} m/s。`,
+          focus: ['g2', 'strong'] },
+        { q: '地点 R の天気図記号が表す天気・風向・風力の組み合わせとして、正しいものはどれか。',
+          choices: [`雨・${otherDir(R2_DIR)}の風・風力 ${R2_F}`, `くもり・${R2_DIR}の風・風力 ${R2_F}`, `雨・${R2_DIR}の風・風力 ${R2_F - 1}`, `雨・${R2_DIR}の風・風力 ${R2_F}`], answer: 3,
+          explain: `●（黒くぬった円）は雨。矢の向きは風が吹いてくる方位で、R の矢は${R2_DIR}にのびているので、${R2_DIR}の風。矢羽根の数 ${R2_F} 本が風力 ${R2_F}。矢がのびる向きを「風が吹いていく向き」と読むまちがいに注意（1章「記号を読む」）。低気圧に反時計回りに吹きこむ風とも合っている。`,
+          focus: ['g2', 'R'] },
+        { q: '晴れた日の昼、海岸付近では海から陸へ向かって風（海風）が吹く。この理由として正しいものはどれか。',
+          choices: ['海は陸よりあたたまりやすく、海上の気圧が低くなるから', '陸は海よりあたたまりにくく、陸上の気圧が高くなるから', '昼は上空の偏西風が、地上までおりてくるから', '陸は海よりあたたまりやすく、陸上の空気が上昇して気圧が低くなるから'], answer: 3,
+          explain: '陸（岩石や土）は海（水）よりあたたまりやすく冷めやすい。昼は陸上の空気があたためられて上昇し、陸上の気圧が低くなるので、気圧の高い海から陸へ風が吹く。夜は陸が先に冷えて逆になり、陸風が吹く。図2 の低気圧も「地面が温められて上昇気流 → 気圧が下がる」の同じしくみでできる（2章）。',
+          model: '陸は海よりあたたまりやすいので、昼は陸上の空気が上昇して気圧が低くなり、気圧の高い海から陸へ風が吹くから。' }
+      ] },
+    { title: '前線と天気の変化', ch: ['4'],
+      lead: `図3 は、ある日の ${T3} 時の天気図で、温帯低気圧が東へ進んでいる。X・Y は低気圧にともなう前線である。表3 は、地点 O で 3 時間ごとに記録した気象観測の結果である。地点 O では、この日の ${H3W} 時ごろに雨がやみ、気温が上がった。低気圧と前線は、1 時間に約 40 km の速さで東へ進んでいた。`,
+      figs: `<figure class="fig fig2"><figcaption>図3<span>${T3} 時の天気図（等圧線 4 hPa ごと）</span></figcaption><canvas id="g3" width="1200" height="1200" aria-label="温帯低気圧と前線 X・Y、地点 O"></canvas></figure>`,
+      tables: rec3Table,
+      qs: [
+        { q: '図3 の前線 X・Y の名前の組み合わせとして、正しいものはどれか。',
+          choices: ['X 温暖前線・Y 寒冷前線', 'X 寒冷前線・Y 温暖前線', 'X 停滞前線・Y 寒冷前線', 'X 温暖前線・Y 閉塞前線'], answer: 0,
+          explain: '半円の記号がついた X が温暖前線（低気圧の中心から東〜南東へのびる）、▲の記号がついた Y が寒冷前線（南西へのびる）。記号は前線が進む向きの側につく。半円と▲が交互に両側につくのは停滞前線（5章）。',
+          focus: ['g3', 'fronts'] },
+        { q: '表3 から、寒冷前線が地点 O を通過したのはどの時間帯と考えられるか。',
+          choices: REC3.slice(0, -1).map((t, k) => `${clock(t)}〜${clock(REC3[k + 1])}`), answer: COLD3,
+          explain: `気温が急に下がり（${obs3(REC3[COLD3]).temp.toFixed(0)} ℃ → ${obs3(REC3[COLD3 + 1]).temp.toFixed(0)} ℃）、風向が南寄りから北寄りに変わり、気圧が上がり始めた時間帯。3 つの変化がそろうところを探す（モデルでは ${clock(Math.round(PT3.cold))}ごろに通過）。4章のグラフで、点線の左右を比べるのと同じ。` },
+        { q: '前線 Y の付近にできる雲と、雨の降り方の組み合わせとして、正しいものはどれか。',
+          choices: ['乱層雲・広い範囲に長い時間おだやかな雨', '積乱雲・広い範囲に長い時間おだやかな雨', '乱層雲・せまい範囲に短い時間強い雨', '積乱雲・せまい範囲に短い時間強い雨'], answer: 3,
+          explain: '寒冷前線では、重い寒気が暖気の下にもぐりこんで暖気を急に押し上げるので、縦に発達する積乱雲ができ、せまい範囲に短時間の強い雨が降る。表3 でも、寒冷前線の通過直後の記録が雨になっている。温暖前線（X）は乱層雲で、広い範囲におだやかな雨。',
+          focus: ['g3', 'Y'] },
+        { q: '地点 O を温暖前線が通過してから寒冷前線が通過するまでの時間を、文章と (2) から考える。このとき、地点 O を通る東西の線の上で、温暖前線と寒冷前線の間の距離として最も適当なものはどれか。',
+          choices: [`約 ${KM3 / 4} km`, `約 ${Math.round(KM3 / 2 / 10) * 10} km`, `約 ${KM3} km`, `約 ${KM3 * 2} km`], answer: 2,
+          explain: `温暖前線の通過は ${H3W} 時ごろ。寒冷前線は (2) の時間帯（${clock(REC3[COLD3])}〜${clock(REC3[COLD3 + 1])}）に通過したので、その間は ${REC3[COLD3] - H3W}〜${REC3[COLD3 + 1] - H3W} 時間。距離 ＝ 速さ × 時間 ＝ 40 km/h × ${REC3[COLD3] - H3W}〜${REC3[COLD3 + 1] - H3W} h ＝ ${40 * (REC3[COLD3] - H3W)}〜${40 * (REC3[COLD3 + 1] - H3W)} km で、選択肢では約 ${KM3} km（モデルでは寒冷前線は ${clock(Math.round(PT3.cold))}ごろ通過、約 ${H3} 時間）。図3 では、2 本の前線の間の暖気の幅にあたる。` },
+        { q: `表3 の最後の記録の 6 時間後（${clock(T3L)}）の、地点 O の天気・気温・風向として最も適当なものはどれか。`,
+          choices: ['雨。気温は約 18 ℃ で、南の風', `${WX_LABEL[LATER3.wx]}。気温は約 ${Math.round(LATER3.temp)} ℃ で、${LATER3.dir}の風`, 'くもり。気温は約 18 ℃ で、南西の風', '雨。気温は約 8 ℃ で、東の風'], answer: 1,
+          explain: `寒冷前線が通過したあとなので、地点 O は寒気の中にある。気温は低いまま、風は北寄りで、積乱雲が通りすぎて雨もやむ。温帯低気圧は東へ去り、西から高気圧が近づくので天気は回復する（4章で時間を進めると確かめられる）。`,
+          model: '寒冷前線が通過して寒気におおわれるので、気温が低く北寄りの風になり、雨はやんで晴れる。' }
+      ] },
+    { title: '日本の気象', ch: ['5'],
+      lead: '図4 のア〜エは、春・梅雨・夏・冬のいずれかの季節の、日本付近の典型的な天気図である（等圧線は 4 hPa ごと）。',
+      figs: `<figure class="fig"><figcaption>図4<span>日本付近の天気図（等圧線 4 hPa ごと）</span></figcaption><div class="maps">${MAPS4.map(([id, tag]) => `<div><canvas id="${id}" width="1200" height="1200" aria-label="天気図 ${tag}"></canvas></div>`).join('')}</div></figure>`,
+      tables: () => '',
+      qs: [
+        { q: '冬の典型的な天気図は、ア〜エのどれか。',
+          choices: KEYS.map(k => `天気図 ${k}`), noKey: true, answer: KEYS.indexOf(MAP_OF.winter),
+          explain: `${MAP_OF.winter} は、大陸に高気圧、日本の東の海上に低気圧がある「西高東低」の気圧配置。南北にのびる等圧線が日本付近でこみ合い、強い北西の季節風が吹く。${MAP_OF.summer} は南高北低（夏）、${MAP_OF.baiu} は停滞前線（梅雨）、${MAP_OF.spring} は移動性高気圧と低気圧（春）。`,
+          focus: ['g4c', 'jp'] },
+        { q: `${MAP_OF.baiu} の天気図で、日本付近に東西にのびる前線を何というか。また、この前線をはさんで勢力がつり合う 2 つの気団の組み合わせとして、正しいものはどれか。`,
+          choices: ['梅雨前線（停滞前線）：シベリア気団と小笠原気団', '寒冷前線：オホーツク海気団と小笠原気団', '梅雨前線（停滞前線）：オホーツク海気団と小笠原気団', '温暖前線：シベリア気団とオホーツク海気団'], answer: 2,
+          explain: '北の冷たく湿ったオホーツク海気団と、南のあたたかく湿った小笠原気団の勢力がほぼ同じになり、境目の停滞前線（梅雨前線）がほとんど動かない。半円と▲が交互に両側につくのが停滞前線の記号。小笠原気団が強くなって前線を北へ押し上げると梅雨が明ける（5章「梅雨」）。',
+          focus: ['g4d', 'front'] },
+        { q: `${MAP_OF.summer} の天気図の季節に、太平洋側の東京付近で吹く季節風の向きと、その風を送り出す気団の性質の組み合わせとして、正しいものはどれか。`,
+          choices: ['北西の風・冷たく乾いている', `${SUMMER_DIR}の風・冷たく湿っている`, '北西の風・あたたかく湿っている', `${SUMMER_DIR}の風・あたたかく湿っている`], answer: 3,
+          explain: `${MAP_OF.summer} は、南の太平洋高気圧が日本をおおう「南高北低」。小笠原気団（あたたかく湿った空気）から、${SUMMER_DIR}の季節風が吹く。夏は大陸があたたまって気圧が下がるので、海から大陸へ風が吹く。海風を大きくしたしくみ（2章）。`,
+          focus: ['g4b', 'tokyo'] },
+        { q: `${MAP_OF.spring} の天気図のころ、日本付近の天気はどのように変わっていくと考えられるか。`,
+          choices: ['高気圧と低気圧が西から東へ交互に進むので、晴れの日と雨の日が数日ごとにくり返す', '高気圧がその場にとどまるので、晴れの日が何週間も続く', '低気圧が東から西へ進むので、雨の日が長く続く', '前線が日本の南岸に長くとどまるので、雨やくもりの日が続く'], answer: 0,
+          explain: `${MAP_OF.spring} では、西に移動性高気圧、日本の東に前線をともなう低気圧がある。どちらも上空の偏西風に流されて西から東へ進むので、晴れ（高気圧）と雨（低気圧）が 4〜7 日ほどの周期で交互にやってくる。このあとは西の高気圧が近づいて晴れる（5章「春・秋」で時間を進めると確かめられる）。`,
+          focus: ['g4a', 'all'] },
+        { q: `${MAP_OF.winter} の季節に、日本海側で雪が多く降る理由として、最も適当なものはどれか。`,
+          choices: ['小笠原気団から吹く南東の季節風が、山脈にぶつかって雪雲ができるから', 'シベリア気団は冷たく湿っているので、大陸の上ですでに雪雲ができているから', '日本海側は太平洋側より気圧が高く、上昇気流が生じやすいから', 'シベリア気団から吹き出す冷たく乾いた北西の季節風が、日本海の上で水蒸気をふくみ、山脈にぶつかって上昇し、雪雲ができるから'], answer: 3,
+          explain: `シベリア気団の空気は冷たく乾いているが、比較的あたたかい日本海の上を渡る間に、海から水蒸気と熱を得て雲ができる。日本列島の山脈にぶつかって上昇すると、さらに雲が発達して日本海側に雪を降らせる。山を越えて太平洋側に下りた空気は乾いていて、晴れて乾燥する（大問5 と同じしくみ）。モデルの新潟の風向は ${WINTER_DIR}。`,
+          model: 'シベリア気団からの冷たく乾いた北西の季節風が、日本海の上で水蒸気をふくんで雲をつくり、山脈にぶつかって上昇気流となり、雪雲が発達するから。',
+          focus: ['g4c', 'jsea'] }
+      ] },
+    { title: '総合：山を越える空気', ch: ['3', '5'],
+      lead: `図5 のように、地点 A（標高 0 m）の空気が山の斜面にそって上昇し、標高 ${PEAK5} m の山頂を越えて、反対側の地点 B（標高 0 m）へ下りた。地点 A の空気は、気温 ${T5} ℃、空気 1 m³ あたり ${E5.toFixed(1)} g の水蒸気をふくんでいた。上昇する空気の温度は、雲ができていないときは 100 m につき 1 ℃、雲ができているときは 100 m につき 0.5 ℃ 下がるものとする。山頂から下りる空気には雲ができず、温度は 100 m につき 1 ℃ 上がるものとする。必要なら表4 を使うこと。`,
+      figs: `<figure class="fig"><figcaption>図5<span>山を越える空気（断面図）</span></figcaption><canvas id="g5" width="1200" height="600" aria-label="地点 A から山を越えて地点 B へ流れる空気の断面図"></canvas></figure>`,
+      tables: () => satTable(4),
+      qs: [
+        { q: '上昇する空気の温度が下がる理由として、正しいものはどれか。',
+          choices: ['上空ほど気圧が低く、空気が膨張するから', '上空ほど気圧が高く、空気が圧縮されるから', '上空ほど地面から遠く、地面の熱が届かないから', '上空ほど空気中の水蒸気が増えるから'], answer: 0,
+          explain: '上空ほど上にある空気が少ないので気圧が低い。上昇した空気は膨張し、膨張すると温度が下がる。ピストンを引くとフラスコの中がくもる実験と同じ（3章「雲のでき方」）。',
+          focus: ['g5', 'up'] },
+        { q: '図5 の点 P で雲ができ始めた。点 P の標高は何 m か。',
+          choices: [`${HC5 - 300} m`, `${HC5} m`, `${HC5 * 2} m`, `${HC5 * 3} m`], answer: 1,
+          explain: `表4 で、飽和水蒸気量が ${E5.toFixed(1)} g/m³ になる気温は ${TD5} ℃。これが A の空気の露点。${T5} ℃ の空気が 100 m につき 1 ℃ 下がって露点に達する高さは（${T5} − ${TD5}）× 100 ＝ ${HC5} m。`,
+          focus: ['g5', 'P'] },
+        { q: '山頂での空気の温度は何 ℃ か。',
+          choices: [`${T5 - PEAK5 / 100} ℃`, `${TPEAK5 - 3} ℃`, `${TPEAK5} ℃`, `${TD5} ℃`], answer: 2,
+          explain: `P（${HC5} m）までは 100 m につき 1 ℃ 下がって ${TD5} ℃。P から山頂までの ${PEAK5 - HC5} m は雲の中なので 100 m につき 0.5 ℃ 下がり、${TD5} − 0.5 × ${(PEAK5 - HC5) / 100} ＝ ${TPEAK5} ℃。山頂まで 1 ℃ ずつ下げて ${T5 - PEAK5 / 100} ℃ とするまちがいが多い。`,
+          focus: ['g5', 'peak'] },
+        { q: '空気が A から山頂まで上昇する間に、空気 1 m³ あたり何 g の水蒸気が水滴になったか。',
+          choices: [`${f1(DROP5)} g`, `${f1(EPEAK5)} g`, `${f1(E5)} g`, `${f1(E5 + EPEAK5)} g`], answer: 0,
+          explain: `山頂（${TPEAK5} ℃）の空気は飽和しているので、ふくむ水蒸気は表4 の ${TPEAK5} ℃ の飽和水蒸気量 ${EPEAK5.toFixed(1)} g/m³。はじめの ${E5.toFixed(1)} g との差 ${E5.toFixed(1)} − ${EPEAK5.toFixed(1)} ＝ ${f1(DROP5)} g が水滴になり、雲や雨として風上側に残った。` },
+        { q: '地点 B に下りた空気の気温と湿度の組み合わせとして、最も適当なものはどれか。',
+          choices: [`${T5} ℃・約 ${Math.round(RHA5)} %（地点 A と同じ）`, `${TPEAK5} ℃・100 %`, `${TB5} ℃・約 ${Math.round(E5 / sat(TB5) * 100)} %`, `${TB5} ℃・約 ${Math.round(RHB5)} %`], answer: 3,
+          explain: `山頂から ${PEAK5} m 下りる間に 100 m につき 1 ℃ 上がるので、${TPEAK5} ＋ ${PEAK5 / 100} ＝ ${TB5} ℃。水蒸気量は山頂と同じ ${EPEAK5.toFixed(1)} g/m³（水滴として失った分はもどらない）なので、湿度は ${EPEAK5.toFixed(1)} ÷ ${sat(TB5).toFixed(1)} × 100 ≒ ${Math.round(RHB5)} %。A より高温で乾いた空気になる（フェーン現象）。冬の季節風が日本海側に雪を降らせ、太平洋側が晴れて乾燥するのも同じしくみ（5章）。`,
+          model: '風上側で雲ができて水蒸気が水滴として失われ、下りるときは雲ができずに 100 m につき 1 ℃ ずつ温度が上がるので、B では A より気温が高く、湿度が低い。',
+          focus: ['g5', 'B'] }
+      ] }
+  ];
+
+  // ---------- 描画とふるまい ----------
+  const picked = DAIMON.map(d => d.qs.map(() => null));
+  const root = document.getElementById('daimon'), board = document.getElementById('board');
+  const chLink = (n) => { const [name, href] = CH[n]; return `<a href="${href}">${n}章「${name}」</a>`; };
+  root.innerHTML = DAIMON.map((d, i) => `<section class="daimon" id="d${i + 1}" aria-labelledby="d${i + 1}-h">
+    <h2 id="d${i + 1}-h"><span class="num">大問${i + 1}</span>${d.title}<small>${d.ch.map(n => n + '章').join('・')}</small></h2>
+    <p class="lead">${d.lead}</p>${d.figs}${d.tables() ? `<div class="tables">${d.tables()}</div>` : ''}
+    <ol class="qs" data-d="${i}"></ol>
+    <div class="dfoot"><span>得点 <span class="score" id="s${i}"></span></span><span>この図を動かして確かめる → ${d.ch.map(chLink).join('・')}</span><button type="button" class="qbtn retry" data-retry="${i}">やり直す</button></div>
+  </section>`).join('');
+
+  function renderQs(i) {
+    const d = DAIMON[i], el = root.querySelector(`ol.qs[data-d="${i}"]`);
+    el.innerHTML = d.qs.map((q, j) => {
+      const p = picked[i][j], long = q.choices.some(c => c.length > 22);
+      const choices = q.choices.map((c, k) => { const mark = p === null ? '' : k === q.answer ? 'ok' : k === p ? 'ng' : ''; return `<button type="button" data-pick="${i}:${j}:${k}" data-mark="${mark}"${p === null ? '' : ' disabled'}>${q.noKey ? '' : `<span class="k">${KEYS[k]}</span>`}<span>${c}</span></button>`; }).join('');
+      const ex = p === null ? '' : `<div class="explain"><div class="verdict ${p === q.answer ? 'ok' : 'ng'}">${p === q.answer ? '正解' : `ちがう。正解は ${KEYS[q.answer]}`}</div><div><strong>考え方：</strong>${q.explain}</div>${q.model ? `<div class="model"><strong>記述で答えるなら：</strong>${q.model}</div>` : ''}${q.focus ? `<button type="button" class="qbtn focus" data-focus="${i}:${j}">図で確かめる</button>` : ''}</div>`;
+      return `<li class="sq"><div class="q"><span class="qn">(${j + 1})</span>${q.q}</div><div class="choices${long ? ' long' : ''}" role="group" aria-label="(${j + 1}) の選択肢">${choices}</div>${ex}</li>`;
+    }).join('');
+  }
+  const scoreOf = (i) => picked[i].filter((p, j) => p === DAIMON[i].qs[j].answer).length;
+  function renderBoard() {
+    const total = DAIMON.reduce((s, d, i) => s + scoreOf(i), 0), n = DAIMON.reduce((s, d) => s + d.qs.length, 0);
+    board.innerHTML = `<tr><th>大問</th><th>内容</th><th style="text-align:right">得点</th></tr>` +
+      DAIMON.map((d, i) => `<tr><td class="n">${i + 1}</td><td><a href="#d${i + 1}">${d.title}</a></td><td class="s">${scoreOf(i)} / ${d.qs.length}</td></tr>`).join('') +
+      `<tr class="total"><td></td><td>合計</td><td class="s">${total} / ${n}</td></tr>`;
+    DAIMON.forEach((d, i) => { document.getElementById('s' + i).textContent = `${scoreOf(i)} / ${d.qs.length}（${picked[i].filter(p => p !== null).length} 問解答）`; });
+  }
+  function clearFocus(i) { if (focus && (i === undefined || focus.d === i)) { const id = focus.fig; focus = null; renderFig(id); } }
+  root.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button'); if (!b || b.disabled) return;
+    if (b.dataset.pick) { const [i, j, k] = b.dataset.pick.split(':').map(Number); picked[i][j] = k; renderQs(i); renderBoard(); }
+    else if (b.dataset.retry !== undefined) { const i = +b.dataset.retry; picked[i] = picked[i].map(() => null); clearFocus(i); renderQs(i); renderBoard(); }
+    else if (b.dataset.focus) {
+      const [i, j] = b.dataset.focus.split(':').map(Number), [fig, key] = DAIMON[i].qs[j].focus, prev = focus && focus.fig;
+      focus = { fig, key, d: i }; if (prev && prev !== fig) renderFig(prev); renderFig(fig);
+      FIGS[fig].cv.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    }
+  });
+  document.getElementById('retry-all').addEventListener('click', () => { picked.forEach((p, i) => { picked[i] = p.map(() => null); renderQs(i); }); clearFocus(); renderBoard(); });
+
+  document.getElementById('crumbs').innerHTML = NAV.map(([label, href]) => href ? `<a href="${href}">${label}</a>` : `<span>${label}</span>`).join('');
+  DAIMON.forEach((d, i) => renderQs(i));
+  renderBoard();
+  setupFigs();
+  renderAllFigs();
+  let lastW = innerWidth;
+  addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; renderAllFigs(); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderAllFigs);
+  if (document.fonts) document.fonts.ready.then(renderAllFigs);
+})();
+</script>

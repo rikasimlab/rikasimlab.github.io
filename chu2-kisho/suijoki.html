@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>空気中の水の変化｜中2 理科 気象とその変化</title>
+<meta name="description" content="飽和水蒸気量と露点、湿度の計算、山を上る空気で雲ができる高さを動かして確かめる。中2理科「気象とその変化」3章。">
+<link rel="canonical" href="https://rikasimlab.github.io/chu2-kisho/suijoki.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="中2 理科 気象とその変化">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="空気中の水の変化｜中2 理科 気象とその変化">
+<meta property="og:description" content="飽和水蒸気量と露点、湿度の計算、山を上る空気で雲ができる高さを動かして確かめる。中2理科「気象とその変化」3章。">
+<meta property="og:url" content="https://rikasimlab.github.io/chu2-kisho/suijoki.html">
+<meta property="og:image" content="https://rikasimlab.github.io/chu2-kisho/ogp/suijoki.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: 2章・4章と同じ見開き。上に空気の操作、断面図（山をのぼる空気）を幅いっぱい、下に飽和水蒸気量のグラフと空気の記録、最後に飽和水蒸気量の表 */
+  :root {
+    --paper: #eef1f4; --map: #f7f9fa; --panel: #ffffff; --ink: #17202a; --muted: #5f6b78; --line: #cfd6dd; --isobar: #8a96a3;
+    --warm: #d6451e; --cool: #1f63b3; --focus: #2a5d8f;
+    --sky: #eef3f8; --sky-top: #dbe7f3; --cold-air: #d9e7f5; --warm-air: #f8e1d6; --rain: #4e7fb8; --ground: #b9ad95; --cell: #f3f5f7; --cloud: #ffffff;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
+      --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff;
+      --sky: #1a2430; --sky-top: #141d29; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #4f4637; --cell: #202b37; --cloud: #d7dee6; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b;
+    --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff;
+    --sky: #1a2430; --sky-top: #141d29; --cold-air: #1f3348; --warm-air: #3d2a24; --rain: #7fb0e6; --ground: #4f4637; --cell: #202b37; --cloud: #d7dee6; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .app {
+    max-width: 1120px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 40px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  nav.crumbs { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+  nav.crumbs a { color: var(--focus); text-decoration: none; }
+  nav.crumbs a:hover { text-decoration: underline; }
+  header { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-start; }
+  .cartouche { padding: 12px 18px 12px 16px; background: var(--panel); border: 1.5px solid var(--ink); flex: none; }
+  .cartouche h1 { margin: 0; font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; line-height: 1.25; letter-spacing: .02em; }
+  .cartouche p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  header .lead { margin: 0; flex: 1 1 320px; max-width: 60ch; font-size: 14px; align-self: center; }
+  header .lead a { color: var(--focus); text-underline-offset: .18em; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; padding: 12px 16px; background: var(--panel); border: 1px solid var(--line); }
+  .stepper { display: flex; align-items: center; gap: 8px; flex: 1 1 260px; min-width: 0; }
+  .stepper label { font-size: 14px; white-space: nowrap; }
+  .stepper input[type="range"] { flex: 1; min-width: 90px; accent-color: var(--focus); }
+  .btn { font: inherit; font-weight: 600; height: 32px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .btn.num { font-family: var(--font-num); width: 32px; padding: 0; }
+  .btn:focus-visible { outline: 2px solid var(--focus); }
+  .btn:disabled { opacity: .35; cursor: default; }
+  .btn.play[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+  .stepper output { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 14px; min-width: 5.2em; text-align: right; white-space: nowrap; }
+  .stepper output small { font-family: var(--font-body); color: var(--muted); font-size: 12px; margin-left: 4px; }
+  .hint { font-size: 12px; color: var(--muted); }
+  .ctl-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: 1 1 100%; }
+
+  .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); padding: 12px; min-width: 0; }
+  figure.panel { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 700; flex-wrap: wrap; }
+  figcaption span { font-weight: 400; color: var(--muted); }
+  canvas { display: block; width: 100%; height: auto; }
+  .wide { grid-column: 1 / -1; }
+
+  .info { display: flex; flex-direction: column; gap: 12px; }
+  .info h3 { margin: 0; font-size: 13px; font-weight: 700; }
+  table.rt { border-collapse: collapse; width: 100%; font-size: 14px; }
+  table.rt th, table.rt td { border: 1px solid var(--line); padding: 5px 10px; text-align: left; vertical-align: top; }
+  table.rt th { background: var(--cell); color: var(--muted); font-weight: 500; width: 7.5em; white-space: nowrap; }
+  table.rt td { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-weight: 600; }
+  table.rt td small { font-family: var(--font-body); font-weight: 400; color: var(--muted); margin-left: 6px; }
+  table.rt td .calc { display: block; font-family: var(--font-num); font-weight: 400; font-size: 12px; color: var(--muted); }
+  table.rt tr.hi td, table.rt tr.hi th { outline: 2px dashed var(--focus); outline-offset: -2px; }
+  .now { margin: 0; padding: 10px 12px; background: var(--cell); font-size: 13px; display: grid; gap: 4px; }
+  .now strong { color: var(--ink); }
+  .steps { margin: 0; padding-left: 1.5em; font-size: 14px; display: grid; gap: 4px; }
+  .steps li::marker { color: var(--muted); font-family: var(--font-num); }
+  .steps { position: relative; z-index: 0; }
+  .steps li { position: relative; }
+  .steps li.on::before { content: ""; position: absolute; inset: -2px -6px -2px -1.9em; background: var(--cell); border-radius: 6px; z-index: -1; }
+  .steps .warm { color: var(--warm); }
+  .steps .cool { color: var(--cool); }
+  .why { margin: 0; padding: 10px 12px; border-left: 3px solid var(--cool); background: var(--cold-air); font-size: 13px; }
+  .why strong { display: block; margin-bottom: 2px; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line); }
+  .tabs button { font: inherit; font-size: 13px; font-weight: 700; padding: 6px 12px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+  .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .tabpanel { display: grid; gap: 12px; }
+  .tabpanel[hidden] { display: none; }
+  /* 飽和水蒸気量の表 */
+  .sat { overflow-x: auto; }
+  table.st { border-collapse: collapse; font-size: 13px; width: 100%; min-width: 560px; }
+  table.st th, table.st td { border: 1px solid var(--line); padding: 4px 6px; text-align: center; white-space: nowrap; }
+  table.st th { background: var(--cell); color: var(--muted); font-weight: 500; text-align: left; width: 9.5em; }
+  table.st td { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+  table.st tr.v td { font-weight: 600; }
+  table.st td.isT { background: var(--warm-air); color: var(--warm); font-weight: 700; }
+  table.st td.isTd { background: var(--cold-air); color: var(--cool); font-weight: 700; }
+  table.st td.fo { outline: 3px dashed var(--focus); outline-offset: -3px; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin: 0; }
+  .legend i { display: inline-block; width: 12px; height: 12px; vertical-align: -1px; margin-right: 4px; border: 1px solid var(--line); }
+  .legend .t i { background: var(--warm-air); } .legend .d i { background: var(--cold-air); }
+  /* 問題タブ */
+  .quiz { gap: 10px; }
+  .qnav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .dots { display: flex; gap: 4px; flex-wrap: wrap; }
+  .dot { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font: 600 12px var(--font-num); color: var(--muted); cursor: pointer; padding: 0; }
+  .dot[aria-current="true"] { border-color: var(--ink); color: var(--ink); border-width: 2px; }
+  .dot.ok { background: var(--cool); border-color: var(--cool); color: #fff; }
+  .dot.ng { background: var(--warm); border-color: var(--warm); color: #fff; }
+  .dot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .q { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .choices { display: grid; gap: 6px; }
+  .choices button { text-align: left; font: inherit; font-size: 14px; line-height: 1.4; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--ink); cursor: pointer; display: flex; gap: 8px; align-items: baseline; }
+  .choices button .k { font-family: var(--font-num); color: var(--muted); flex: none; }
+  .choices button:focus-visible { outline: 2px solid var(--focus); }
+  .choices button:disabled { cursor: default; }
+  .choices button[data-mark="ok"] { border-color: var(--cool); background: var(--cold-air); }
+  .choices button[data-mark="ng"] { border-color: var(--warm); background: var(--warm-air); }
+  .choices button[data-mark="ok"] .k, .choices button[data-mark="ng"] .k { color: inherit; font-weight: 600; }
+  .explain { margin: 0; padding: 10px 12px; background: var(--cell); font-size: 13px; display: grid; gap: 6px; }
+  .verdict { font-weight: 700; }
+  .verdict.ok { color: var(--cool); }
+  .verdict.ng { color: var(--warm); }
+  .qbtn { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .qbtn:focus-visible { outline: 2px solid var(--focus); }
+  .qbtn:disabled { opacity: .35; cursor: default; }
+  .qbtn.focus { border-color: var(--focus); color: var(--focus); justify-self: start; }
+  .qfoot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .qfoot .score { margin-left: auto; font-family: var(--font-num); }
+  .levels { display: flex; gap: 14px; border-bottom: 1px solid var(--line); }
+  .levels button { font: inherit; font-size: 13px; font-weight: 700; padding: 2px 0 6px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; margin-bottom: -1px; display: flex; gap: 5px; align-items: baseline; }
+  .levels button small { font: 600 11px var(--font-num); color: var(--muted); }
+  .levels button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .levels button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .ldesc { margin: -6px 0 0; font-size: 12px; color: var(--muted); }
+  .freq { margin: 0 0 -8px; font-size: 11px; font-weight: 700; color: var(--muted); }
+  .fnote { margin: 0; font-size: 11px; color: var(--muted); }
+  footer { font-size: 12px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    .wide { grid-column: auto; }
+    .stepper output small { display: block; margin-left: 0; }
+  }
+  .motion-note { display: none; }
+  @media (prefers-reduced-motion: reduce) { .motion-note { display: block; } }
+  /* タッチ端末：押せるものは 44px 四方以上。マウスの見た目は変えない */
+  @media (pointer: coarse) {
+    .btn { height: 44px; }
+    .btn.num { width: 44px; flex: none; }
+    .stepper input[type="range"] { height: 44px; min-width: 80px; }
+    .tabs button { min-height: 44px; padding-inline: 16px; }
+    .dot { width: 44px; height: 44px; }
+    .choices button, .qbtn { min-height: 44px; }
+    .levels button { min-height: 44px; }
+    nav.crumbs { row-gap: 0; }
+    nav.crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+</style>
+
+<div class="app">
+  <nav class="crumbs" id="crumbs"></nav>
+  <header>
+    <div class="cartouche">
+      <h1>空気中の水の変化</h1>
+      <p>中学2年 理科　第2分野 ｜ 気象とその変化</p>
+    </div>
+    <p class="lead">空気 1 m³ に入る水蒸気には上限（飽和水蒸気量）があり、気温が高いほど大きい。地上の空気の気温と水蒸気量を決めて、湿度と露点を読む。空気を上昇させると、膨張して温度が下がり、露点に達した高さで雲ができる。「問題」タブで入試形式の計算問題を解ける。湿度を乾湿計ではかる方法は <a href="kansoku.html">1章「気象観測」</a>の「乾湿計で湿度を読む」。</p>
+  </header>
+
+  <section class="controls" aria-label="操作">
+    <div class="stepper">
+      <label for="temp">地上の気温</label>
+      <button type="button" class="btn num" id="t-minus" aria-label="気温を1℃下げる">−</button>
+      <input type="range" id="temp" min="0" max="35" step="1" value="20">
+      <button type="button" class="btn num" id="t-plus" aria-label="気温を1℃上げる">＋</button>
+      <output id="temp-out" for="temp">20 ℃</output>
+    </div>
+    <div class="stepper">
+      <label for="vap">水蒸気量</label>
+      <button type="button" class="btn num" id="v-minus" aria-label="水蒸気量を0.1g減らす">−</button>
+      <input type="range" id="vap" min="4.8" max="17.3" step="0.1" value="12.1">
+      <button type="button" class="btn num" id="v-plus" aria-label="水蒸気量を0.1g増やす">＋</button>
+      <output id="vap-out" for="vap">12.1 g/m³</output>
+    </div>
+    <div class="ctl-h">
+      <div class="stepper">
+        <label for="hgt">空気の高さ</label>
+        <input type="range" id="hgt" min="0" max="3000" step="50" value="0">
+        <output id="hgt-out" for="hgt">0 m</output>
+      </div>
+      <button type="button" class="btn play" id="play" aria-pressed="false">▶ 上昇させる</button>
+      <button type="button" class="btn" id="reset">地上に戻す</button>
+      <span class="hint">上昇する空気は 100 m で約 1℃ 下がる（雲の中は約 0.5℃）</span>
+    </div>
+  </section>
+
+  <main class="grid">
+    <figure class="panel wide">
+      <figcaption>断面図（山をのぼる空気のかたまり）<span id="xs-cap">空気は膨張して冷え、露点に達した高さから雲になる</span></figcaption>
+      <canvas id="xs" width="1200" height="640" aria-label="空気のかたまりが山の斜面に沿って上昇し、露点に達した高さで雲ができる断面図"></canvas>
+    </figure>
+    <figure class="panel">
+      <figcaption>飽和水蒸気量のグラフ<span>入試の図はこの形。●が地上の空気</span></figcaption>
+      <canvas id="graph" width="1200" height="900" aria-label="気温と飽和水蒸気量のグラフ。地上の空気の点と露点"></canvas>
+    </figure>
+    <aside class="panel info">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-rec" aria-selected="true" aria-controls="panel-rec">空気の記録</button>
+        <button type="button" role="tab" id="tab-quiz" aria-selected="false" aria-controls="panel-quiz">問題</button>
+      </div>
+      <div class="tabpanel" id="panel-rec" role="tabpanel" aria-labelledby="tab-rec">
+        <h3>地上の空気（1 m³）</h3>
+        <table class="rt" id="rec0">
+          <tr data-k="T"><th>気温</th><td id="r-t">—</td></tr>
+          <tr data-k="sat"><th>飽和水蒸気量</th><td id="r-sat">—</td></tr>
+          <tr data-k="e"><th>水蒸気量</th><td id="r-e">—</td></tr>
+          <tr data-k="rh"><th>湿度</th><td id="r-rh">—</td></tr>
+          <tr data-k="td"><th>露点</th><td id="r-td">—</td></tr>
+          <tr data-k="hc"><th>雲ができる高さ</th><td id="r-hc">—</td></tr>
+        </table>
+        <h3 id="h-parcel">上昇した空気のかたまり</h3>
+        <table class="rt" id="rec1">
+          <tr data-k="h"><th>高さ</th><td id="p-h">—</td></tr>
+          <tr data-k="pt"><th>温度</th><td id="p-t">—</td></tr>
+          <tr data-k="pe"><th>水蒸気量</th><td id="p-e">—</td></tr>
+          <tr data-k="prh"><th>湿度</th><td id="p-rh">—</td></tr>
+          <tr data-k="pc"><th>水滴になった量</th><td id="p-c">—</td></tr>
+        </table>
+        <div class="now" id="now"></div>
+      </div>
+      <div class="tabpanel quiz" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden></div>
+      <h3>雲ができるまでの順番</h3>
+      <ol class="steps" id="steps"></ol>
+      <p class="why" id="why"><strong>なぜ上がると冷えるのか</strong>上空ほど、その上にある空気が少ないので気圧が低い。上昇した空気のかたまりは、周りの気圧が低くなるぶん膨張し、膨張すると温度が下がる（スプレー缶を噴射すると缶が冷たくなるのと同じ）。冷えて露点に達すると、入りきらなくなった水蒸気が、空気中の小さなちりを核にして水滴や氷の粒になる。これが雲。冷えた金属のコップの表面がくもるのも、コップに触れた空気が露点より冷えたから。</p>
+      <p class="motion-note hint">動きを減らす設定のため、自動の上昇はゆっくりにしています。</p>
+    </aside>
+    <figure class="panel wide">
+      <figcaption>飽和水蒸気量の表（空気 1 m³ に含める水蒸気の上限、g/m³）<span>教科書の表と同じ値。計算問題はこの表で解く</span></figcaption>
+      <p class="legend"><span class="t"><i></i>地上の気温の欄</span><span class="d"><i></i>露点の欄（水蒸気量と同じ値になる気温）</span></p>
+      <div class="sat" id="sat"></div>
+    </figure>
+  </main>
+
+  <footer>飽和水蒸気量は教科書・理科年表の値。上昇する空気の温度変化（100 m で 1℃、雲の中で 0.5℃）と「雲ができる高さ＝（気温−露点）×100 m」は、中学の計算問題で使う約束で、実際の大気では露点も高さとともに少し下がる。空気のかたまりは、周りの空気と混ざらないものとして描いている。</footer>
+</div>
+
+<script>
+window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象観測", "kansoku.html"], ["2 気圧と風", "kiatsu-to-kaze.html"], ["3 空気中の水の変化", null], ["4 前線と天気の変化", "zensen.html"], ["5 日本の気象", "nihon-no-kisho.html"]];
+</script>
+<script>
+(() => {
+  // ---------- 飽和水蒸気量の表（教科書の値、docs/reference/suijoki.md） ----------
+  const SAT = [4.8, 5.2, 5.6, 6.0, 6.4, 6.8, 7.3, 7.8, 8.3, 8.8, 9.4, 10.0, 10.7, 11.4, 12.1, 12.8, 13.6, 14.5, 15.4, 16.3, 17.3, 18.3, 19.4, 20.6, 21.8, 23.1, 24.4, 25.8, 27.2, 28.8, 30.4, 32.1, 33.8, 35.7, 37.6, 39.6, 41.7, 43.9, 46.2, 48.6, 51.1];
+  const T_MAX = 35, H_MAX = 3000, E_MIN = SAT[0];
+  const LAPSE_DRY = 1.0, LAPSE_WET = 0.5;     // 100 m あたり下がる温度（℃）
+  const state = { T: 20, e: 12.1, h: 0, playing: false, focus: null };
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const r1 = (v) => Math.round(v * 10) / 10;
+
+  // 表の間を直線でつないだ飽和水蒸気量（整数の気温では表の値そのもの）
+  function sat(T) {
+    T = clamp(T, 0, 40); const i = Math.floor(T), f = T - i;
+    return i >= 40 ? SAT[40] : SAT[i] + (SAT[i + 1] - SAT[i]) * f;
+  }
+  // 露点：飽和水蒸気量が e になる気温（表の間は直線で読む）
+  function dewPoint(e) {
+    if (e <= SAT[0]) return 0;
+    for (let i = 0; i < 40; i++) if (e <= SAT[i + 1]) return i + (e - SAT[i]) / (SAT[i + 1] - SAT[i]);
+    return 40;
+  }
+  const humidity = (e, T) => e / sat(T) * 100;
+  const cloudBase = (T, Td) => (T - Td) * 100;      // 雲ができ始める高さ（m）
+  // 高さ h の空気のかたまり
+  function parcelOf(T0, e0, h) {
+    const Td = dewPoint(e0), Hc = cloudBase(T0, Td);
+    if (h <= Hc) { const T = T0 - LAPSE_DRY * h / 100; return { h, T, e: e0, rh: humidity(e0, T), cond: 0, cloud: false, Hc, Td }; }
+    const T = Td - LAPSE_WET * (h - Hc) / 100, e = sat(T);
+    return { h, T, e, rh: 100, cond: e0 - e, cloud: true, Hc, Td };
+  }
+  const parcel = (h) => parcelOf(state.T, state.e, h);
+  const ground = () => { const Td = dewPoint(state.e); return { T: state.T, e: state.e, sat: sat(state.T), rh: humidity(state.e, state.T), Td, Hc: cloudBase(state.T, Td), room: sat(state.T) - state.e }; };
+
+  function arrow(ctx, x1, y1, x2, y2, color, width) {
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy); if (L < 1) return;
+    const nx = dx / L, ny = dy / L;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - nx * 6, y2 - ny * 6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - nx * 10 - ny * 5, y2 - ny * 10 + nx * 5); ctx.lineTo(x2 - nx * 10 + ny * 5, y2 - ny * 10 - nx * 5); ctx.closePath(); ctx.fill();
+  }
+  function cloudPuffs(ctx, x, y, w, h, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = css('--cloud'); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1.2;
+    const n = Math.max(3, Math.round(w / 14));
+    for (let i = 0; i < n; i++) { const px = x - w / 2 + (i + 0.5) * w / n, r = h * (0.35 + 0.25 * Math.abs(Math.sin(i * 2.3 + x))); ctx.beginPath(); ctx.arc(px, y + h * 0.1 - r * 0.2, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    ctx.restore();
+  }
+  // 文字の背景を地の色で抜く
+  function label(ctx, text, x, y, color, font, align, base, halo) {
+    ctx.font = font; ctx.textAlign = align || 'left'; ctx.textBaseline = base || 'middle';
+    ctx.lineWidth = 4; ctx.lineJoin = 'round'; ctx.strokeStyle = halo || css('--sky'); ctx.strokeText(text, x, y);
+    ctx.fillStyle = color; ctx.fillText(text, x, y);
+  }
+
+  // ---------- 断面図 ----------
+  const xs = document.getElementById('xs'), xctx = xs.getContext('2d');
+  let XW = 600, XH = 320, GY = 282, K = 240 / H_MAX;             // 1 m あたりの px
+  let SX0 = 96, SX1 = 480;                                         // 斜面の始まりと山頂の x
+  const slopeX = (h) => SX0 + (SX1 - SX0) * h / H_MAX, hy = (h) => GY - h * K;
+  const parcelPos = (h) => ({ x: slopeX(h) - 26, y: hy(h) - 18 });
+  function drawXs() {
+    const s = xs.width / XW; xctx.setTransform(s, 0, 0, s, 0, 0); xctx.clearRect(0, 0, XW, XH);
+    const ink = css('--ink'), muted = css('--muted'), warm = css('--warm'), cool = css('--cool');
+    const g = ground(), p = parcel(state.h), Hc = g.Hc, inRange = Hc <= H_MAX;
+    // 空と地面
+    const grad = xctx.createLinearGradient(0, 0, 0, GY); grad.addColorStop(0, css('--sky-top')); grad.addColorStop(1, css('--sky'));
+    xctx.fillStyle = grad; xctx.fillRect(0, 0, XW, GY);
+    xctx.fillStyle = css('--ground'); xctx.beginPath(); xctx.moveTo(0, GY); xctx.lineTo(SX0, GY); xctx.lineTo(SX1, hy(H_MAX)); xctx.lineTo(XW - 40 * XW / 600, hy(1900)); xctx.lineTo(XW, hy(600)); xctx.lineTo(XW, XH); xctx.lineTo(0, XH); xctx.closePath(); xctx.fill();
+    xctx.fillStyle = css('--ground'); xctx.fillRect(0, GY, XW, XH - GY);
+    // 高さの目盛り
+    xctx.strokeStyle = css('--line'); xctx.lineWidth = 1; xctx.font = '10px ' + css('--font-num'); xctx.fillStyle = muted; xctx.textAlign = 'right'; xctx.textBaseline = 'middle';
+    for (let h = 500; h <= H_MAX; h += 500) { xctx.beginPath(); xctx.moveTo(54, hy(h)); xctx.lineTo(slopeX(h) - 2, hy(h)); xctx.stroke(); xctx.fillText(h + ' m', 50, hy(h)); }
+    // 雲底の線（露点に達する高さ）
+    if (inRange) {
+      xctx.save(); xctx.strokeStyle = cool; xctx.lineWidth = 1.5; xctx.setLineDash([6, 4]); xctx.beginPath(); xctx.moveTo(34, hy(Hc)); xctx.lineTo(XW - 8, hy(Hc)); xctx.stroke(); xctx.restore();
+      label(xctx, `露点に達する高さ ${Math.round(Hc)} m（${g.T}−${r1(g.Td)}）×100`, XW - 10, hy(Hc) - 9, cool, '700 11px ' + css('--font-body'), 'right');
+    } else {
+      label(xctx, `この高さでは露点に達しない（雲ができる高さは ${Math.round(Hc)} m）`, XW - 10, 16, cool, '700 11px ' + css('--font-body'), 'right');
+    }
+    // 雲（空気が通った斜面の、露点より上に）
+    if (inRange && state.h >= Hc) {
+      for (let h = Hc; h <= state.h; h += 110) { const pp = parcelPos(h); cloudPuffs(xctx, pp.x + 2, pp.y, 70, 30, 0.95); }
+      // 雲の中の雨（雲が 800 m 以上に育ったとき）
+      if (state.h - Hc >= 800) { xctx.strokeStyle = css('--rain'); xctx.lineWidth = 1.2; for (let h = Hc + 300; h <= state.h - 200; h += 120) { const pp = parcelPos(h); for (let k = 0; k < 3; k++) { const x0 = pp.x - 28 + k * 11, y0 = pp.y + 22 + (k % 2) * 6; xctx.beginPath(); xctx.moveTo(x0, y0); xctx.lineTo(x0 - 1.5, y0 + 9); xctx.stroke(); } } }
+    }
+    // 空気のかたまり（膨張して大きくなる）
+    const pp = parcelPos(state.h), R = 20 + 9 * state.h / H_MAX;
+    if (!p.cloud) {
+      xctx.fillStyle = css('--warm-air'); xctx.globalAlpha = 0.9; xctx.beginPath(); xctx.arc(pp.x, pp.y, R, 0, Math.PI * 2); xctx.fill(); xctx.globalAlpha = 1;
+      xctx.strokeStyle = warm; xctx.lineWidth = 2; xctx.stroke();
+      // 水蒸気（見えない粒）
+      xctx.fillStyle = warm; const n = Math.round(p.e / 1.5);
+      for (let i = 0; i < n; i++) { const a = i * 2.399, rr = R * 0.75 * Math.sqrt((i + 0.5) / n); xctx.beginPath(); xctx.arc(pp.x + Math.cos(a) * rr, pp.y + Math.sin(a) * rr, 1.6, 0, Math.PI * 2); xctx.fill(); }
+    } else {
+      cloudPuffs(xctx, pp.x, pp.y, 2 * R + 10, R * 1.3, 1);
+      xctx.fillStyle = cool; for (let i = 0; i < 7; i++) { const a = i * 2.399 + 1, rr = R * 0.6 * Math.sqrt((i + 0.5) / 7); xctx.beginPath(); xctx.arc(pp.x + Math.cos(a) * rr, pp.y + Math.sin(a) * rr, 2.4, 0, Math.PI * 2); xctx.fill(); }
+    }
+    // かたまりの読み（右上に。①〜④は斜面の内側なので重ならない）
+    const tx = pp.x + R + 10, ty = Math.max(50, pp.y - R - 6);
+    label(xctx, `${r1(p.T)} ℃`, tx, ty - 28, ink, '700 13px ' + css('--font-num'));
+    label(xctx, `${state.h} m  湿度 ${Math.round(p.rh)} %`, tx, ty - 14, muted, '11px ' + css('--font-body'));
+    if (p.cloud) label(xctx, `水滴 ${r1(p.cond)} g/m³`, tx, ty, cool, '700 11px ' + css('--font-body'));
+    // 上昇の矢印（かたまりの左上から）
+    if (state.h < H_MAX - 100) arrow(xctx, pp.x - R * 0.5, pp.y - R - 2, pp.x - R * 0.5 + 10, pp.y - R - 26, muted, 1.6);
+    // ①〜④（斜面の内側＝山の中に書く。空気のかたまりの読みは斜面の外側なので重ならない）
+    const f11 = '700 11px ' + css('--font-body'), halo = css('--panel');
+    const put = (t, h, color) => label(xctx, t, slopeX(h) + 34, hy(h) + 16, color, f11, 'left', 'middle', halo);
+    put('① 地上の空気が上昇する', 250, ink);
+    if (inRange) {
+      if (Hc >= 600) put('② 膨張して温度が下がる（100 m で約 1℃）', Hc / 2 + 100, warm);
+      put('③ 露点に達する → 湿度 100%', Hc, cool);
+      if (Hc <= H_MAX - 500) put('④ 水蒸気が水滴になって雲（100 m で約 0.5℃）', Math.min(H_MAX - 200, Hc + 500), cool);
+    } else {
+      put('② 膨張して温度が下がる（100 m で約 1℃）', 1500, warm);
+    }
+    xctx.fillStyle = muted; xctx.font = '11px ' + css('--font-body'); xctx.textAlign = 'left'; xctx.textBaseline = 'top';
+    xctx.fillText(`地上 ${g.T} ℃　水蒸気 ${r1(g.e)} g/m³　露点 ${r1(g.Td)} ℃`, 8, 8);
+    drawFocus('xs', xctx);
+  }
+
+  // ---------- 飽和水蒸気量のグラフ ----------
+  const gr = document.getElementById('graph'), gctx = gr.getContext('2d');
+  let GW = 600; const GH = 450, GL = 52, GR = 16, GT = 24, GB = 48, TX = 40, EY = 50;
+  const gx = (T) => GL + T / TX * (GW - GL - GR), gy = (e) => GH - GB - e / EY * (GH - GB - GT);
+  function drawGraph() {
+    const s = gr.width / GW; gctx.setTransform(s, 0, 0, s, 0, 0); gctx.clearRect(0, 0, GW, GH);
+    const ink = css('--ink'), muted = css('--muted'), warm = css('--warm'), cool = css('--cool'), line = css('--line');
+    const g = ground(), p = parcel(state.h);
+    gctx.fillStyle = css('--map'); gctx.fillRect(0, 0, GW, GH);
+    // 目盛り
+    gctx.strokeStyle = line; gctx.lineWidth = 1; gctx.font = '10px ' + css('--font-num'); gctx.fillStyle = muted;
+    for (let T = 0; T <= TX; T += 5) { gctx.beginPath(); gctx.moveTo(gx(T), GT); gctx.lineTo(gx(T), GH - GB); gctx.stroke(); gctx.textAlign = 'center'; gctx.textBaseline = 'top'; gctx.fillText(String(T), gx(T), GH - GB + 4); }
+    for (let e = 0; e <= EY; e += 5) { gctx.beginPath(); gctx.moveTo(GL, gy(e)); gctx.lineTo(GW - GR, gy(e)); gctx.stroke(); gctx.textAlign = 'right'; gctx.textBaseline = 'middle'; gctx.fillText(String(e), GL - 6, gy(e)); }
+    gctx.fillStyle = muted; gctx.font = '11px ' + css('--font-body'); gctx.textAlign = 'center'; gctx.textBaseline = 'top'; gctx.fillText('気温〔℃〕', (GL + GW - GR) / 2, GH - GB + 32);
+    gctx.save(); gctx.translate(12, (GT + GH - GB) / 2); gctx.rotate(-Math.PI / 2); gctx.textBaseline = 'middle'; gctx.fillText('水蒸気量〔g/m³〕', 0, 0); gctx.restore();
+    // 飽和の曲線と、その下（まだ含める）・上（入りきらない）
+    gctx.save(); gctx.beginPath(); gctx.moveTo(gx(0), gy(0));
+    for (let T = 0; T <= TX; T += 0.5) gctx.lineTo(gx(T), gy(sat(T)));
+    gctx.lineTo(gx(TX), gy(0)); gctx.closePath(); gctx.fillStyle = css('--cell'); gctx.globalAlpha = 0.7; gctx.fill(); gctx.restore();
+    gctx.strokeStyle = ink; gctx.lineWidth = 2.2; gctx.beginPath();
+    for (let T = 0; T <= TX; T += 0.5) { const x = gx(T), y = gy(sat(T)); if (T === 0) gctx.moveTo(x, y); else gctx.lineTo(x, y); }
+    gctx.stroke();
+    gctx.fillStyle = ink; gctx.font = '700 11px ' + css('--font-body'); gctx.textAlign = 'right'; gctx.textBaseline = 'bottom'; gctx.fillText('飽和水蒸気量（曲線の上には入りきらない）', gx(36), gy(sat(36)) - 6);
+    // 露点へ（水平に左へ、曲線にぶつかる）
+    const Td = g.Td;
+    gctx.save(); gctx.setLineDash([5, 4]); gctx.lineWidth = 1.5;
+    gctx.strokeStyle = cool; gctx.beginPath(); gctx.moveTo(gx(g.T), gy(g.e)); gctx.lineTo(gx(Td), gy(g.e)); gctx.lineTo(gx(Td), gy(0)); gctx.stroke();
+    // まだ含める量（上へ、曲線まで）
+    gctx.strokeStyle = warm; gctx.beginPath(); gctx.moveTo(gx(g.T), gy(g.e)); gctx.lineTo(gx(g.T), gy(g.sat)); gctx.stroke();
+    gctx.beginPath(); gctx.moveTo(gx(g.T), gy(0)); gctx.lineTo(gx(g.T), gy(g.e)); gctx.stroke();
+    gctx.restore();
+    const fb = '700 11px ' + css('--font-body'), fn = '600 11px ' + css('--font-num');
+    const lab = (t, x, y, c, align, base, f) => { gctx.font = f || fb; gctx.textAlign = align; gctx.textBaseline = base; gctx.lineWidth = 4; gctx.lineJoin = 'round'; gctx.strokeStyle = css('--map'); gctx.strokeText(t, x, y); gctx.fillStyle = c; gctx.fillText(t, x, y); };
+    gctx.fillStyle = cool; gctx.beginPath(); gctx.arc(gx(Td), gy(g.e), 4, 0, Math.PI * 2); gctx.fill();
+    lab(`露点 ${r1(Td)} ℃`, gx(Td), gy(0) + 17, cool, Td < 6 ? 'left' : 'center', 'top');
+    if (g.T - Td > 7) lab('冷やすと水平に左へ', (gx(g.T) + gx(Td)) / 2, gy(g.e) + 6, cool, 'center', 'top', '11px ' + css('--font-body'));
+    if (g.room > 0.3) lab(`あと ${r1(g.room)} g 含める`, gx(g.T) + 8, (gy(g.e) + gy(g.sat)) / 2, warm, 'left', 'middle');
+    lab(`気温 ${g.T} ℃`, gx(g.T), gy(0) + 17, warm, g.T - Td < 7 ? 'left' : 'center', 'top');
+    gctx.fillStyle = muted; gctx.beginPath(); gctx.arc(gx(g.T), gy(g.sat), 3, 0, Math.PI * 2); gctx.fill();
+    lab(`${r1(g.sat)}`, gx(g.T) + 6, gy(g.sat) - 2, muted, 'left', 'bottom', fn);
+    // 上昇中の空気（左へ動き、曲線にぶつかると曲線に沿って下がる）
+    if (state.h > 0) {
+      gctx.strokeStyle = cool; gctx.lineWidth = 2; gctx.beginPath(); gctx.moveTo(gx(g.T), gy(g.e));
+      if (!p.cloud) gctx.lineTo(gx(p.T), gy(p.e)); else { gctx.lineTo(gx(Td), gy(g.e)); for (let T = Td; T >= p.T; T -= 0.25) gctx.lineTo(gx(T), gy(sat(T))); gctx.lineTo(gx(p.T), gy(p.e)); }
+      gctx.stroke();
+      gctx.fillStyle = css('--map'); gctx.beginPath(); gctx.arc(gx(p.T), gy(p.e), 6, 0, Math.PI * 2); gctx.fill();
+      gctx.strokeStyle = cool; gctx.lineWidth = 2.5; gctx.stroke();
+      lab(`${state.h} m の空気 ${r1(p.T)} ℃`, gx(p.T) - 9, gy(p.e) - 9, cool, 'right', 'bottom');
+      if (p.cloud && p.cond > 0.05) lab(`水滴 ${r1(p.cond)} g`, gx(p.T) - 9, gy(p.e) + 5, cool, 'right', 'top', fn);
+    }
+    // 地上の空気の点
+    gctx.fillStyle = warm; gctx.beginPath(); gctx.arc(gx(g.T), gy(g.e), 6, 0, Math.PI * 2); gctx.fill();
+    gctx.strokeStyle = css('--map'); gctx.lineWidth = 2; gctx.stroke();
+    lab(`地上の空気 ${r1(g.e)} g/m³　湿度 ${r1(g.rh)} %`, gx(g.T) + 10, gy(g.e) + 2, warm, 'left', 'top');
+    drawFocus('graph', gctx);
+  }
+
+  // ---------- 飽和水蒸気量の表 ----------
+  const satEl = document.getElementById('sat');
+  function renderSatTable() {
+    const g = ground(), tdn = Math.round(g.Td);
+    const blocks = [[0, 9], [10, 19], [20, 29], [30, 40]];
+    satEl.innerHTML = blocks.map(([a, b]) => {
+      let th = '<tr><th>気温〔℃〕</th>', tv = '<tr class="v"><th>飽和水蒸気量〔g/m³〕</th>';
+      for (let T = a; T <= b; T++) {
+        const cls = [T === g.T ? 'isT' : '', T === tdn ? 'isTd' : ''].join(' ').trim();
+        th += `<td class="${cls}" data-t="${T}">${T}</td>`; tv += `<td class="${cls}" data-v="${T}">${SAT[T].toFixed(1)}</td>`;
+      }
+      return `<table class="st">${th}</tr>${tv}</tr></table>`;
+    }).join('');
+    const key = state.focus && state.focus.table;
+    if (key) { const T = key === 'T' ? g.T : tdn; satEl.querySelectorAll(`[data-t="${T}"],[data-v="${T}"]`).forEach(el => el.classList.add('fo')); }
+  }
+
+  // ---------- 記録と説明 ----------
+  const STEPS = [
+    ['ground', '地上の空気：水蒸気量は飽和水蒸気量より少ない（湿度 100% 未満）'],
+    ['rise', '上昇すると、周りの気圧が低いので<strong class="warm">膨張して温度が下がる</strong>（100 m で約 1℃）。水蒸気量は変わらないので<strong>湿度は上がる</strong>'],
+    ['dew', '<strong class="cool">露点に達する</strong>：水蒸気量 ＝ 飽和水蒸気量、湿度 100%。ここが雲のでき始める高さ'],
+    ['cloud', 'さらに上がると、入りきらない水蒸気が<strong class="cool">凝結して水滴（雲粒）</strong>になる。これが<strong>雲</strong>。雲の中は 100 m で約 0.5℃ 下がる']
+  ];
+  function phaseOf(p) { return state.h === 0 ? 'ground' : !p.cloud ? (Math.abs(p.h - p.Hc) < 1 ? 'dew' : 'rise') : (p.h - p.Hc < 60 ? 'dew' : 'cloud'); }
+  const $ = (id) => document.getElementById(id);
+  function updateReadout() {
+    const g = ground(), p = parcel(state.h);
+    $('r-t').textContent = `${g.T} ℃`;
+    $('r-sat').innerHTML = `${r1(g.sat)} g/m³<small>表の ${g.T} ℃ の値</small>`;
+    $('r-e').innerHTML = `${r1(g.e)} g/m³<small>あと ${r1(g.room)} g 含める</small>`;
+    $('r-rh').innerHTML = `${r1(g.rh)} %<span class="calc">${r1(g.e)} ÷ ${r1(g.sat)} × 100 ＝ ${(g.e / g.sat * 100).toFixed(2)}…</span>`;
+    const tdExact = Math.abs(g.Td - Math.round(g.Td)) < 1e-9;
+    $('r-td').innerHTML = `${tdExact ? g.Td : '約 ' + r1(g.Td)} ℃<small>${tdExact ? `表で飽和水蒸気量が ${r1(g.e)} になる気温` : `${Math.floor(g.Td)} ℃（${SAT[Math.floor(g.Td)]}）と ${Math.floor(g.Td) + 1} ℃（${SAT[Math.floor(g.Td) + 1]}）の間`}</small>`;
+    $('r-hc').innerHTML = g.Hc === 0 ? `0 m<small>地上で露点。霧になる</small>` : `約 ${Math.round(g.Hc)} m<span class="calc">（${g.T} − ${r1(g.Td)}）× 100 m</span>`;
+    $('p-h').textContent = `${state.h} m`;
+    $('p-t').innerHTML = `${r1(p.T)} ℃<small>${p.cloud ? `露点 ${r1(g.Td)} から 0.5℃ × ${Math.round((state.h - g.Hc) / 100 * 10) / 10}` : `${g.T} − 1℃ × ${state.h / 100}`}</small>`;
+    $('p-e').innerHTML = `${r1(p.e)} g/m³<small>${p.cloud ? 'その温度の飽和水蒸気量' : '地上と同じ'}</small>`;
+    $('p-rh').textContent = `${Math.round(p.rh)} %`;
+    $('p-c').innerHTML = p.cloud ? `${r1(p.cond)} g/m³<span class="calc">${r1(g.e)} − ${r1(p.e)}</span>` : `0 g<small>まだ露点に達していない</small>`;
+    $('h-parcel').textContent = state.h === 0 ? '上昇した空気のかたまり（まだ地上）' : `上昇した空気のかたまり（${state.h} m）`;
+    const ph = phaseOf(p);
+    let msg;
+    if (state.h === 0) msg = g.Hc === 0 ? '地上の空気がすでに露点に達している（湿度 100%）。地表近くで凝結すると霧' : `この空気は <strong>${Math.round(g.Hc)} m</strong> 上がると露点に達する。「上昇させる」で確かめる`;
+    else if (!p.cloud) msg = `露点まであと <strong>${r1(p.T - g.Td)} ℃</strong>（あと ${Math.round(g.Hc - state.h)} m）。水蒸気量は変わらず、湿度だけが上がっている`;
+    else msg = `露点に達した高さ ${Math.round(g.Hc)} m から上は雲。1 m³ あたり <strong>${r1(p.cond)} g</strong> の水蒸気が水滴になった`;
+    $('now').innerHTML = `<strong>いまの空気</strong><span>${msg}</span>`;
+    $('steps').innerHTML = STEPS.map(([k, html]) => `<li class="${k === ph ? 'on' : ''}">${html}</li>`).join('');
+    $('temp-out').textContent = `${g.T} ℃`;
+    $('vap-out').innerHTML = `${r1(g.e)} g/m³<small>湿度 ${Math.round(g.rh)} %</small>`;
+    $('hgt-out').textContent = `${state.h} m`;
+    $('t-minus').disabled = g.T <= 0; $('t-plus').disabled = g.T >= T_MAX;
+    $('v-minus').disabled = g.e <= E_MIN + 1e-9; $('v-plus').disabled = g.e >= g.sat - 1e-9;
+  }
+  // ---------- スマホ幅：Canvas の文字と線を拡大し、文字を図の内側に収める（座標はそのまま） ----------
+  // 図の表示幅が狭いと 1 論理 px が 1 CSS px より小さくなる。ctx.font の px を k 倍、lineWidth を (1+k)/2 倍して描く。
+  // k は「11 px の文字が TEXT_MIN CSS px を下回らない」倍率（1〜2）。logicalW は論理幅を返す関数（狭い幅で論理幅が変わる図があるため）。
+  // fillText / strokeText は、文字が canvas の左右の端からはみ出すとき内側へ押し戻す（回転していない文字だけ）。
+  // 文字の基準点が図の外（切り出した窓の外の前線名など）なら描かない：押し戻すと端で文字が重なるため。
+  const TEXT_MIN = 11;
+  function fitCanvas(cv, ctx, logicalW) {
+    const P = CanvasRenderingContext2D.prototype, fd = Object.getOwnPropertyDescriptor(P, 'font'), ld = Object.getOwnPropertyDescriptor(P, 'lineWidth');
+    let k = 1;
+    Object.defineProperty(ctx, 'font', { configurable: true, get() { return fd.get.call(this); }, set(v) { fd.set.call(this, k === 1 ? v : v.replace(/([\d.]+)px/, (_, n) => (n * k).toFixed(1) + 'px')); } });
+    Object.defineProperty(ctx, 'lineWidth', { configurable: true, get() { return ld.get.call(this); }, set(v) { ld.set.call(this, v * (1 + (k - 1) / 2)); } });
+    const inside = (c, text, x) => {
+      const m = c.getTransform(); if (m.b || m.c) return x;
+      const w = c.measureText(text).width, a = c.textAlign, left = a === 'right' || a === 'end' ? x - w : a === 'center' ? x - w / 2 : x;
+      const L = -m.e / m.a + 4, R = (cv.width - m.e) / m.a - 4;
+      if (x < L - 8 || x > R + 8) return null;
+      return w > R - L ? x + L - left : x + Math.max(0, L - left) - Math.max(0, left + w - R);
+    };
+    ctx.fillText = function (t, x, y, mw) { const x2 = inside(this, t, x); if (x2 !== null) P.fillText.call(this, t, x2, y, mw); };
+    ctx.strokeText = function (t, x, y, mw) { const x2 = inside(this, t, x); if (x2 !== null) P.strokeText.call(this, t, x2, y, mw); };
+    const update = () => { const L = logicalW(), w = cv.clientWidth || L; k = Math.min(2, Math.max(1, TEXT_MIN * L / (11 * w))); };
+    update(); return update;
+  }
+  // ---------- スマホ幅：断面図とグラフを縦長に組み替える ----------
+  // 表示幅が NARROW px 未満なら論理幅を CSS 幅に近い値に縮め、canvas の高さを増やす（1 論理 px ≒ 1 CSS px）。
+  const NARROW = 560;
+  const isNarrow = () => xs.clientWidth > 0 && xs.clientWidth < NARROW;
+  function keepIn(ctx, text, x, W) {
+    const w = ctx.measureText(text).width, a = ctx.textAlign, left = a === 'right' ? x - w : a === 'center' ? x - w / 2 : x;
+    return x + Math.max(0, 4 - left) - Math.max(0, left + w - (W - 4));
+  }
+  function layoutCanvases() {
+    const n = isNarrow();
+    if (n) { XW = 340; XH = 440; GY = 410; K = 340 / H_MAX; SX0 = 90; SX1 = 290; GW = 380; }
+    else { XW = 600; XH = 320; GY = 282; K = 240 / H_MAX; SX0 = 96; SX1 = 480; GW = 600; }
+    const xh = Math.round(1200 * XH / XW), gh = Math.round(1200 * GH / GW);
+    if (xs.height !== xh) xs.height = xh;
+    if (gr.height !== gh) gr.height = gh;
+  }
+  layoutCanvases();
+  const FITS = [fitCanvas(xs, xctx, () => XW), fitCanvas(gr, gctx, () => GW)];
+  let lastW = innerWidth;
+  addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; layoutCanvases(); FITS.forEach(f => f()); renderAll(); });
+  function renderAll() { drawXs(); drawGraph(); renderSatTable(); updateReadout(); }
+
+  // ---------- 操作 ----------
+  const sT = $('temp'), sE = $('vap'), sH = $('hgt'), play = $('play');
+  function setState(o, from) {
+    if (o.T !== undefined) state.T = clamp(Math.round(o.T), 0, T_MAX);
+    if (o.e !== undefined) state.e = o.e;
+    state.e = r1(clamp(state.e, E_MIN, sat(state.T)));            // 気温を下げて飽和を超えたら、入りきらない分は水滴になり水蒸気量は飽和水蒸気量まで
+    if (o.h !== undefined) state.h = clamp(Math.round(o.h / 50) * 50, 0, H_MAX);
+    sE.max = sat(state.T).toFixed(1);
+    if (from !== 'T') sT.value = state.T;
+    if (from !== 'e') sE.value = state.e;
+    if (from !== 'h') sH.value = state.h;
+    renderAll();
+  }
+  sT.addEventListener('input', () => setState({ T: +sT.value }, 'T'));
+  sE.addEventListener('input', () => setState({ e: +sE.value }, 'e'));
+  sH.addEventListener('input', () => { stopPlay(); setState({ h: +sH.value }, 'h'); });
+  $('t-minus').addEventListener('click', () => setState({ T: state.T - 1 }));
+  $('t-plus').addEventListener('click', () => setState({ T: state.T + 1 }));
+  $('v-minus').addEventListener('click', () => setState({ e: state.e - 0.1 }));
+  $('v-plus').addEventListener('click', () => setState({ e: state.e + 0.1 }));
+  $('reset').addEventListener('click', () => { stopPlay(); setState({ h: 0 }); });
+  function stopPlay() { state.playing = false; play.setAttribute('aria-pressed', 'false'); play.textContent = '▶ 上昇させる'; }
+  play.addEventListener('click', () => {
+    if (state.playing) { stopPlay(); return; }
+    if (state.h >= H_MAX) state.h = 0;
+    state.playing = true; play.setAttribute('aria-pressed', 'true'); play.textContent = '❚❚ 止める';
+    last = performance.now(); hAcc = state.h; requestAnimationFrame(tick);
+  });
+  let last = 0, hAcc = 0;
+  function tick(now) {
+    if (!state.playing) return;
+    const dt = Math.min(0.1, (now - last) / 1000); last = now;
+    hAcc += dt * (reduced ? 150 : 400);
+    setState({ h: hAcc });
+    if (state.h >= H_MAX) { stopPlay(); return; }
+    requestAnimationFrame(tick);
+  }
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderAll);
+
+  // ---------- ナビ ----------
+  const NAV = window.UNIT_NAV || [];
+  $('crumbs').innerHTML = NAV.map(([label, href]) => href ? `<a href="${href}">${label}</a>` : `<span>${label}</span>`).join('');
+
+  // ---------- 問題（入試形式） ----------
+  // 問題を開くと図が setup の状態になる。答えると正誤と「図のどこを見るか」。「図をこの状態にして見る」で focus の部分を点線枠で強調する。
+  // 難易度は3段階（level: easy／std／hard、各 7 問）。数値の答えは表（SAT）と parcelOf() から計算して、図と食いちがわないようにする。
+  const KEYS = ['ア', 'イ', 'ウ', 'エ'];
+  const LEVELS = [['easy', 'イージー', '用語・しくみの一問一答（入試の小問1〜2の型）'], ['std', 'スタンダード', '表・グラフの読み取りと計算（入試の標準的な小問の型）'], ['hard', 'ハード', '2 段階の計算・理由（正答率が下がる小問の型）']];
+  const pct = (e, T) => Math.round(e / SAT[T] * 100);
+  const S_DEW = { T: 28, e: SAT[16] }, S_DP = Math.round(dewPoint(S_DEW.e));      // グラフで露点を読む
+  const S_HALF = [r1(SAT[10] / 2), r1(SAT[30] / 2)];                              // 湿度 50% の 10 ℃と 30 ℃
+  const H_CUP = { room: 26, cup: 16 }, H_CUP_RH = pct(SAT[H_CUP.cup], H_CUP.room);  // コップがくもる温度から湿度
+  const H_RH = { T: 20, rh: 74 }, H_RH_E = r1(SAT[H_RH.T] * H_RH.rh / 100);        // 湿度から露点（12.8 g → 15 ℃）
+  const H_ROOM = { T: 30, rh: 50, to: 10, vol: 50 }, H_ROOM_E = r1(SAT[H_ROOM.T] * H_ROOM.rh / 100), H_ROOM_C = r1(H_ROOM_E - SAT[H_ROOM.to]);
+  const H_UP = { T: 20, e: 12.1, h: 400 }, H_UP_P = parcelOf(H_UP.T, H_UP.e, H_UP.h);
+  const H_MT = { T: 22, e: 12.1, h: 2000 }, H_MT_P = parcelOf(H_MT.T, H_MT.e, H_MT.h), H_MT_DRY = parcelOf(H_MT.T, 4.8, H_MT.h);
+  const LEE_T = Math.round(H_MT_P.T + H_MT.h / 100), LEE_E = r1(H_MT_P.e), LEE_RH = pct(LEE_E, LEE_T), MT_RH0 = pct(H_MT.e, H_MT.T);   // 山を下りた風下（100 m で 1 ℃ 上がる）
+  // freq: true ＝「よく出る」。公立高校入試 29 回のうち 10 回に出た小単元 3a 飽和水蒸気量・湿度・露点を主に問う問（docs/reference/nyushi-hindo-kisho.md の小単元表）
+  const QUIZ = [
+    // ---- イージー：用語・しくみ ----
+    { level: 'easy', freq: true, setup: { T: 20, e: 12.1, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '空気 1 m³ が含むことのできる水蒸気の最大の質量を何というか。',
+      choices: ['湿度', '露点', '飽和水蒸気量', '水蒸気量'], answer: 2,
+      explain: `グラフの曲線が飽和水蒸気量（g/m³）。気温ごとに決まっていて、下の表の値（20 ℃なら ${SAT[20]} g/m³）。曲線より下の●が、いまの空気の水蒸気量。`,
+      focus: { graph: 'ratio', table: 'T', rec: 'sat' } },
+    { level: 'easy', freq: true, setup: { T: 25, e: 12.8, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '空気を冷やしていくとき、空気中の水蒸気が凝結して水滴ができ始める温度を何というか。',
+      choices: ['沸点', '露点', '融点', '飽和水蒸気量'], answer: 1,
+      explain: 'グラフで●から水平に左へ動き、曲線にぶつかる所の気温が露点。そこで水蒸気量 ＝ 飽和水蒸気量になり、湿度は 100%。「空気の記録」の露点の行。',
+      focus: { graph: 'dew', table: 'Td', rec: 'td' } },
+    { level: 'easy', freq: true, setup: { T: 20, e: 12.1, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '湿度〔%〕を求める式として正しいものはどれか。',
+      choices: ['飽和水蒸気量 ÷ 空気 1 m³ 中の水蒸気量 × 100', '露点 ÷ 気温 × 100', '空気 1 m³ 中の水蒸気量 × 飽和水蒸気量 ÷ 100', '空気 1 m³ 中の水蒸気量 ÷ その気温の飽和水蒸気量 × 100'], answer: 3,
+      explain: 'グラフで、●の高さ（水蒸気量）が、その気温の曲線の高さ（飽和水蒸気量）の何割かが湿度。「空気の記録」の湿度の行に計算が出る。温度どうしを割っても湿度にはならない。',
+      focus: { graph: 'ratio', rec: 'rh' } },
+    { level: 'easy', setup: { T: 20, e: 12.1, h: 1500 },
+      q: '空気が上昇して雲ができるまでの順番として正しいものはどれか。',
+      choices: ['上昇する → 膨張して温度が下がる → 露点に達する → 水蒸気が水滴になる', '上昇する → 圧縮されて温度が下がる → 露点に達する → 水蒸気が水滴になる', '上昇する → 膨張して温度が上がる → 水蒸気が増える → 水滴になる', '上昇する → 水蒸気が増える → 露点に達する → 膨張して水滴になる'], answer: 0,
+      explain: '断面図の ①〜④。上空は気圧が低いので、上昇した空気は膨張して温度が下がる（圧縮ではない）。水蒸気の量は変わらず、温度が露点まで下がった所で水滴になる。「上昇させる」で空気のかたまりが大きくなりながら冷えていくのを見る。',
+      focus: { xs: 'path' } },
+    { level: 'easy', setup: { T: 20, e: 12.1, h: 600 },
+      q: '少量の水と線香の煙を入れた丸底フラスコに注射筒をつなぎ、ピストンをすばやく引くと、フラスコの中が白くくもった。その理由として正しいものはどれか。',
+      choices: ['空気が圧縮されて温度が上がり、水が蒸発したから', '空気が膨張して温度が下がり、露点に達して水蒸気が水滴になったから', '線香の煙が増えて白く見えたから', '空気が膨張して温度が上がり、水蒸気が増えたから'], answer: 1,
+      explain: 'ピストンを引く ＝ フラスコの中の気圧が下がる ＝ 空気が膨張して温度が下がる。これは上空で起きていることと同じ（断面図の ②）。煙は水滴ができるときの核（凝結核）。ピストンを押すと圧縮されて温度が上がり、くもりは消える。',
+      focus: { xs: 'parcel' } },
+    { level: 'easy', freq: true, setup: { T: 20, e: 12.1, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '気温と飽和水蒸気量の関係として正しいものはどれか。',
+      choices: ['気温が高いほど、飽和水蒸気量は小さい', '飽和水蒸気量は気温に関係なく一定', '気温が高いほど、飽和水蒸気量は大きい', '飽和水蒸気量は 20 ℃のとき最も大きい'], answer: 2,
+      explain: `グラフの曲線は右（気温が高い）ほど上がる。表でも 0 ℃ ${SAT[0]} g、20 ℃ ${SAT[20]} g、35 ℃ ${SAT[35]} g と増える。気温が高い空気ほど多くの水蒸気を含むことができる。`,
+      focus: { graph: 'curve' } },
+    { level: 'easy', freq: true, setup: { T: 20, e: 12.1, h: 600 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '水蒸気を含む空気の温度が下がって露点に達したときのようすとして正しいものはどれか。',
+      choices: ['湿度が 100% になり、さらに冷えると水蒸気の一部が水滴になる', '湿度が 0% になり、水蒸気がなくなる', '湿度は変わらず、水蒸気量が増える', '空気が膨張して温度が上がる'], answer: 0,
+      explain: '断面図の ③：空気のかたまりが露点まで冷えた高さで湿度 100%（雲のでき始め）。さらに上がると入りきらない水蒸気が水滴になり（④）、「上昇した空気のかたまり」の「水滴になった量」が増えていく。',
+      focus: { xs: 'cloudBase', rec: 'hc' } },
+    // ---- スタンダード：表・グラフの読み取りと計算 ----
+    { level: 'std', freq: true, setup: { T: 20, e: 12.1, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `気温 20 ℃の空気 1 m³ に 12.1 g の水蒸気が含まれている。20 ℃の飽和水蒸気量を ${SAT[20]} g/m³ とすると、この空気の湿度はおよそ何％か。`,
+      choices: [`約 ${pct(12.1, 20) - 12} %`, `約 ${pct(12.1, 20)} %`, `約 ${pct(12.1, 20) + 4} %`, `約 ${pct(12.1, 20) + 16} %`], answer: 1,
+      explain: `湿度 ＝ 水蒸気量 ÷ その気温の飽和水蒸気量 × 100。表の 20 ℃の欄（${SAT[20]}）を見て、12.1 ÷ ${SAT[20]} × 100 ＝ ${(12.1 / SAT[20] * 100).toFixed(1)}。グラフでは、●の高さが曲線の高さの何割かが湿度。「空気の記録」の湿度の行に計算が出る。`,
+      focus: { graph: 'ratio', table: 'T', rec: 'rh' } },
+    { level: 'std', freq: true, setup: { T: 25, e: 12.8, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `気温 25 ℃の空気 1 m³ に 12.8 g の水蒸気が含まれている。この空気の露点は何℃か。`,
+      choices: ['10 ℃', '12 ℃', '15 ℃', '20 ℃'], answer: 2,
+      explain: `露点は「水蒸気量がそのまま飽和水蒸気量になる気温」。表で飽和水蒸気量が 12.8 の欄を探すと 15 ℃。グラフでは、●から水平に左へ動いて曲線にぶつかる所の気温。気温 25 ℃は計算に使わない。`,
+      focus: { graph: 'dew', table: 'Td', rec: 'td' } },
+    { level: 'std', freq: true, setup: { ...S_DEW, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `グラフの●は、気温 ${S_DEW.T} ℃、水蒸気量 ${S_DEW.e} g/m³ の空気を表している。グラフから、この空気の露点はおよそ何℃と読めるか。`,
+      choices: [`約 ${S_DP} ℃`, `約 ${S_DP - 4} ℃`, `約 ${S_DP + 6} ℃`, `約 ${S_DEW.T} ℃`], answer: 0,
+      explain: `グラフの●から水平に左へ動いて曲線にぶつかる所の気温を、横軸で読む。表でも、飽和水蒸気量が ${S_DEW.e} の欄が ${S_DP} ℃。●の真下の ${S_DEW.T} ℃はいまの気温で、露点ではない。`,
+      focus: { graph: 'dew', table: 'Td' } },
+    { level: 'std', freq: true, setup: { T: 30, e: S_HALF[1], h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '湿度がどちらも 50% の、気温 10 ℃の空気 A と気温 30 ℃の空気 B がある。空気 1 m³ に含まれる水蒸気量について正しいものはどれか。',
+      choices: ['湿度が同じなので、A と B の水蒸気量は等しい', `B のほうが多い（A ${S_HALF[0]} g、B ${S_HALF[1]} g）`, `A のほうが多い（A ${S_HALF[1]} g、B ${S_HALF[0]} g）`, '気温が高いと水蒸気が逃げていくので、B のほうが少ない'], answer: 1,
+      explain: `水蒸気量 ＝ 飽和水蒸気量 × 湿度 ÷ 100。表で 10 ℃は ${SAT[10]} g、30 ℃は ${SAT[30]} g なので、50% は A ${S_HALF[0]} g、B ${S_HALF[1]} g。グラフでは、どちらも●が曲線の高さの半分だが、30 ℃の曲線のほうがずっと高い（図は B）。`,
+      focus: { graph: 'ratio', table: 'T' } },
+    { level: 'std', freq: true, setup: { T: 15, e: 8.8, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '気温 15 ℃、水蒸気量 8.8 g/m³ の空気を、水蒸気量を変えずに 25 ℃まで温めた。湿度と露点はそれぞれどうなるか。',
+      choices: ['湿度は低くなり、露点は変わらない', '湿度は高くなり、露点は高くなる', '湿度は変わらず、露点も変わらない', '湿度は低くなり、露点は高くなる'], answer: 0,
+      explain: 'グラフで●が水平に右へ動く。曲線（飽和水蒸気量）は右ほど高いので、同じ水蒸気量でも割合（湿度）は下がる。露点は水蒸気量だけで決まるので変わらない。気温の−／＋で確かめる。',
+      focus: { graph: 'warm' } },
+    { level: 'std', freq: true, setup: { T: 25, e: 17.3, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `露点 20 ℃の空気がある。この空気を 10 ℃まで冷やすと、空気 1 m³ あたり何 g の水滴ができるか。（20 ℃ ${SAT[20]}、10 ℃ ${SAT[10]} g/m³）`,
+      choices: [`${r1(SAT[20] - SAT[15])} g`, `${SAT[10]} g`, `${r1(SAT[25] - SAT[10])} g`, `${r1(SAT[20] - SAT[10])} g`], answer: 3,
+      explain: `露点 20 ℃ ＝ 水蒸気量は 20 ℃の飽和水蒸気量 ${SAT[20]} g。10 ℃では ${SAT[10]} g までしか含めないので、差 ${SAT[20]} − ${SAT[10]} ＝ ${r1(SAT[20] - SAT[10])} g が水滴になる。表で 20 ℃と 10 ℃の欄を引き算。グラフでは、曲線の上にはみ出した分。`,
+      focus: { graph: 'cool', table: 'Td' } },
+    { level: 'std', freq: true, setup: { T: 20, e: 10.7, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '地上の気温が 20 ℃、露点が 12 ℃の空気が山の斜面に沿って上昇する。上昇する空気の温度は 100 m につき 1 ℃下がるとすると、雲ができ始める高さは何 m か。',
+      choices: ['400 m', '1200 m', '2000 m', '800 m'], answer: 3,
+      explain: '雲ができ始めるのは温度が露点まで下がった所。20 − 12 ＝ 8 ℃ 下がればよいので、100 m × 8 ＝ 800 m。断面図の点線（露点に達する高さ）と、記録の「雲ができる高さ」の行。',
+      focus: { xs: 'cloudBase', rec: 'hc' } },
+    // ---- ハード：2 段階の計算・理由 ----
+    { level: 'hard', freq: true, setup: { T: H_CUP.room, e: SAT[H_CUP.cup], h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `気温 ${H_CUP.room} ℃の部屋で、金属製のコップにくみ置きの水を入れ、氷水を少しずつ加えてかき混ぜると、水温が ${H_CUP.cup} ℃のときコップの表面がくもり始めた。この部屋の湿度はおよそ何％か。`,
+      choices: [`約 ${100 - H_CUP_RH} %`, `約 ${Math.round(H_CUP.cup / H_CUP.room * 100)} %`, `約 ${H_CUP_RH} %`, `約 ${Math.round(SAT[H_CUP.cup])} %`], answer: 2,
+      explain: `くもり始めた ${H_CUP.cup} ℃が露点（コップに触れた空気が冷えて凝結した）。水蒸気量は表の ${H_CUP.cup} ℃の欄 ${SAT[H_CUP.cup]} g/m³。湿度 ＝ ${SAT[H_CUP.cup]} ÷ ${SAT[H_CUP.room]}（${H_CUP.room} ℃の飽和水蒸気量）× 100 ≒ ${H_CUP_RH}%。温度どうしを割った ${H_CUP.cup} ÷ ${H_CUP.room} では求められない。くみ置きの水を使うのは、水温を室温と同じにしておくため。`,
+      focus: { graph: 'dew', table: 'Td', rec: 'rh' } },
+    { level: 'hard', freq: true, setup: { T: 30, e: SAT[15], h: 0 }, reveal: { T: 20 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '気温 30 ℃で露点 15 ℃の空気 A と、気温 20 ℃で露点 15 ℃の空気 B がある。正しいものはどれか。',
+      choices: ['A のほうが水蒸気量が多く、湿度も高い', `水蒸気量は A も B も ${SAT[15]} g/m³ で等しく、湿度は B のほうが高い`, '水蒸気量は A も B も等しく、湿度も等しい', 'B のほうが水蒸気量が多く、湿度は A のほうが高い'], answer: 1,
+      explain: `露点は水蒸気量だけで決まる（水蒸気量 ＝ 露点の飽和水蒸気量）ので、どちらも ${SAT[15]} g/m³。湿度は A ${pct(SAT[15], 30)}%、B ${pct(SAT[15], 20)}% で、気温が低い B のほうが高い。グラフでは A と B の●は同じ高さで、B のほうが曲線に近い（図をこの状態にすると B）。`,
+      focus: { graph: 'dew', rec: 'rh' } },
+    { level: 'hard', freq: true, setup: { T: H_RH.T, e: H_RH_E, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `気温 ${H_RH.T} ℃、湿度 ${H_RH.rh}% の空気の露点はおよそ何℃か。`,
+      choices: [`約 ${Math.round(H_RH.T * (100 - H_RH.rh) / 100)} ℃`, '約 10 ℃', '約 12 ℃', `約 ${Math.round(dewPoint(H_RH_E))} ℃`], answer: 3,
+      explain: `① 水蒸気量 ＝ ${SAT[H_RH.T]}（${H_RH.T} ℃の飽和水蒸気量）× ${H_RH.rh} ÷ 100 ≒ ${H_RH_E} g/m³。② 表で飽和水蒸気量が ${H_RH_E} の欄を探すと ${Math.round(dewPoint(H_RH_E))} ℃。これが露点。湿度から水蒸気量、水蒸気量から露点の 2 段階。「空気の記録」の水蒸気量と露点の行。`,
+      focus: { table: 'Td', rec: 'td' } },
+    { level: 'hard', freq: true, setup: { T: H_ROOM.T, e: H_ROOM_E, h: 0 },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `気温 ${H_ROOM.T} ℃、湿度 ${H_ROOM.rh}% の部屋の空気を ${H_ROOM.to} ℃まで冷やした。部屋の体積を ${H_ROOM.vol} m³ とすると、部屋全体で何 g の水滴ができるか。`,
+      choices: [`${H_ROOM_C} g`, `${Math.round(H_ROOM_E * H_ROOM.vol)} g`, `${Math.round(H_ROOM_C * H_ROOM.vol)} g`, `${Math.round((SAT[H_ROOM.T] - SAT[H_ROOM.to]) * H_ROOM.vol)} g`], answer: 2,
+      explain: `① 水蒸気量 ＝ ${SAT[H_ROOM.T]} × ${H_ROOM.rh} ÷ 100 ＝ ${H_ROOM_E} g/m³。② ${H_ROOM.to} ℃の飽和水蒸気量は ${SAT[H_ROOM.to]} g/m³ なので、1 m³ あたり ${H_ROOM_E} − ${SAT[H_ROOM.to]} ＝ ${H_ROOM_C} g が水滴になる。③ 部屋は ${H_ROOM.vol} m³ なので ${H_ROOM_C} × ${H_ROOM.vol} ＝ ${Math.round(H_ROOM_C * H_ROOM.vol)} g。グラフでは、曲線の上にはみ出した分が 1 m³ あたりの水滴。`,
+      focus: { graph: 'cool', table: 'Td' } },
+    { level: 'hard', freq: true, setup: { ...H_UP },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: '断面図で、空気のかたまりが雲のできる高さまで上昇するあいだ、湿度はしだいに高くなる。その理由として正しいものはどれか。',
+      choices: ['上昇すると水蒸気量が増えるから', '上昇すると気圧が高くなり、空気が圧縮されるから', '上昇すると温度が下がって飽和水蒸気量が大きくなるから', '上昇すると温度が下がって飽和水蒸気量が小さくなり、水蒸気量は変わらないから'], answer: 3,
+      explain: `「上昇した空気のかたまり」の記録：地上 ${H_UP.T} ℃・湿度 ${pct(H_UP.e, H_UP.T)}% の空気が ${H_UP.h} m 上がると ${r1(H_UP_P.T)} ℃・湿度 ${Math.round(H_UP_P.rh)}%。水蒸気量は ${H_UP.e} g/m³ のままだが、温度が下がると飽和水蒸気量が小さくなるので、割合（湿度）が上がる。露点に達すると 100%。上空は気圧が低いので、空気は圧縮でなく膨張する。`,
+      focus: { xs: 'parcel', rec: 'prh' } },
+    { level: 'hard', freq: true, setup: { ...H_MT },   // よく出る：3a 飽和水蒸気量・湿度・露点
+      q: `地上で気温 ${H_MT.T} ℃、水蒸気量 ${H_MT.e} g/m³ の空気が山の斜面を上昇し、高さ ${H_MT.h} m に達した。雲ができる前は 100 m につき 1 ℃、雲ができてからは 100 m につき 0.5 ℃ 温度が下がるとする。${H_MT.h} m での空気の温度と、空気 1 m³ あたり水滴になった量の組み合わせとして正しいものはどれか。`,
+      choices: [`${r1(H_MT_DRY.T)} ℃、${r1(H_MT.e - sat(H_MT_DRY.T))} g`, `${r1(H_MT_P.T)} ℃、${r1(H_MT_P.cond)} g`, `${r1(H_MT_P.T)} ℃、${r1(H_MT_P.e)} g`, `${r1(H_MT_P.Td)} ℃、0 g`], answer: 1,
+      explain: `① 露点は表で ${H_MT.e} g の欄の ${r1(H_MT_P.Td)} ℃、雲ができ始める高さは (${H_MT.T} − ${r1(H_MT_P.Td)}) × 100 ＝ ${H_MT_P.Hc} m。② そこから ${H_MT.h} m までの ${H_MT.h - H_MT_P.Hc} m は雲の中なので 0.5 × ${(H_MT.h - H_MT_P.Hc) / 100} ＝ ${r1(H_MT_P.Td - H_MT_P.T)} ℃ 下がって ${r1(H_MT_P.T)} ℃。③ ${r1(H_MT_P.T)} ℃の飽和水蒸気量は ${r1(H_MT_P.e)} g/m³ なので、${H_MT.e} − ${r1(H_MT_P.e)} ＝ ${r1(H_MT_P.cond)} g が水滴になった。ずっと 100 m で 1 ℃ 下がるとするとアになる。断面図のかたまりの読みと、記録の「水滴になった量」の行。`,
+      focus: { xs: 'parcel', rec: 'pc' } },
+    { level: 'hard', setup: { ...H_MT },
+      q: `問6 の空気が ${H_MT.h} m で雨を降らせて水滴を失い、山の反対側の斜面を地上（0 m）まで下りた。下りるときは 100 m につき 1 ℃ 温度が上がるとする。風下の地上での気温と湿度の組み合わせとして正しいものはどれか。`,
+      choices: [`${LEE_T} ℃、湿度 約 ${LEE_RH}%（上る前より乾いている）`, `${H_MT.T} ℃、湿度 約 ${MT_RH0}%（上る前と同じ）`, `${LEE_T} ℃、湿度 約 ${MT_RH0}%（上る前と同じ）`, `${r1(H_MT_P.T)} ℃、湿度 100%（雲のまま）`], answer: 0,
+      explain: `断面図は上り斜面だけを描いている。${H_MT.h} m の ${r1(H_MT_P.T)} ℃・水蒸気量 ${LEE_E} g/m³ の空気が ${H_MT.h} m 下りると 1 × ${H_MT.h / 100} ＝ ${H_MT.h / 100} ℃ 上がって ${LEE_T} ℃。水蒸気量は ${LEE_E} g/m³ のままなので、湿度 ＝ ${LEE_E} ÷ ${SAT[LEE_T]} × 100 ≒ ${LEE_RH}%。上るときは雲の中で 0.5 ℃ ずつしか下がらないのに、下りるときは 1 ℃ ずつ上がるので、風下は上る前より ${LEE_T - H_MT.T} ℃ 高く、乾いた空気になる（フェーン現象）。`,
+      focus: { xs: 'parcel', rec: 'pc' } }
+  ];
+  function hl(ctx, draw) { ctx.save(); ctx.strokeStyle = css('--focus'); ctx.fillStyle = css('--focus'); ctx.lineWidth = 3; ctx.setLineDash([8, 6]); draw(); ctx.restore(); }
+  function hlRect(ctx, x, y, w, h) { hl(ctx, () => { ctx.globalAlpha = .12; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; ctx.strokeRect(x, y, w, h); }); }
+  function hlRing(ctx, x, y, r) { hl(ctx, () => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.globalAlpha = .12; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke(); }); }
+  const FOCUS = {
+    graph: {
+      ratio: (ctx) => { const g = ground(); hlRect(ctx, gx(g.T) - 22, gy(g.sat) - 14, 44, gy(0) - gy(g.sat) + 22); },
+      dew: (ctx) => { const g = ground(); hlRect(ctx, gx(g.Td) - 20, gy(g.e) - 16, gx(g.T) - gx(g.Td) + 36, gy(0) - gy(g.e) + 26); },
+      cool: (ctx) => { const g = ground(); hlRect(ctx, gx(10) - 16, gy(g.e) - 16, gx(g.Td) - gx(10) + 32, gy(SAT[10]) - gy(g.e) + 32); },
+      warm: (ctx) => { const g = ground(); hlRect(ctx, gx(g.T) - 16, gy(g.e) - 20, gx(25) - gx(g.T) + 32, 40); },
+      curve: (ctx) => hlRect(ctx, gx(0) - 6, gy(50) - 6, gx(40) - gx(0) + 12, gy(0) - gy(50) + 12)
+    },
+    xs: {
+      path: (ctx) => { const a = parcelPos(0), b = parcelPos(Math.min(H_MAX, ground().Hc + 900)); hlRect(ctx, a.x - 40, b.y - 40, b.x - a.x + 270, a.y - b.y + 80); },
+      cloudBase: (ctx) => { const Hc = clamp(ground().Hc, 0, H_MAX); hlRect(ctx, 60, hy(Hc) - 20, XW - 70, 36); },
+      parcel: (ctx) => { const pp = parcelPos(state.h); hlRing(ctx, pp.x, pp.y, 20 + 9 * state.h / H_MAX + 12); }
+    }
+  };
+  function drawFocus(which, ctx) { const key = state.focus && state.focus[which]; if (key) FOCUS[which][key](ctx); }
+  function markRec() { document.querySelectorAll('table.rt tr').forEach(tr => tr.classList.toggle('hi', !!(state.focus && state.focus.rec === tr.dataset.k))); }
+
+  const quizEl = $('panel-quiz');
+  const quiz = { level: 'easy', i: { easy: 0, std: 0, hard: 0 }, picked: QUIZ.map(() => null) };
+  const levelList = () => QUIZ.map((q, k) => [q, k]).filter(([q]) => q.level === quiz.level);
+  const current = () => levelList()[quiz.i[quiz.level]];
+  function applySetup(s) { stopPlay(); setState({ T: s.T, e: s.e, h: s.h }); markRec(); }
+  const FREQ_NOTE = '<p class="fnote">よく出る：10 都府県の公立高校入試 29 回（2024〜2026 年）のうち 10 回に出た内容（飽和水蒸気量・湿度・露点）</p>';
+  function renderQuiz() {
+    const list = levelList(), n = list.length, i = quiz.i[quiz.level], [q, qi] = list[i], picked = quiz.picked[qi];
+    const answered = list.filter(([, k]) => quiz.picked[k] !== null).length, correct = list.filter(([qq, k]) => quiz.picked[k] === qq.answer).length;
+    const levels = LEVELS.map(([id, name]) => { const c = QUIZ.filter((qq, k) => qq.level === id && quiz.picked[k] === qq.answer).length, m = QUIZ.filter(qq => qq.level === id).length; return `<button type="button" role="tab" data-level="${id}" aria-selected="${id === quiz.level}">${name}<small>${c}/${m}</small></button>`; }).join('');
+    const dots = list.map(([qq, k], j) => { const p = quiz.picked[k], cls = p === null ? '' : p === qq.answer ? 'ok' : 'ng'; return `<button type="button" class="dot ${cls}" data-go="${j}" aria-current="${j === i}" aria-label="問${j + 1}">${j + 1}</button>`; }).join('');
+    const choices = q.choices.map((c, k) => { const mark = picked === null ? '' : k === q.answer ? 'ok' : k === picked ? 'ng' : ''; return `<button type="button" data-pick="${k}" data-mark="${mark}"${picked === null ? '' : ' disabled'}><span class="k">${KEYS[k]}</span><span>${c}</span></button>`; }).join('');
+    const explain = picked === null ? '' : `<div class="explain"><div class="verdict ${picked === q.answer ? 'ok' : 'ng'}">${picked === q.answer ? '正解' : `ちがう。正解は ${KEYS[q.answer]}`}</div><div><strong>図のどこを見るか：</strong>${q.explain}</div><button type="button" class="qbtn focus" data-focus="1">図をこの状態にして見る</button></div>`;
+    quizEl.innerHTML = `<div class="levels" role="tablist" aria-label="難易度">${levels}</div><p class="ldesc">${LEVELS.find(l => l[0] === quiz.level)[2]}</p><div class="qnav"><span>問 ${i + 1} / ${n}</span><div class="dots">${dots}</div></div>${q.freq ? '<p class="freq">よく出る</p>' : ''}<div class="q">${q.q}</div><div class="choices">${choices}</div>${explain}<div class="qfoot"><button type="button" class="qbtn" data-step="-1"${i === 0 ? ' disabled' : ''}>← 前</button><button type="button" class="qbtn" data-step="1"${i === n - 1 ? ' disabled' : ''}>次 →</button><span class="score">${answered} 問中 ${correct} 問正解</span><button type="button" class="qbtn" data-retry="1"${answered ? '' : ' disabled'}>やり直す</button></div>${list.some(([qq]) => qq.freq) ? FREQ_NOTE : ''}`;
+  }
+  function goQuestion(j) { const list = levelList(); quiz.i[quiz.level] = clamp(j, 0, list.length - 1); state.focus = null; applySetup(current()[0].setup); renderQuiz(); }
+  quizEl.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button'); if (!b || b.disabled) return;
+    const d = b.dataset;
+    if (d.pick !== undefined) { quiz.picked[current()[1]] = +d.pick; renderQuiz(); }
+    else if (d.level) { quiz.level = d.level; goQuestion(quiz.i[quiz.level]); }
+    else if (d.go !== undefined) goQuestion(+d.go);
+    else if (d.step !== undefined) goQuestion(quiz.i[quiz.level] + +d.step);
+    else if (d.retry) { levelList().forEach(([, k]) => { quiz.picked[k] = null; }); goQuestion(0); }
+    else if (d.focus) {
+      const q = current()[0]; state.focus = q.focus; applySetup({ ...q.setup, ...(q.reveal || {}) });
+      const target = $(q.focus.xs ? 'xs' : q.focus.graph ? 'graph' : 'sat');
+      target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    }
+  });
+  const tabs = [['tab-rec', 'panel-rec'], ['tab-quiz', 'panel-quiz']];
+  tabs.forEach(([t, p]) => $(t).addEventListener('click', () => {
+    tabs.forEach(([t2, p2]) => { $(t2).setAttribute('aria-selected', String(t2 === t)); $(p2).hidden = p2 !== p; });
+    if (p === 'panel-quiz') goQuestion(quiz.i[quiz.level]); else { state.focus = null; markRec(); renderAll(); }
+  }));
+  renderQuiz();
+
+  setState({ T: 20, e: 12.1, h: 0 });
+})();
+</script>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>中2 理科 気象とその変化｜動かして確かめる教材</title>
+<meta name="description" content="中学2年理科「気象とその変化」を、断面図・平面図・観測点の記録を動かして確かめる無料の教材。気象観測から日本の気象までの5章と、入試形式の総まとめ。ログイン不要・広告なし。">
+<link rel="canonical" href="https://rikasimlab.github.io/chu2-kisho/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="中2 理科 気象とその変化">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="中2 理科 気象とその変化｜動かして確かめる教材">
+<meta property="og:description" content="中学2年理科「気象とその変化」を、断面図・平面図・観測点の記録を動かして確かめる無料の教材。気象観測から日本の気象までの5章と、入試形式の総まとめ。ログイン不要・広告なし。">
+<meta property="og:url" content="https://rikasimlab.github.io/chu2-kisho/">
+<meta property="og:image" content="https://rikasimlab.github.io/chu2-kisho/ogp/mokuji.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: 単元の目次。上に地上天気図（温帯低気圧が東へ進む）、左上の表題枠に単元名、下に章の一覧を表の形で */
+  :root {
+    --paper: #eef1f4; --map: #f7f9fa; --panel: #ffffff; --ink: #17202a; --muted: #5f6b78; --line: #cfd6dd; --isobar: #8a96a3;
+    --warm: #d6451e; --cool: #1f63b3; --focus: #2a5d8f;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b; --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --paper: #0f1620; --map: #121b26; --panel: #17222e; --ink: #e7eaee; --muted: #98a5b3; --line: #2a3744; --isobar: #5d6c7b; --warm: #ff7d52; --cool: #63a6ff; --focus: #7fb3ff; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .app { max-width: 880px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 56px; }
+
+  /* 天気図 */
+  .hero { position: relative; height: clamp(230px, 34vw, 340px); border: 1.5px solid var(--ink); background: var(--map); overflow: hidden; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .cartouche { position: absolute; left: 14px; top: 14px; max-width: calc(100% - 28px); padding: 12px 18px 12px 16px; background: var(--panel); border: 1.5px solid var(--ink); }
+  .cartouche h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); font-weight: 700; line-height: 1.25; letter-spacing: .02em; text-wrap: balance; }
+  .cartouche p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+  .lead { margin: 16px 0 0; max-width: 46em; font-size: 15px; }
+
+  /* 章の一覧 */
+  .chapters { list-style: none; margin: 28px 0 0; padding: 0; border-top: 2px solid var(--ink); }
+  .ch { position: relative; display: grid; grid-template-columns: 3em 1fr auto; column-gap: 14px; align-items: baseline; padding: 18px 4px; border-bottom: 1px solid var(--line); min-width: 0; }
+  .ch .num { font-family: var(--font-num); font-weight: 600; font-size: 22px; line-height: 1; color: var(--ink); }
+  .ch h2 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; }
+  .ch h2 a { color: var(--focus); text-decoration: none; }
+  .ch h2 a::after { content: ""; position: absolute; inset: 0; }
+  .ch:hover h2 a { text-decoration: underline; text-underline-offset: .18em; }
+  .ch h2 a:focus-visible { outline: none; }
+  .ch h2 a:focus-visible::after { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .ch .sum { margin: 4px 0 0; font-size: 14.5px; }
+  .ch .kw { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  .ch .state { font-size: 14px; white-space: nowrap; color: var(--muted); }
+  .ch .state.open { color: var(--focus); font-weight: 700; text-decoration: underline; text-underline-offset: .18em; }
+  .ch.todo .num, .ch.todo h2 { color: var(--muted); }
+  .note { margin: 20px 0 0; font-size: 13px; color: var(--muted); max-width: 46em; }
+  @media (max-width: 520px) {
+    .hero { height: 240px; }
+    .ch { grid-template-columns: 2.4em 1fr; row-gap: 6px; }
+    .ch .state { grid-column: 2; justify-self: start; }
+  }
+</style>
+
+<div class="app">
+  <div class="hero">
+    <canvas id="map" aria-hidden="true"></canvas>
+    <div class="cartouche">
+      <h1>気象とその変化</h1>
+      <p>中学2年 理科　第2分野</p>
+    </div>
+  </div>
+  <p class="lead">動かして確かめる理科。章ごとに「断面図・平面図・観測点の記録」の同じ型で作っている。できた章から開ける。</p>
+  <p class="lead"><strong>無料・ログイン不要・広告なし。</strong><a href="about.html">この教材について（出典・作者）</a></p>
+
+  <ol class="chapters">
+    <li class="ch">
+      <span class="num">1</span>
+      <div><h2><a href="kansoku.html">気象観測</a></h2><p class="sum">気象要素と天気図記号、乾湿計と湿度表、圧力と大気圧（N/m²・hPa）</p><p class="kw">記号の読み書き、湿度表の読み取り、圧力の計算</p></div>
+      <span class="state open">開く</span>
+    </li>
+    <li class="ch">
+      <span class="num">2</span>
+      <div><h2><a href="kiatsu-to-kaze.html">気圧と風</a></h2><p class="sum">地面を温める・冷やすと、上昇気流 → 気圧 → 等圧線 → 風向がつながる。海風・陸風も</p><p class="kw">低気圧・高気圧、等圧線と風力、海陸風、天気図記号</p></div>
+      <span class="state open">開く</span>
+    </li>
+    <li class="ch">
+      <span class="num">3</span>
+      <div><h2><a href="suijoki.html">空気中の水の変化</a></h2><p class="sum">飽和水蒸気量、露点、湿度の計算、雲のでき方</p><p class="kw">露点、湿度の計算、雲のでき方</p></div>
+      <span class="state open">開く</span>
+    </li>
+    <li class="ch">
+      <span class="num">4</span>
+      <div><h2><a href="zensen.html">前線と天気の変化</a></h2><p class="sum">温帯低気圧が東へ進み、温暖前線・寒冷前線が通過すると気温・気圧・風向・天気がどう変わるか</p><p class="kw">前線の断面、温帯低気圧、通過時のグラフ</p></div>
+      <span class="state open">開く</span>
+    </li>
+    <li class="ch">
+      <span class="num">5</span>
+      <div><h2><a href="nihon-no-kisho.html">日本の気象</a></h2><p class="sum">季節を切り替えると日本付近の天気図と断面が変わる。冬の北西・夏の南東の季節風は海陸風の大規模版。3つの気団と停滞前線、偏西風、台風</p><p class="kw">気団、季節風、四季の天気図、台風</p></div>
+      <span class="state open">開く</span>
+    </li>
+    <li class="ch">
+      <span class="num">総</span>
+      <div><h2><a href="matome.html">総まとめ（入試形式）</a></h2><p class="sum">高校入試と同じ「文章・図・表・小問」の大問 5 つ。1〜5章をまたいで、用語 → 読み取り → 計算 → 理由の順に解く</p><p class="kw">3日間の観測記録、等圧線と風、前線の通過、四季の天気図、山を越える空気</p></div>
+      <span class="state open">開く</span>
+    </li>
+  </ol>
+
+  <p class="note">章名と用語は、現行の教科書（東京書籍・啓林館・大日本図書）の目次と突き合わせて揃えた。3章の名前は啓林館・教育出版と同じ。</p>
+</div>
+
+<script>
+(function () {
+  // 地上天気図：中心 996 hPa の温帯低気圧と東の高気圧が、東へゆっくり進む。等圧線 4 hPa ごと、20 hPa ごと太線。
+  // 前線の記号は 4章 zensen.html の frontLine と同じ（半円は進む側＝北東、三角は進む側＝南東）。
+  const cv = document.getElementById('map'), ctx = cv.getContext('2d');
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W = 0, H = 0, P = 1600, t0 = performance.now();
+
+  function frontLine(x1, y1, x2, y2, kind) {
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = dx / L, ny = dy / L;
+    const color = kind === 'warm' ? css('--warm') : css('--cool');
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    const ang = Math.atan2(ny, nx);
+    for (let s = 14; s < L - 6; s += 22) {
+      const bx = x1 + nx * s, by = y1 + ny * s;
+      ctx.beginPath();
+      if (kind === 'warm') { ctx.arc(bx, by, 6, ang, ang + Math.PI, true); ctx.fill(); }
+      else { ctx.moveTo(bx - nx * 6, by - ny * 6); ctx.lineTo(bx + ny * 10, by - nx * 10); ctx.lineTo(bx + nx * 6, by + ny * 6); ctx.closePath(); ctx.fill(); }
+    }
+  }
+  function isobars(cx, cy, n, stepX, stepY, rot, base, sign, labelTop) {
+    const ink = css('--isobar');
+    ctx.font = '600 11px ' + css('--font-num');
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    for (let i = 1; i <= n; i++) {
+      const v = base + sign * 4 * i, bold = v % 20 === 0;
+      ctx.strokeStyle = ink; ctx.lineWidth = bold ? 2 : 1;
+      ctx.beginPath(); ctx.ellipse(cx, cy, stepX * i, stepY * i, rot, 0, Math.PI * 2); ctx.stroke();
+      if (labelTop) {
+        ctx.fillStyle = css('--muted');
+        ctx.fillText(String(v), cx + stepX * i * 0.15, cy - stepY * i + 2 + (bold ? -1 : 0));
+      }
+    }
+  }
+  function label(x, y, kanji, hpa) {
+    ctx.textAlign = 'center';
+    ctx.lineWidth = 5; ctx.strokeStyle = css('--map'); ctx.lineJoin = 'round';
+    ctx.font = '700 18px ' + css('--font-body'); ctx.textBaseline = 'alphabetic';
+    ctx.strokeText(kanji, x, y - 7); ctx.fillStyle = css('--ink'); ctx.fillText(kanji, x, y - 7);
+    ctx.font = '600 12px ' + css('--font-num'); ctx.textBaseline = 'top';
+    ctx.strokeText(hpa, x, y + 5); ctx.fillStyle = css('--ink'); ctx.fillText(hpa, x, y + 5);
+    ctx.fillStyle = css('--ink'); ctx.beginPath(); ctx.arc(x, y - 1, 2, 0, Math.PI * 2); ctx.fill();
+  }
+  function system(cx, cy, k) {
+    isobars(cx, cy, 5, 34 * k, 26 * k, -0.35, 996, +1, true);                 // 低気圧：1000（太）…1016
+    const hx = cx - 420 * k, hy = cy + 30 * k;
+    isobars(hx, hy, 2, 52 * k, 40 * k, 0.25, 1028, -1, false);                // 高気圧：1024、1020（太）。寒冷前線の後ろ
+    frontLine(cx, cy, cx + 210 * k * Math.cos(25 * Math.PI / 180), cy + 210 * k * Math.sin(25 * Math.PI / 180), 'warm'); // 東南東へ
+    frontLine(cx, cy, cx - 0.6 * 230 * k, cy + 0.8 * 230 * k, 'cold');        // 南西へ
+    label(cx, cy, '低', '996');
+    label(hx, hy, '高', '1024');
+  }
+  function draw(now) {
+    const dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const k = W < 520 ? 0.8 : 1, cy = H * 0.52, home = W * 0.68;
+    const off = reduced ? 0 : ((now - t0) / 1000 * 4) % P;             // 1 秒に 4 px 東へ（4章の設定と同じ向き）
+    for (let i = -1; i <= 1; i++) system(home + off + i * P, cy, k);
+  }
+  function resize() {
+    const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    W = r.width; H = r.height; P = Math.max(W, 600) + 900;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    draw(performance.now());
+  }
+  function loop(now) { if (!document.hidden) draw(now); requestAnimationFrame(loop); }
+  addEventListener('resize', resize);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => draw(performance.now()));
+  resize();
+  if (!reduced) requestAnimationFrame(loop);
+})();
+</script>
