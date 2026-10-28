@@ -358,10 +358,12 @@
       let fx = rxv * 0.85 + dx * 0.5, fy = ryv * 0.85 + dy * 0.5;
       const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
       const flen = size * 0.3, gap = size * 0.13;
+      const fd = 2 * (fx * dx + fy * dy), gx = fd * dx - fx, gy = fd * dy - fy;   // 左側（右側を線で折り返す）
+      // 日本式（気象庁 wm2.pdf）：風力 6 までは右側に、7 以上は右側 6 本＋左側に（風力−6）本を先端から
       for (let i = 0; i < force; i++) {
-        const t = L - i * gap; if (t < size * 0.2) break;
+        const t = L - (i % 6) * gap, ux = i < 6 ? fx : gx, uy = i < 6 ? fy : gy;
         const px = x + dx * (R + t), py = y + dy * (R + t);
-        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * flen, py + fy * flen); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + ux * flen, py + uy * flen); ctx.stroke();
       }
     }
     ctx.restore();
@@ -523,7 +525,7 @@
     const k = xk(), lh = 19 * k, r = 9 * k, x0 = 12 + r, tx = x0 + r + 8, maxW = XW - tx - 8;
     let y = Math.max(XH_WIDE, ...xsDots.map(d => d.y1)) + 6 + lh / 2;
     ctx.save(); ctx.textBaseline = 'middle';
-    for (const { n, text, color } of xsNotes) {
+    for (const { n, text, color } of [...xsNotes].sort((a, b) => a.n - b.n)) {   // 描く順（重なりよけ）と番号の順はちがう
       ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x0, y, r, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = css('--panel'); ctx.font = '700 11px ' + css('--font-num'); ctx.textAlign = 'center'; ctx.fillText(String(n), x0, y + 0.5);
       ctx.fillStyle = css('--ink'); ctx.font = '12px ' + css('--font-body'); ctx.textAlign = 'left';
@@ -685,25 +687,25 @@
     if (state.mode === 'heat') {
       badgeCentered(xctx, 1, 300, GY + 24, '地面が温められる', color);
       badge(xctx, 2, 318, 150, '空気が温まり、軽くなって上がる（上昇気流）', 'right', color);
-      badgeCentered(xctx, 3, 300, TOP - 14, '上空で外へ広がる', lab);
-      badge(xctx, 4, 118, 120, '周りで空気がしずむ', 'right', lab);
-      badge(xctx, 5, 60, yGround - 20, '地上では中心へ風が吹きこむ', 'right', lab);
-      badgeCentered(xctx, 6, 300, 286, '中心ほど気圧が低い → 低気圧', color);
+      badgeCentered(xctx, 5, 300, TOP - 14, '上空で外へ広がる', lab);
+      badge(xctx, 6, 118, 120, '周りで空気がしずむ', 'right', lab);
+      badge(xctx, 4, 60, yGround - 20, '地上では中心へ風が吹きこむ', 'right', lab);
+      badgeCentered(xctx, 3, 300, 286, '地上の空気が減り、中心ほど気圧が低い → 低気圧', color);
     } else if (state.mode === 'cool') {
       badgeCentered(xctx, 1, 300, GY + 24, '地面が冷やされる（晴れた夜など）', color);
       badge(xctx, 2, 318, 150, '空気が冷えて重くなり、しずむ（下降気流）', 'right', color);
-      badge(xctx, 3, 60, yGround - 20, '地上では中心から風が吹き出す', 'right', lab);
-      badge(xctx, 4, 118, 120, '周りで空気が上がる', 'right', lab);
-      badgeCentered(xctx, 5, 300, TOP - 14, '上空から中心へ集まる', lab);
-      badgeCentered(xctx, 6, 300, 314, '中心ほど気圧が高い → 高気圧', color);
+      badge(xctx, 4, 60, yGround - 20, '地上では中心から風が吹き出す', 'right', lab);
+      badge(xctx, 5, 118, 120, '周りで空気が上がる', 'right', lab);
+      badgeCentered(xctx, 6, 300, TOP - 14, '上空から中心へ集まる', lab);
+      badgeCentered(xctx, 3, 300, 314, '地上の空気が増え、中心ほど気圧が高い → 高気圧', color);
     } else {
       const sea = state.mode === 'sea';
       badgeCentered(xctx, 1, up, GY + 24, sea ? '昼は陸の方が温まりやすい' : '夜は陸の方が冷めやすく、海が相対的に温かい', color);
       badge(xctx, 2, up + 18, 150, sea ? '陸の上で上昇気流' : '海の上で上昇気流', 'right', color);
-      badgeCentered(xctx, 3, 300, TOP - 14, sea ? '上空では陸から海へ' : '上空では海から陸へ', lab);
-      badge(xctx, 4, down > 300 ? down + 12 : down - 12, 120, sea ? '海の上で空気がしずむ' : '陸の上で空気がしずむ', 'left', lab);
-      badgeCentered(xctx, 5, 300, yGround - 22, sea ? '海から陸へ風が吹く ＝ 海風' : '陸から海へ風が吹く ＝ 陸風', lab);
-      badgeCentered(xctx, 6, 300, 314, sea ? '陸の気圧が低く、海の気圧が高い' : '海の気圧が低く、陸の気圧が高い', color);
+      badgeCentered(xctx, 5, 300, TOP - 14, sea ? '上空では陸から海へ' : '上空では海から陸へ', lab);
+      badge(xctx, 6, down > 300 ? down + 12 : down - 12, 120, sea ? '海の上で空気がしずむ' : '陸の上で空気がしずむ', 'left', lab);
+      badgeCentered(xctx, 4, 300, yGround - 22, sea ? '海から陸へ風が吹く ＝ 海風' : '陸から海へ風が吹く ＝ 陸風', lab);
+      badgeCentered(xctx, 3, 300, 314, sea ? '陸の気圧が低く、海の気圧が高い' : '海の気圧が低く、陸の気圧が高い', color);
       if (xsNotes) {                                                       // 同じ行に描く「地上の気圧」「1012 hPa」の字の場所を先に取る
         const h = 11 * xk();
         xctx.font = '11px ' + css('--font-body'); keepOut(20, 268 - h / 2, 20 + xctx.measureText('地上の気圧').width, 268 + h / 2);
@@ -891,7 +893,7 @@
     { level: 'easy', setup: { mode: 'heat', strength: 6, look: 'simple' },
       q: '地面が強く温められた場所では、空気の動きと地上の気圧はどうなるか。',
       choices: ['空気が上がり（上昇気流）、気圧は高くなる', '空気が下がり（下降気流）、気圧は低くなる', '空気が上がり（上昇気流）、気圧は低くなる', '空気が下がり（下降気流）、気圧は高くなる'], answer: 2,
-      explain: '断面図の②：温まった空気は軽くなって上がる。地上の空気が減るので気圧が下がり（⑥）、中心が低気圧になる。下の「地上の気圧」のグラフが中心でへこんでいる。',
+      explain: '断面図の②：温まった空気は軽くなって上がる。地上の空気が減るので気圧が下がり（③）、中心が低気圧になる。下の「地上の気圧」のグラフが中心でへこんでいる。',
       focus: { xs: 'up' } },
     { level: 'easy', setup: { mode: 'heat', strength: 5, look: 'simple' },
       q: '北半球の低気圧の地上付近では、風はどのように吹くか。',
@@ -911,7 +913,7 @@
     { level: 'easy', setup: { mode: 'sea', strength: 5, look: 'simple', seaSide: 'left' },
       q: 'よく晴れた日の昼、海岸付近で吹く風の向きと名前の組み合わせで正しいものはどれか。',
       choices: ['陸から海へ吹く・陸風', '海から陸へ吹く・陸風', '陸から海へ吹く・海風', '海から陸へ吹く・海風'], answer: 3,
-      explain: '平面図の矢印は海（西）から陸（東）へ向いている。断面図の⑤。風の名前は「吹いてくる側」でつける：海から吹けば海風。夜は逆向きの陸風になる。',
+      explain: '平面図の矢印は海（西）から陸（東）へ向いている。断面図の④。風の名前は「吹いてくる側」でつける：海から吹けば海風。夜は逆向きの陸風になる。',
       focus: { plan: 'coast' } },
     { level: 'easy', setup: { mode: 'heat', strength: 6, look: 'simple' },
       q: '天気図の等圧線は、ふつう何 hPa ごとに引き、何 hPa ごとに太い線にするか。',
@@ -927,7 +929,7 @@
     { level: 'std', setup: { mode: 'sea', strength: 6, look: 'simple', seaSide: 'left' },
       q: '昼に海風が吹くのはなぜか。',
       choices: ['海の方が陸より温まりやすく、海の上で上昇気流が起きるから', '陸の方が海より温まりやすく、陸の上で上昇気流が起きて陸の気圧が低くなるから', '陸の方が海より冷めやすく、陸の上で下降気流が起きるから', '海と陸の気圧がいつも同じだから'], answer: 1,
-      explain: '断面図の①→②→⑥：陸は温まりやすい（水は温まりにくく冷めにくい）→ 陸の上で上昇気流 → 陸の気圧が低く、海が高い → 気圧の高い海から低い陸へ風が吹く。',
+      explain: '断面図の①→②→③→④：陸は温まりやすい（水は温まりにくく冷めにくい）→ 陸の上で上昇気流 → 陸の気圧が低く、海が高い → 気圧の高い海から低い陸へ風が吹く。',
       focus: { xs: 'landUp' } },
     { level: 'std', setup: { mode: 'heat', strength: 5, look: 'simple', obs: { x: 430, y: 230 } },
       q: '観測点を図の位置に置いたとき、その天気図記号の読み方として正しいものはどれか。',
@@ -947,7 +949,7 @@
     { level: 'std', setup: { mode: 'land', strength: 5, look: 'simple', seaSide: 'left' },
       q: '断面図では、地上付近の風が陸から海へ吹き、海の上で上昇気流が起きている。これはいつの、何という風か。',
       choices: ['昼の海風', '昼の陸風', '夜の海風', '夜の陸風'], answer: 3,
-      explain: '断面図の②で、上昇気流が起きているのは海の上。夜は陸の方が先に冷えるので、相対的に温かい海の上で空気が上がり、陸から海へ風が吹く（⑤）。陸から吹くので陸風。',
+      explain: '断面図の②で、上昇気流が起きているのは海の上。夜は陸の方が先に冷えるので、相対的に温かい海の上で空気が上がり、陸から海へ風が吹く（④）。陸から吹くので陸風。',
       focus: { xs: 'seaUp' } },
     { level: 'std', setup: { mode: 'heat', strength: 3, look: 'simple', obs: { x: 430, y: 230 } },
       q: '観測点の位置はそのままで、温め方の強さを 3 から 8 にすると、等圧線の間隔と観測点の風力はどうなるか。',
@@ -963,7 +965,7 @@
     { level: 'hard', setup: { mode: 'land', strength: 6, look: 'simple', seaSide: 'left' },
       q: '晴れた日の夜、海岸付近で陸風が吹くのはなぜか。',
       choices: ['夜は海の方が陸より冷めやすく、海の上の気圧が高くなるから', '夜は陸の方が海より温まりやすく、陸の上で上昇気流が起きるから', '夜は陸の方が海より冷めやすく、相対的に温かい海の上で上昇気流が起きて海の気圧が低くなるから', '夜は風がなく、海と陸の気圧が同じになるから'], answer: 2,
-      explain: '断面図の①→②→⑥：陸は冷めやすく、海は冷めにくい → 海の上の空気が相対的に温かく、上昇気流 → 海の気圧が低く、陸が高い → 気圧の高い陸から低い海へ風が吹く。昼の海風と、温まる側・冷える側が入れかわる。',
+      explain: '断面図の①→②→③→④：陸は冷めやすく、海は冷めにくい → 海の上の空気が相対的に温かく、上昇気流 → 海の気圧が低く、陸が高い → 気圧の高い陸から低い海へ風が吹く。昼の海風と、温まる側・冷える側が入れかわる。',
       focus: { xs: 'seaUp' } },
     { level: 'hard', setup: { mode: 'sea', strength: 6, look: 'simple', seaSide: 'left' },
       q: '海陸風と同じしくみで、大陸と海（太平洋）の間で季節ごとに吹く風を季節風という。日本の夏の季節風について正しいものはどれか。',
@@ -988,7 +990,7 @@
     { level: 'hard', setup: { mode: 'heat', strength: 5, look: 'simple' },
       q: '地面を温めたときに起きる a〜d を、起きる順に並べたものとして正しいものはどれか。<br>a 上昇気流が起きる　b 地面の近くの空気が温められる　c 地上の気圧が下がる　d 周りから中心へ風が吹きこむ',
       choices: ['a → b → c → d', 'b → c → a → d', 'b → d → a → c', 'b → a → c → d'], answer: 3,
-      explain: '断面図の①②と「起きていること」の順：空気が温められる（b）→ 軽くなって上がる（a）→ 地上の空気が減って気圧が下がる（c）→ 気圧の高い周りから中心へ風が吹きこむ（d）。風は気圧の差ができてから吹く。',
+      explain: '断面図の①→②→③→④の順：空気が温められる（b）→ 軽くなって上がる（a）→ 地上の空気が減って気圧が下がる（c）→ 気圧の高い周りから中心へ風が吹きこむ（d）。風は気圧の差ができてから吹く。',
       focus: { xs: 'order' } },
     { level: 'hard', setup: { mode: 'cool', strength: 6, look: 'simple', obs: { x: 430, y: 230 } },
       q: `冷やす・強さ 6 の高気圧で、中心の真東、${QLINE} hPa の等圧線の少し内側に地点 Q がある。観測点を動かさずに等圧線と風の吹き方から考えて、Q の天気図記号の読みとして正しいものはどれか。`,

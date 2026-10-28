@@ -478,7 +478,9 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       ctx.lineWidth = Math.max(1.5, size * 0.06);
       ctx.beginPath(); ctx.moveTo(x + dx * R, y + dy * R); ctx.lineTo(x + dx * (R + L), y + dy * (R + L)); ctx.stroke();
       let fx = -dy * 0.85 + dx * 0.5, fy = dx * 0.85 + dy * 0.5; const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
-      for (let i = 0; i < force; i++) { const t = L - i * size * 0.13; if (t < size * 0.2) break; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * size * 0.3, py + fy * size * 0.3); ctx.stroke(); }
+      const fd = 2 * (fx * dx + fy * dy), gx = fd * dx - fx, gy = fd * dy - fy;   // 左側（右側を線で折り返す）
+      // 日本式（気象庁 wm2.pdf）：風力 6 までは右側に、7 以上は右側 6 本＋左側に（風力−6）本を先端から
+      for (let i = 0; i < force; i++) { const t = L - (i % 6) * size * 0.13, ux = i < 6 ? fx : gx, uy = i < 6 ? fy : gy; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + ux * size * 0.3, py + uy * size * 0.3); ctx.stroke(); }
     }
     ctx.restore();
   }

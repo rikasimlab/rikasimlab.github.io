@@ -252,7 +252,7 @@
     </figure>
   </main>
 
-  <footer>北半球の温帯低気圧を、教科書の模式図にそって単純化している。上の動く図では前線は低気圧と一緒に動き、閉そくさせない（閉そく前線は下の静止図）。前線の位置・雨の範囲・気温の値は典型的な例で、実際の低気圧ごとにちがう。天気図記号の読み方は「気圧と風」のページにある。</footer>
+  <footer>北半球の温帯低気圧を、教科書の模式図にそって単純化している。上の動く図では前線は低気圧と一緒に動き、閉そくさせない（閉そく前線は下の静止図）。等圧線は前線で折れ曲がり、寒冷前線に沿って気圧の谷がのびる形にしている。前線の位置・雨の範囲・気温の値は典型的な例で、実際の低気圧ごとにちがう。天気図記号の読み方は「気圧と風」のページにある。</footer>
 </div>
 
 <script>
@@ -271,12 +271,24 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
   const DW = norm(Math.cos(25 * Math.PI / 180), Math.sin(25 * Math.PI / 180)), DC = norm(-0.6, 0.8);   // 温暖前線は東南東へ、寒冷前線は南西へ
   const NW = [DW[1], -DW[0]], NC = [-DC[1], DC[0]];        // 温暖前線の「前方（北東側）」、寒冷前線の「後方（北西側）」
   const cxAt = (t) => -150 + SPEED * t;
+  const LEAN = -DC[0] / DC[1];                      // 寒冷前線は南へ 1 px で西へ 0.75 px
+  const TROUGH = 2.5, TROUGH_W = 15, STEP = 2, STEP_W = 20;   // 寒冷前線の気圧の谷（hPa, px）、温暖前線を境にした気圧の段
+  const ALPHA_BEHIND = 20 * Math.PI / 180;          // 寒冷前線の後ろ：寒気が北西から流れこむので、等圧線を横切る角度を小さく
 
   // ---------- 低気圧のモデル ----------
+  // 気圧：中心より北は同心円。南は等圧線を寒冷前線に沿って南西へずらし、寒冷前線の上に細い谷、温暖前線の後ろを少し低くする
+  // （前線で等圧線が折れ曲がる教科書の図の形。観測点の気圧は寒冷前線の通過のときに最も低く、通過後は上がる。中心の 988 hPa がいちばん低い）
+  function pressureAt(x, y, t) {
+    const dx0 = x - cxAt(t), dy = y - CY;
+    if (dy <= 0) return BG - A * Math.exp(-(dx0 * dx0 + dy * dy) / (2 * SIG * SIG));
+    const dx = dx0 + LEAN * dy * (1 - Math.exp(-dy * dy / 800)), taper = 1 - Math.exp(-dy * dy / 7200);
+    const bc = dx0 * NC[0] + dy * NC[1], aw = dx0 * NW[0] + dy * NW[1];
+    return BG - A * Math.exp(-(dx * dx + dy * dy) / (2 * SIG * SIG)) - taper * (TROUGH * Math.exp(-bc * bc / (2 * TROUGH_W * TROUGH_W)) + STEP / (1 + Math.exp(aw / STEP_W)));
+  }
   function situation(x, y, t) {
     const cx = cxAt(t), dx = x - cx, dy = y - CY;
     const r = Math.hypot(dx, dy);
-    const p = BG - A * Math.exp(-(r * r) / (2 * SIG * SIG));
+    const p = pressureAt(x, y, t);
     const aheadW = dx * NW[0] + dy * NW[1];      // 温暖前線より東にどれだけ
     const behindC = dx * NC[0] + dy * NC[1];     // 寒冷前線より西にどれだけ
     const south = dy > 0;
@@ -296,14 +308,15 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       temp = 7 + (behindC < 15 ? 11 * (1 - behindC / 15) : 0);
     }
     if (wx === 'rain') temp -= 1;
-    // 風（低気圧の周りを反時計回りに吹きこむ）
+    // 風（低気圧の周りを反時計回りに吹きこむ）：低い方を左に見て等圧線に沿う向きから、低い方へ ALPHA 傾ける
     let vx = 0, vy = 0, speed = 0;
     if (r > 1) {
       speed = 0.8 * A * (r / SIG) * Math.exp(-(r * r) / (2 * SIG * SIG)) + 2;
-      const ux = dx / r, uy = dy / r;
-      const tx = uy, ty = -ux, rx = -ux, ry = -uy;
-      vx = (Math.cos(ALPHA) * tx + Math.sin(ALPHA) * rx) * speed;
-      vy = (Math.cos(ALPHA) * ty + Math.sin(ALPHA) * ry) * speed;
+      const h = 0.5, gx = pressureAt(x + h, y, t) - pressureAt(x - h, y, t), gy = pressureAt(x, y + h, t) - pressureAt(x, y - h, t);
+      const g = Math.hypot(gx, gy) || 1, ux = gx / g, uy = gy / g;                 // 気圧の高い向き
+      const al = south && behindC > 0 ? ALPHA + (ALPHA_BEHIND - ALPHA) * Math.min(1, behindC / 20) : ALPHA;
+      vx = (Math.cos(al) * uy - Math.sin(al) * ux) * speed;
+      vy = (-Math.cos(al) * ux - Math.sin(al) * uy) * speed;
     }
     return { p, temp, wx, region, vx, vy, speed, aheadW, behindC, south };
   }
@@ -319,6 +332,8 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     const xwRel = sW * DW[0], xcRel = sC * DC[0];     // 中心から見た前線の x
     return { warm: (o.x - xwRel + 150) / SPEED, cold: (o.x - xcRel + 150) / SPEED, xwRel, xcRel };
   }
+  // 観測点の気圧が最も低くなる時刻（中心より南では寒冷前線の通過のころ）
+  function pMinTime(o) { let best = 0, bp = Infinity; for (let t = 0; t <= T_MAX; t += 0.1) { const p = pressureAt(o.x, o.y, t); if (p < bp) { bp = p; best = t; } } return best; }
 
   // ---------- 天気図記号 ----------
   function drawSymbol(ctx, x, y, size, wx, bearing, force) {
@@ -334,7 +349,9 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       const b = bearing * Math.PI / 180, dx = Math.sin(b), dy = -Math.cos(b), L = size * 0.9;
       ctx.beginPath(); ctx.moveTo(x + dx * R, y + dy * R); ctx.lineTo(x + dx * (R + L), y + dy * (R + L)); ctx.stroke();
       let fx = -dy * 0.85 + dx * 0.5, fy = dx * 0.85 + dy * 0.5; const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
-      for (let i = 0; i < force; i++) { const t = L - i * size * 0.13; if (t < size * 0.2) break; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * size * 0.3, py + fy * size * 0.3); ctx.stroke(); }
+      const fd = 2 * (fx * dx + fy * dy), gx = fd * dx - fx, gy = fd * dy - fy;   // 左側（右側を線で折り返す）
+      // 日本式（気象庁 wm2.pdf）：風力 6 までは右側に、7 以上は右側 6 本＋左側に（風力−6）本を先端から
+      for (let i = 0; i < force; i++) { const t = L - (i % 6) * size * 0.13, ux = i < 6 ? fx : gx, uy = i < 6 ? fy : gy; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + ux * size * 0.3, py + uy * size * 0.3); ctx.stroke(); }
     }
     ctx.restore();
   }
@@ -377,11 +394,25 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     pctx.globalAlpha = 1; pctx.restore();
     // 等圧線
     pctx.font = '12px ' + css('--font-num'); pctx.textAlign = 'center'; pctx.textBaseline = 'bottom';
+    const N = 100, h = PW / N, grid = [];                                  // 格子の等値線（前線で折れ曲がる）
+    for (let j = 0; j <= N; j++) { grid[j] = []; for (let i = 0; i <= N; i++) grid[j][i] = pressureAt(i * h, j * h, t); }
+    const cut = (x0, y0, p0, x1, y1, p1, lev) => { const k = (lev - p0) / (p1 - p0); return [x0 + (x1 - x0) * k, y0 + (y1 - y0) * k]; };
     for (let n = 1; 4 * n < A; n++) {
       const r = SIG * Math.sqrt(2 * Math.log(A / (4 * n))), val = BG - 4 * n, bold = val % 20 === 0;
-      pctx.strokeStyle = ink; pctx.lineWidth = bold ? 2 : 1; pctx.globalAlpha = bold ? 0.9 : 0.5;
-      pctx.beginPath(); pctx.arc(cx, CY, r, 0, Math.PI * 2); pctx.stroke(); pctx.globalAlpha = 1;
-      if (cx + 0 > 20 && cx < PW - 20) { pctx.fillStyle = ink; pctx.fillText(String(val), cx, CY - r - 3); }
+      pctx.strokeStyle = ink; pctx.lineWidth = bold ? 2 : 1; pctx.globalAlpha = bold ? 0.9 : 0.5; pctx.lineCap = 'round';
+      pctx.beginPath();
+      for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+        const a = grid[j][i], b = grid[j][i + 1], c = grid[j + 1][i + 1], d = grid[j + 1][i];
+        if (val < Math.min(a, b, c, d) || val >= Math.max(a, b, c, d)) continue;
+        const x0 = i * h, y0 = j * h, x1 = x0 + h, y1 = y0 + h, pts = [];
+        if ((a >= val) !== (b >= val)) pts.push(cut(x0, y0, a, x1, y0, b, val));
+        if ((b >= val) !== (c >= val)) pts.push(cut(x1, y0, b, x1, y1, c, val));
+        if ((c >= val) !== (d >= val)) pts.push(cut(x1, y1, c, x0, y1, d, val));
+        if ((d >= val) !== (a >= val)) pts.push(cut(x0, y1, d, x0, y0, a, val));
+        for (let k = 0; k + 1 < pts.length; k += 2) { pctx.moveTo(pts[k][0], pts[k][1]); pctx.lineTo(pts[k + 1][0], pts[k + 1][1]); }
+      }
+      pctx.stroke(); pctx.globalAlpha = 1;
+      if (cx + 0 > 20 && cx < PW - 20) { pctx.fillStyle = ink; pctx.fillText(String(val), cx, CY - r - 3); }   // 北側は同心円のまま
     }
     // 前線
     frontLine(pctx, cx, CY, cx + DW[0] * 560, CY + DW[1] * 560, 'warm');
@@ -733,7 +764,8 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
   const KEYS = ['ア', 'イ', 'ウ', 'エ'];
   const LEVELS = [['easy', 'イージー', '用語・記号・しくみの一問一答（入試の小問1〜2の型）'], ['std', 'スタンダード', '図・グラフの読み取り（入試の標準的な小問の型）'], ['hard', 'ハード', '観測記録の表・計算・理由（正答率が下がる小問の型）']];
   const QOBS = { x: 380, y: 300 }, QPT = passTimes(QOBS);      // 問題で使う観測点。温暖前線は約 13 h、寒冷前線は約 24 h に通過
-  const T_NEAR = (QOBS.x + 150) / SPEED;                       // 低気圧の中心が観測点の真北を通る時刻（気圧が最も低い）≒ 21 h
+  const T_NEAR = (QOBS.x + 150) / SPEED;                       // 低気圧の中心が観測点の真北を通る時刻 ≒ 21 h（気圧が最も低いのはここではない）
+  const T_PMIN = pMinTime(QOBS);                               // 気圧が最も低い時刻 ≒ 寒冷前線の通過（約 24 h）
   const hrs = (t) => `${Math.round(t)} 時間ごろ`;
   const obsAt = (t) => { const d = situation(QOBS.x, QOBS.y, t); const f = beaufort(d.speed); return { ...d, f, dir: f === 0 ? '静穏' : DIRS[Math.round(bearingFrom(d.vx, d.vy) / 22.5) % 16] }; };
   const REC_TIMES = [16, 19, 22, 25, 28];                       // 入試の表と同じ 3 時間ごと
@@ -822,17 +854,17 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     { level: 'hard', setup: { t: REC_TIMES[coldIdx + 1], obs: QOBS },
       q: `次の表は、観測点で 3 時間ごとに記録した気温・気圧・風向・天気である。${recTable()}寒冷前線が観測点を通過したのは、どの時間帯か。`,
       choices: recIntervals, answer: coldIdx,
-      explain: `気温が急に下がり（${obsAt(REC_TIMES[coldIdx]).temp.toFixed(0)} ℃ → ${obsAt(REC_TIMES[coldIdx + 1]).temp.toFixed(0)} ℃）、風向が時計回りに北寄りへ変わり、気圧が上がり始めた時間帯。3つの変化がそろう所を探す。グラフの寒冷前線の点線（${hrs(QPT.cold)}）と見比べる。入試の表はこの形で出る。`,
+      explain: `気温が急に下がり（${obsAt(REC_TIMES[coldIdx]).temp.toFixed(0)} ℃ → ${obsAt(REC_TIMES[coldIdx + 1]).temp.toFixed(0)} ℃）、風向が南寄りから北寄りへ変わった時間帯。気圧は寒冷前線の通過のころに最も低くなり（寒冷前線は気圧の谷）、通過後は上がる。3つの変化がそろう所を探す。グラフの寒冷前線の点線（${hrs(QPT.cold)}）と見比べる。入試の表はこの形で出る。`,
       focus: { graph: 'coldPass' } },
     { level: 'hard', setup: { t: QPT.cold + 2, obs: QOBS },
       q: '観測記録から寒冷前線の通過時刻を決めるとき、気温の低下だけで判断してはいけない理由として正しいものはどれか。',
       choices: ['気温は前線の通過と関係がないから', '夜になって気温が下がることもあるので、風向の変化と気圧の変化も合わせて見る必要があるから', '寒冷前線が通過すると気温は上がるから', '気温は湿度と同じ値になるから'], answer: 1,
       explain: 'グラフの寒冷前線の点線で、気温・風向・気圧の3つが同時に変わっていることを確かめる。夜間の冷えこみ（放射冷却）でも気温は下がるが、そのときは風向が南寄りから北寄りに急に変わることはない。',
       focus: { graph: 'coldPass' } },
-    { level: 'hard', setup: { t: T_NEAR, obs: QOBS },
+    { level: 'hard', setup: { t: T_PMIN, obs: QOBS },
       q: '観測点の気圧が最も低くなるのは、およそ何時間のところか。',
-      choices: [hrs(QPT.warm), hrs(QPT.cold), hrs(T_NEAR), hrs(30)], answer: 2,
-      explain: `低気圧の中心が観測点に最も近づいたとき（中心が観測点の真北を通るとき）に気圧が最も低い。グラフの気圧の谷。寒冷前線の通過（${hrs(QPT.cold)}）より前で、そのあと気圧は上がり続ける。`,
+      choices: [hrs(QPT.warm), hrs(T_NEAR), hrs(T_PMIN), hrs(30)], answer: 2,
+      explain: `グラフの気圧の谷。寒冷前線の通過（${hrs(QPT.cold)}）のときに最も低く、そのあと気圧は上がり続ける。平面図では、等圧線が寒冷前線のところで折れ曲がり、前線に沿って気圧の低い谷がのびている。低気圧の中心が観測点の真北を通る ${hrs(T_NEAR)}は、まだ谷の手前（東）なので最も低くはない。`,
       focus: { graph: 'pMin' } },
     { level: 'hard', setup: { t: QPT.cold, obs: QOBS },
       q: `グラフから、温暖前線の通過から寒冷前線の通過までおよそ ${hBetween} 時間かかったことがわかる。低気圧と前線が 1 時間に約 40 km 東へ進むとすると、観測点を通る東西の線の上で、温暖前線と寒冷前線の間の距離は約何 km か。`,
@@ -877,7 +909,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     graph: {
       coldPass: (ctx) => { const pt = passTimes(state.obs); if (pt) hlRect(ctx, GX(pt.cold) - 14, 14, 28, 228); },
       warmSector: (ctx) => { const pt = passTimes(state.obs); if (pt) hlRect(ctx, GX(pt.warm), 14, GX(pt.cold) - GX(pt.warm), 228); },
-      pMin: (ctx) => hlRect(ctx, GX((state.obs.x + 150) / SPEED) - 14, 14, 28, 228),
+      pMin: (ctx) => hlRect(ctx, GX(pMinTime(state.obs)) - 14, 14, 28, 228),
       future: (ctx) => hlRect(ctx, GX(state.t), 14, GX(T_MAX) - GX(state.t), 228)
     },
     occPlan: { symbol: (ctx) => hlRing(ctx, (OL[0] + OP[0]) / 2 + 6, (OL[1] + OP[1]) / 2, 44) },

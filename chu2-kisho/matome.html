@@ -203,7 +203,9 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       const b = bearing * Math.PI / 180, dx = Math.sin(b), dy = -Math.cos(b), L = size * 0.9;
       ctx.beginPath(); ctx.moveTo(x + dx * R, y + dy * R); ctx.lineTo(x + dx * (R + L), y + dy * (R + L)); ctx.stroke();
       let fx = -dy * 0.85 + dx * 0.5, fy = dx * 0.85 + dy * 0.5; const fl = Math.hypot(fx, fy); fx /= fl; fy /= fl;
-      for (let i = 0; i < force; i++) { const t = L - i * size * 0.13; if (t < size * 0.2) break; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + fx * size * 0.3, py + fy * size * 0.3); ctx.stroke(); }
+      const fd = 2 * (fx * dx + fy * dy), gx = fd * dx - fx, gy = fd * dy - fy;   // 左側（右側を線で折り返す）
+      // 日本式（気象庁 wm2.pdf）：風力 6 までは右側に、7 以上は右側 6 本＋左側に（風力−6）本を先端から
+      for (let i = 0; i < force; i++) { const t = L - (i % 6) * size * 0.13, ux = i < 6 ? fx : gx, uy = i < 6 ? fy : gy; const px = x + dx * (R + t), py = y + dy * (R + t); ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + ux * size * 0.3, py + uy * size * 0.3); ctx.stroke(); }
     }
     ctx.restore();
   }
@@ -348,9 +350,18 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
   const DW = norm(Math.cos(25 * Math.PI / 180), Math.sin(25 * Math.PI / 180)), DC = norm(-0.6, 0.8);
   const NW = [DW[1], -DW[0]], NC = [-DC[1], DC[0]];
   const cxAt = (t) => -150 + Z.SPEED * t;
+  // 気圧：4章 pressureAt と同じ（南は等圧線を寒冷前線に沿ってずらし、寒冷前線に細い谷、温暖前線の後ろを少し低く）
+  const LEAN = -DC[0] / DC[1], TROUGH = 2.5, TROUGH_W = 15, STEP = 2, STEP_W = 20, ALPHA_BEHIND = 20 * Math.PI / 180;
+  function pressureAt(x, y, t) {
+    const dx0 = x - cxAt(t), dy = y - Z.CY;
+    if (dy <= 0) return Z.BG - Z.A * Math.exp(-(dx0 * dx0 + dy * dy) / (2 * Z.SIG * Z.SIG));
+    const dx = dx0 + LEAN * dy * (1 - Math.exp(-dy * dy / 800)), taper = 1 - Math.exp(-dy * dy / 7200);
+    const bc = dx0 * NC[0] + dy * NC[1], aw = dx0 * NW[0] + dy * NW[1];
+    return Z.BG - Z.A * Math.exp(-(dx * dx + dy * dy) / (2 * Z.SIG * Z.SIG)) - taper * (TROUGH * Math.exp(-bc * bc / (2 * TROUGH_W * TROUGH_W)) + STEP / (1 + Math.exp(aw / STEP_W)));
+  }
   function situation(x, y, t) {
     const cx = cxAt(t), dx = x - cx, dy = y - Z.CY, r = Math.hypot(dx, dy);
-    const p = Z.BG - Z.A * Math.exp(-(r * r) / (2 * Z.SIG * Z.SIG));
+    const p = pressureAt(x, y, t);
     const aheadW = dx * NW[0] + dy * NW[1], behindC = dx * NC[0] + dy * NC[1];
     let wx, temp;
     if (dy <= 0) { wx = r < 120 ? 'rain' : r < 220 ? 'cloudy' : 'fine'; temp = 8; }
@@ -361,8 +372,10 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     let vx = 0, vy = 0, speed = 0;
     if (r > 1) {
       speed = 0.8 * Z.A * (r / Z.SIG) * Math.exp(-(r * r) / (2 * Z.SIG * Z.SIG)) + 2;
-      const ux = dx / r, uy = dy / r, tx = uy, ty = -ux, rx = -ux, ry = -uy;
-      vx = (Math.cos(Z.ALPHA) * tx + Math.sin(Z.ALPHA) * rx) * speed; vy = (Math.cos(Z.ALPHA) * ty + Math.sin(Z.ALPHA) * ry) * speed;
+      const h = 0.5, gx = pressureAt(x + h, y, t) - pressureAt(x - h, y, t), gy = pressureAt(x, y + h, t) - pressureAt(x, y - h, t);
+      const g = Math.hypot(gx, gy) || 1, ux = gx / g, uy = gy / g;
+      const al = dy > 0 && behindC > 0 ? Z.ALPHA + (ALPHA_BEHIND - Z.ALPHA) * Math.min(1, behindC / 20) : Z.ALPHA;
+      vx = (Math.cos(al) * uy - Math.sin(al) * ux) * speed; vy = (-Math.cos(al) * ux - Math.sin(al) * uy) * speed;
     }
     return { p, temp, wx, vx, vy, speed };
   }
@@ -386,9 +399,23 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     ctx.fillStyle = css('--rain'); ctx.globalAlpha = 0.16;
     for (let gx = 0; gx < W; gx += 10) for (let gy = 0; gy < W; gy += 10) if (situation(gx + 5, gy + 5, t).wx === 'rain') ctx.fillRect(gx, gy, 10, 10);
     ctx.globalAlpha = 1;
+    const N = 100, h = W / N, grid = [];                                  // 格子の等値線（前線で折れ曲がる）
+    for (let j = 0; j <= N; j++) { grid[j] = []; for (let i = 0; i <= N; i++) grid[j][i] = pressureAt(i * h, j * h, t); }
+    const cut = (x0, y0, p0, x1, y1, p1, lev) => { const k = (lev - p0) / (p1 - p0); return [x0 + (x1 - x0) * k, y0 + (y1 - y0) * k]; };
     for (let n = 1; 4 * n < Z.A; n++) {
       const r = Z.SIG * Math.sqrt(2 * Math.log(Z.A / (4 * n))), val = Z.BG - 4 * n, bold = val % 20 === 0;
-      ctx.strokeStyle = css('--isobar'); ctx.lineWidth = bold ? 2.2 : 1.1; ctx.beginPath(); ctx.arc(cx, CY, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = css('--isobar'); ctx.lineWidth = bold ? 2.2 : 1.1; ctx.lineCap = 'round'; ctx.beginPath();
+      for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+        const a = grid[j][i], b = grid[j][i + 1], c = grid[j + 1][i + 1], d = grid[j + 1][i];
+        if (val < Math.min(a, b, c, d) || val >= Math.max(a, b, c, d)) continue;
+        const x0 = i * h, y0 = j * h, x1 = x0 + h, y1 = y0 + h, pts = [];
+        if ((a >= val) !== (b >= val)) pts.push(cut(x0, y0, a, x1, y0, b, val));
+        if ((b >= val) !== (c >= val)) pts.push(cut(x1, y0, b, x1, y1, c, val));
+        if ((c >= val) !== (d >= val)) pts.push(cut(x1, y1, c, x0, y1, d, val));
+        if ((d >= val) !== (a >= val)) pts.push(cut(x0, y1, d, x0, y0, a, val));
+        for (let k = 0; k + 1 < pts.length; k += 2) { ctx.moveTo(pts[k][0], pts[k][1]); ctx.lineTo(pts[k + 1][0], pts[k + 1][1]); }
+      }
+      ctx.stroke();
       if (CY - r > 10) haloText(ctx, String(val), cx, CY - r, muted, fn('600', 11));
     }
     frontLine(ctx, cx, CY, cx + DW[0] * 560, CY + DW[1] * 560, 'warm');
@@ -686,7 +713,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
           focus: ['g3', 'fronts'] },
         { q: '表3 から、寒冷前線が地点 O を通過したのはどの時間帯と考えられるか。',
           choices: REC3.slice(0, -1).map((t, k) => `${clock(t)}〜${clock(REC3[k + 1])}`), answer: COLD3,
-          explain: `気温が急に下がり（${obs3(REC3[COLD3]).temp.toFixed(0)} ℃ → ${obs3(REC3[COLD3 + 1]).temp.toFixed(0)} ℃）、風向が南寄りから北寄りに変わり、気圧が上がり始めた時間帯。3 つの変化がそろうところを探す（モデルでは ${clock(Math.round(PT3.cold))}ごろに通過）。4章のグラフで、点線の左右を比べるのと同じ。` },
+          explain: `気温が急に下がり（${obs3(REC3[COLD3]).temp.toFixed(0)} ℃ → ${obs3(REC3[COLD3 + 1]).temp.toFixed(0)} ℃）、風向が南寄りから北寄りに変わった時間帯。気圧は寒冷前線の通過のころに最も低くなり（寒冷前線は気圧の谷）、通過後は上がる。3 つの変化がそろうところを探す（モデルでは ${clock(Math.round(PT3.cold))}ごろに通過）。4章のグラフで、点線の左右を比べるのと同じ。` },
         { q: '前線 Y の付近にできる雲と、雨の降り方の組み合わせとして、正しいものはどれか。',
           choices: ['乱層雲・広い範囲に長い時間おだやかな雨', '積乱雲・広い範囲に長い時間おだやかな雨', '乱層雲・せまい範囲に短い時間強い雨', '積乱雲・せまい範囲に短い時間強い雨'], answer: 3,
           explain: '寒冷前線では、重い寒気が暖気の下にもぐりこんで暖気を急に押し上げるので、縦に発達する積乱雲ができ、せまい範囲に短時間の強い雨が降る。表3 でも、寒冷前線の通過直後の記録が雨になっている。温暖前線（X）は乱層雲で、広い範囲におだやかな雨。',

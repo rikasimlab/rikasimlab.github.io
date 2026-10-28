@@ -111,6 +111,7 @@
   table.st th { background: var(--cell); color: var(--muted); font-weight: 500; text-align: left; width: 9.5em; }
   table.st td { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
   table.st tr.v td { font-weight: 600; }
+  table.st td.pad { border-color: transparent; }
   table.st td.isT { background: var(--warm-air); color: var(--warm); font-weight: 700; }
   table.st td.isTd { background: var(--cold-air); color: var(--cool); font-weight: 700; }
   table.st td.fo { outline: 3px dashed var(--focus); outline-offset: -3px; }
@@ -249,11 +250,11 @@
       <div class="tabpanel quiz" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden></div>
       <h3>雲ができるまでの順番</h3>
       <ol class="steps" id="steps"></ol>
-      <p class="why" id="why"><strong>なぜ上がると冷えるのか</strong>上空ほど、その上にある空気が少ないので気圧が低い。上昇した空気のかたまりは、周りの気圧が低くなるぶん膨張し、膨張すると温度が下がる（スプレー缶を噴射すると缶が冷たくなるのと同じ）。冷えて露点に達すると、入りきらなくなった水蒸気が、空気中の小さなちりを核にして水滴や氷の粒になる。これが雲。晴れた夜に地面が冷え、地表近くの空気が露点より下がると、地表近くで水蒸気が水滴になって浮かぶ。これが霧。冷えた金属のコップの表面がくもるのも、コップに触れた空気が露点より冷えたから。</p>
+      <p class="why" id="why"><strong>なぜ上がると冷えるのか</strong>上空ほど、その上にある空気が少ないので気圧が低い。上昇した空気のかたまりは、周りの気圧が低くなるぶん膨張し、膨張すると温度が下がる（フラスコの中の空気を注射器ですばやく引いて膨張させると、温度が下がってくもるのと同じ）。冷えて露点に達すると、入りきらなくなった水蒸気が、空気中の小さなちりを核にして水滴や氷の粒になる。これが雲。晴れた夜に地面が冷え、地表近くの空気が露点より下がると、地表近くで水蒸気が水滴になって浮かぶ。これが霧。冷えた金属のコップの表面がくもるのも、コップに触れた空気が露点より冷えたから。</p>
       <p class="motion-note hint">動きを減らす設定のため、自動の上昇はゆっくりにしています。</p>
     </aside>
     <figure class="panel wide">
-      <figcaption>飽和水蒸気量の表（空気 1 m³ に含める水蒸気の上限、g/m³）<span>教科書の表と同じ値。計算問題はこの表で解く</span></figcaption>
+      <figcaption>飽和水蒸気量の表（空気 1 m³ に含める水蒸気の上限、g/m³）<span>教科書の表と同じ値。計算問題はこの表で解く。0 ℃未満の 2 行は、雲の中が氷点下になったとき用</span></figcaption>
       <p class="legend"><span class="t"><i></i>地上の気温の欄</span><span class="d"><i></i>露点の欄（水蒸気量と同じ値になる気温）</span></p>
       <div class="sat" id="sat"></div>
     </figure>
@@ -269,6 +270,9 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
 (() => {
   // ---------- 飽和水蒸気量の表（教科書の値、docs/reference/suijoki.md） ----------
   const SAT = [4.8, 5.2, 5.6, 6.0, 6.4, 6.8, 7.3, 7.8, 8.3, 8.8, 9.4, 10.0, 10.7, 11.4, 12.1, 12.8, 13.6, 14.5, 15.4, 16.3, 17.3, 18.3, 19.4, 20.6, 21.8, 23.1, 24.4, 25.8, 27.2, 28.8, 30.4, 32.1, 33.8, 35.7, 37.6, 39.6, 41.7, 43.9, 46.2, 48.6, 51.1];
+  // 0 ℃未満（−15〜−1 ℃）。雲の中が氷点下になったときだけ使う（水に対する値、docs/reference/suijoki.md）
+  const SAT_BELOW = [1.6, 1.7, 1.9, 2.0, 2.2, 2.4, 2.5, 2.7, 2.9, 3.2, 3.4, 3.7, 3.9, 4.2, 4.5];
+  const T_LOW = -SAT_BELOW.length, satAt = (T) => T < 0 ? SAT_BELOW[T - T_LOW] : SAT[T];
   const T_MAX = 35, H_MAX = 3000, E_MIN = SAT[0];
   const LAPSE_DRY = 1.0, LAPSE_WET = 0.5;     // 100 m あたり下がる温度（℃）
   const state = { T: 20, e: 12.1, h: 0, playing: false, focus: null };
@@ -279,8 +283,8 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
 
   // 表の間を直線でつないだ飽和水蒸気量（整数の気温では表の値そのもの）
   function sat(T) {
-    T = clamp(T, 0, 40); const i = Math.floor(T), f = T - i;
-    return i >= 40 ? SAT[40] : SAT[i] + (SAT[i + 1] - SAT[i]) * f;
+    T = clamp(T, T_LOW, 40); const i = Math.floor(T), f = T - i;
+    return i >= 40 ? SAT[40] : satAt(i) + (satAt(i + 1) - satAt(i)) * f;
   }
   // 露点：飽和水蒸気量が e になる気温（表の間は直線で読む）
   function dewPoint(e) {
@@ -388,25 +392,27 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
 
   // ---------- 飽和水蒸気量のグラフ ----------
   const gr = document.getElementById('graph'), gctx = gr.getContext('2d');
-  let GW = 600; const GH = 450, GL = 52, GR = 16, GT = 24, GB = 48, TX = 40, EY = 50;
-  const gx = (T) => GL + T / TX * (GW - GL - GR), gy = (e) => GH - GB - e / EY * (GH - GB - GT);
+  let GW = 600, TMIN = 0; const GH = 450, GL = 52, GR = 16, GT = 24, GB = 48, TX = 40, EY = 50;
+  const gx = (T) => GL + (T - TMIN) / (TX - TMIN) * (GW - GL - GR), gy = (e) => GH - GB - e / EY * (GH - GB - GT);
   function drawGraph() {
     const s = gr.width / GW; gctx.setTransform(s, 0, 0, s, 0, 0); gctx.clearRect(0, 0, GW, GH);
     const ink = css('--ink'), muted = css('--muted'), warm = css('--warm'), cool = css('--cool'), line = css('--line');
     const g = ground(), p = parcel(state.h);
+    // 3000 m まで上げると氷点下になる空気のときだけ、横軸を 0 ℃未満へ広げる（上昇の途中で軸が動かないように）
+    TMIN = Math.max(T_LOW, Math.min(0, Math.floor(parcel(H_MAX).T / 5) * 5));
     gctx.fillStyle = css('--map'); gctx.fillRect(0, 0, GW, GH);
     // 目盛り
     gctx.strokeStyle = line; gctx.lineWidth = 1; gctx.font = '10px ' + css('--font-num'); gctx.fillStyle = muted;
-    for (let T = 0; T <= TX; T += 5) { gctx.beginPath(); gctx.moveTo(gx(T), GT); gctx.lineTo(gx(T), GH - GB); gctx.stroke(); gctx.textAlign = 'center'; gctx.textBaseline = 'top'; gctx.fillText(String(T), gx(T), GH - GB + 4); }
+    for (let T = TMIN; T <= TX; T += 5) { gctx.beginPath(); gctx.moveTo(gx(T), GT); gctx.lineTo(gx(T), GH - GB); gctx.stroke(); gctx.textAlign = 'center'; gctx.textBaseline = 'top'; gctx.fillText(String(T), gx(T), GH - GB + 4); }
     for (let e = 0; e <= EY; e += 5) { gctx.beginPath(); gctx.moveTo(GL, gy(e)); gctx.lineTo(GW - GR, gy(e)); gctx.stroke(); gctx.textAlign = 'right'; gctx.textBaseline = 'middle'; gctx.fillText(String(e), GL - 6, gy(e)); }
     gctx.fillStyle = muted; gctx.font = '11px ' + css('--font-body'); gctx.textAlign = 'center'; gctx.textBaseline = 'top'; gctx.fillText('気温〔℃〕', (GL + GW - GR) / 2, GH - GB + 32);
     gctx.save(); gctx.translate(12, (GT + GH - GB) / 2); gctx.rotate(-Math.PI / 2); gctx.textBaseline = 'middle'; gctx.fillText('水蒸気量〔g/m³〕', 0, 0); gctx.restore();
     // 飽和の曲線と、その下（まだ含める）・上（入りきらない）
-    gctx.save(); gctx.beginPath(); gctx.moveTo(gx(0), gy(0));
-    for (let T = 0; T <= TX; T += 0.5) gctx.lineTo(gx(T), gy(sat(T)));
+    gctx.save(); gctx.beginPath(); gctx.moveTo(gx(TMIN), gy(0));
+    for (let T = TMIN; T <= TX; T += 0.5) gctx.lineTo(gx(T), gy(sat(T)));
     gctx.lineTo(gx(TX), gy(0)); gctx.closePath(); gctx.fillStyle = css('--cell'); gctx.globalAlpha = 0.7; gctx.fill(); gctx.restore();
     gctx.strokeStyle = ink; gctx.lineWidth = 2.2; gctx.beginPath();
-    for (let T = 0; T <= TX; T += 0.5) { const x = gx(T), y = gy(sat(T)); if (T === 0) gctx.moveTo(x, y); else gctx.lineTo(x, y); }
+    for (let T = TMIN; T <= TX; T += 0.5) { const x = gx(T), y = gy(sat(T)); if (T === TMIN) gctx.moveTo(x, y); else gctx.lineTo(x, y); }
     gctx.stroke();
     gctx.fillStyle = ink; gctx.font = '700 11px ' + css('--font-body'); gctx.textAlign = 'right'; gctx.textBaseline = 'bottom'; gctx.fillText('飽和水蒸気量（曲線の上には入りきらない）', gx(36), gy(sat(36)) - 6);
     // 露点へ（水平に左へ、曲線にぶつかる）
@@ -447,13 +453,14 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
   const satEl = document.getElementById('sat');
   function renderSatTable() {
     const g = ground(), tdn = Math.round(g.Td);
-    const blocks = [[0, 9], [10, 19], [20, 29], [30, 40]];
+    const blocks = [[T_LOW, -6], [-5, -1], [0, 9], [10, 19], [20, 29], [30, 40]];
     satEl.innerHTML = blocks.map(([a, b]) => {
       let th = '<tr><th>気温〔℃〕</th>', tv = '<tr class="v"><th>飽和水蒸気量〔g/m³〕</th>';
       for (let T = a; T <= b; T++) {
         const cls = [T === g.T ? 'isT' : '', T === tdn ? 'isTd' : ''].join(' ').trim();
-        th += `<td class="${cls}" data-t="${T}">${T}</td>`; tv += `<td class="${cls}" data-v="${T}">${SAT[T].toFixed(1)}</td>`;
+        th += `<td class="${cls}" data-t="${T}">${T}</td>`; tv += `<td class="${cls}" data-v="${T}">${satAt(T).toFixed(1)}</td>`;
       }
+      for (let k = b - a + 1; k < 10; k++) { th += '<td class="pad"></td>'; tv += '<td class="pad"></td>'; }   // −5〜−1 の行も 10 列にそろえる
       return `<table class="st">${th}</tr>${tv}</tr></table>`;
     }).join('');
     const key = state.focus && state.focus.table;
@@ -480,7 +487,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
     $('r-hc').innerHTML = g.Hc === 0 ? `0 m<small>地上で露点。霧になる</small>` : `約 ${Math.round(g.Hc)} m<span class="calc">（${g.T} − ${r1(g.Td)}）× 100 m</span>`;
     $('p-h').textContent = `${state.h} m`;
     $('p-t').innerHTML = `${r1(p.T)} ℃<small>${p.cloud ? `露点 ${r1(g.Td)} から 0.5℃ × ${Math.round((state.h - g.Hc) / 100 * 10) / 10}` : `${g.T} − 1℃ × ${state.h / 100}`}</small>`;
-    $('p-e').innerHTML = `${r1(p.e)} g/m³<small>${p.cloud ? 'その温度の飽和水蒸気量' : '地上と同じ'}</small>`;
+    $('p-e').innerHTML = `${r1(p.e)} g/m³<small>${p.cloud ? (p.T < 0 ? 'その温度の飽和水蒸気量（表の 0 ℃未満の欄）' : 'その温度の飽和水蒸気量') : '地上と同じ'}</small>`;
     $('p-rh').textContent = `${Math.round(p.rh)} %`;
     $('p-c').innerHTML = p.cloud ? `${r1(p.cond)} g/m³<span class="calc">${r1(g.e)} − ${r1(p.e)}</span>` : `0 g<small>まだ露点に達していない</small>`;
     $('h-parcel').textContent = state.h === 0 ? '上昇した空気のかたまり（まだ地上）' : `上昇した空気のかたまり（${state.h} m）`;
@@ -720,7 +727,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       dew: (ctx) => { const g = ground(); hlRect(ctx, gx(g.Td) - 20, gy(g.e) - 16, gx(g.T) - gx(g.Td) + 36, gy(0) - gy(g.e) + 26); },
       cool: (ctx) => { const g = ground(); hlRect(ctx, gx(10) - 16, gy(g.e) - 16, gx(g.Td) - gx(10) + 32, gy(SAT[10]) - gy(g.e) + 32); },
       warm: (ctx) => { const g = ground(); hlRect(ctx, gx(g.T) - 16, gy(g.e) - 20, gx(25) - gx(g.T) + 32, 40); },
-      curve: (ctx) => hlRect(ctx, gx(0) - 6, gy(50) - 6, gx(40) - gx(0) + 12, gy(0) - gy(50) + 12)
+      curve: (ctx) => hlRect(ctx, gx(TMIN) - 6, gy(50) - 6, gx(40) - gx(0) + 12, gy(0) - gy(50) + 12)
     },
     xs: {
       path: (ctx) => { const a = parcelPos(0), b = parcelPos(Math.min(H_MAX, ground().Hc + 900)); hlRect(ctx, a.x - 40, b.y - 40, b.x - a.x + 270, a.y - b.y + 80); },
