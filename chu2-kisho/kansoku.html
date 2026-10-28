@@ -432,8 +432,16 @@
       const tw = sctx.measureText(label).width, px = CX + dx * k, py = CY + dy * k;
       let sx = dy, sy = -dx, align = Math.abs(sx) < 0.3 ? 'center' : sx > 0 ? 'left' : 'right';
       if ((align === 'left' && px + sx * d + tw > SW - 4) || (align === 'right' && px + sx * d - tw < 4)) { sx = -sx; sy = -sy; align = align === 'left' ? 'right' : 'left'; }
+      // 字のかたまりの四隅が輪の内側に収まらないとき（風向が南北に近いと横に長くはみ出す）は 2 行に折る
+      const lx = px + sx * d, ly = py + sy * d, LH = 12;
+      const inRing = (lines) => {
+        const w = Math.max(...lines.map(s => sctx.measureText(s).width)), h = lines.length * LH;
+        const x0 = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2;
+        return [[x0, ly - h / 2], [x0 + w, ly - h / 2], [x0, ly + h / 2], [x0 + w, ly + h / 2]].every(([qx, qy]) => Math.hypot(qx - CX, qy - CY) < RING - 4);
+      };
+      const lines = inRing([label]) ? [label] : ['風が吹いて', 'くる向き'];
       sctx.textAlign = align;
-      sctx.fillText(label, px + sx * d, py + sy * d);
+      lines.forEach((s, i) => sctx.fillText(s, lx, ly + (i - (lines.length - 1) / 2) * LH));
     }
     if (state.focus && state.focus.sym) hlRing(sctx, CX, CY, 126);
   }
