@@ -573,13 +573,15 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       ctx.save(); ctx.beginPath(); ctx.ellipse(a.x, a.y, a.rx, a.ry, 0, 0, Math.PI * 2);
       ctx.fillStyle = col; ctx.globalAlpha = a.on ? 0.13 : 0.045; ctx.fill();
       ctx.globalAlpha = a.on ? 0.75 : 0.3; ctx.strokeStyle = col; ctx.lineWidth = a.on ? 1.5 : 1; ctx.setLineDash([6, 5]); ctx.stroke(); ctx.restore();
-      // 名前は地図の中に入るところへ（端に近い気団は端ぞろえ）
-      const align = a.x < 80 ? 'left' : a.x > PW - 120 ? 'right' : 'center';
-      const lx = align === 'left' ? 12 : align === 'right' ? PW - 12 : a.x;
-      const ly = a.key === 'okhotsk' ? a.y + 48 : a.key === 'siberia' ? a.y + 10 : state.mode === 'typhoon' ? a.y - 80 : a.y - 40;
-      haloText(ctx, a.name, lx, ly, a.on ? col : css('--muted'), `${a.on ? 700 : 500} ${a.on ? 13 : 11}px ` + css('--font-body'), align);
-      haloText(ctx, a.sub, lx, ly + 16, a.on ? col : css('--muted'), '11px ' + css('--font-body'), align);
+      for (const t of airMassText(a)) haloText(ctx, t.text, t.x, t.y, a.on ? col : css('--muted'), t.font, t.align);
     }
+  }
+  // 気団の名前と性質の字。名前は地図の中に入るところへ（端に近い気団は端ぞろえ）
+  function airMassText(a) {
+    const align = a.x < 80 ? 'left' : a.x > PW - 120 ? 'right' : 'center';
+    const x = align === 'left' ? 12 : align === 'right' ? PW - 12 : a.x;
+    const y = a.key === 'okhotsk' ? a.y + 48 : a.key === 'siberia' ? a.y + 10 : state.mode === 'typhoon' ? a.y - 80 : a.y - 40;
+    return [{ text: a.name, x, y, align, font: `${a.on ? 700 : 500} ${a.on ? 13 : 11}px ` + css('--font-body') }, { text: a.sub, x, y: y + 16, align, font: '11px ' + css('--font-body') }];
   }
   // 台風：進路全体と太平洋高気圧のふち、左右の風の合成
   function drawTyphoonGuide(ctx) {
@@ -653,9 +655,49 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
   }
   const pendingLabels = [];
   function labelAt(ctx, lev, x, y) { pendingLabels.push([lev, x, y]); }
-  function flushLabels(ctx) {
-    for (const [lev, x, y] of pendingLabels) haloText(ctx, String(lev), Math.max(14, Math.min(PW - 14, x)), y, css('--muted'), '600 11px ' + css('--font-num'));
+  // 字の四角（論理座標）。fitCanvas が端から押し戻すのと同じく、図の内側に収めた位置で測る
+  function textBox(ctx, text, x, y, font, align, base) {
+    ctx.save(); ctx.font = font; const w = ctx.measureText(text).width, h = parseFloat(ctx.font.match(/([\d.]+)px/)[1]); ctx.restore();
+    const l = Math.max(4, Math.min(PW - 4 - w, align === 'right' ? x - w : align === 'left' ? x : x - w / 2));
+    const t = base === 'top' ? y : base === 'bottom' ? y - h : y - h / 2;
+    return [l, t, l + w, t + h];
+  }
+  const boxHit = (a, b, pad) => a[0] - pad < b[2] && a[2] + pad > b[0] && a[1] - pad < b[3] && a[3] + pad > b[1];
+  // 等圧線の値は、taken（reservedBoxes の字）と先に置いた値に重なるなら描かない（狭い幅で字が大きくなると重なるため）
+  function flushLabels(ctx, taken) {
+    const font = '600 11px ' + css('--font-num');
+    for (const [lev, x0, y] of pendingLabels) {
+      const x = Math.max(14, Math.min(PW - 14, x0)), b = textBox(ctx, String(lev), x, y, font);
+      if (taken.some(t => boxHit(b, t, 2))) continue;
+      taken.push(b); haloText(ctx, String(lev), x, y, css('--muted'), font);
+    }
     pendingLabels.length = 0;
+  }
+  // 高・低・台風の字の位置：上端に近い中心では、字が切れないよう図の内側へ下げる（点は中心のまま）
+  function markPos(ctx, q) {
+    const big = `700 ${q.kind === 'T' ? 16 : 22}px ` + css('--font-body'), small = '600 11px ' + css('--font-num');
+    const hb = textBox(ctx, '高', 0, 0, big)[3] * 2, hs = textBox(ctx, '0', 0, 0, small)[3] * 2;
+    const my = Math.max(q.y - 6, hb / 2 + 2);
+    return { big, small, my, ny: my + hb / 2 + hs / 2 + 2 };
+  }
+  // 等圧線の値より先に場所を取る字（方位・緯度経度・観測点・高／低・偏西風の注記・気団の名前）の四角
+  function reservedBoxes(ctx) {
+    const num10 = '10px ' + css('--font-num'), bold12 = '700 12px ' + css('--font-body'), o = state.obs;
+    const out = [
+      ...[30, 40].map(lat => textBox(ctx, lat + '°N', 4, L2Y(lat) - 2, num10, 'left', 'bottom')),
+      ...[130, 140, 150].map(lon => textBox(ctx, lon + '°E', L2X(lon), PW - 14, num10, 'center', 'top')),
+      textBox(ctx, '北', 300, 4, bold12, 'center', 'top'), textBox(ctx, '南', 300, PW - 4, bold12, 'center', 'bottom'),
+      textBox(ctx, '西', 4, 300, bold12, 'left'), textBox(ctx, '東', PW - 4, 300, bold12, 'right'),
+      [o.x - 30, o.y - 30, o.x + 30, o.y + 30], textBox(ctx, '観測点', o.x + 36, o.y, bold12, 'left'),
+    ];
+    for (const q of systems()) {
+      if (q.kind === 'T2' || q.x < -20 || q.x > PW + 20 || q.y < -20 || q.y > PW + 20) continue;
+      const mp = markPos(ctx, q);
+      out.push(textBox(ctx, q.kind === 'T' ? '台風' : '高', q.x, mp.my, mp.big), textBox(ctx, String(Math.round(pressureAt(q.x, q.y))), q.x, mp.ny, mp.small));
+    }
+    if (state.mode === 'spring') out.push(textBox(ctx, '偏西風 →  西から東へ', 300, 38, bold12));
+    for (const a of airMasses()) for (const t of airMassText(a)) out.push(textBox(ctx, t.text, t.x, t.y, t.font, t.align));
+    return out;
   }
   function drawPlan() {
     const s = plan.width / PW; pctx.setTransform(s, 0, 0, s, 0, 0); pctx.clearRect(0, 0, PW, PW);
@@ -698,7 +740,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       pctx.restore();
     }
     // 等圧線
-    drawIsobars(pctx); flushLabels(pctx);
+    drawIsobars(pctx);
     // 前線
     if (m === 'baiu') {
       const pts = []; for (let x = 0; x <= PW; x += 6) pts.push([x, frontY(x, v)]);
@@ -714,9 +756,9 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       if (q.kind === 'T2') continue;
       if (q.x < -20 || q.x > PW + 20 || q.y < -20 || q.y > PW + 20) continue;
       const p = Math.round(pressureAt(q.x, q.y)), hi = q.kind === 'H';
-      const color = hi ? cool : warm, mark = q.kind === 'T' ? '台風' : hi ? '高' : '低';
-      haloText(pctx, mark, q.x, q.y - 6, color, `700 ${q.kind === 'T' ? 16 : 22}px ` + css('--font-body'));
-      haloText(pctx, String(p), q.x, q.y + 13, color, '600 11px ' + css('--font-num'));
+      const color = hi ? cool : warm, mark = q.kind === 'T' ? '台風' : hi ? '高' : '低', mp = markPos(pctx, q);
+      haloText(pctx, mark, q.x, mp.my, color, mp.big);
+      haloText(pctx, String(p), q.x, mp.ny, color, mp.small);
       pctx.fillStyle = color; pctx.beginPath(); pctx.arc(q.x, q.y, q.kind === 'T' ? 3 : 2, 0, Math.PI * 2); pctx.fill();
       if (q.name && q.kind !== 'T' && Math.abs(q.amp) >= 6 && q.x > 40 && q.x < PW - 40 && !(m === 'typhoon' && q.kind === 'H') && q.name !== 'オホーツク海高気圧') haloText(pctx, q.name, q.x, q.y + 30, color, '700 11px ' + css('--font-body'));
     }
@@ -731,6 +773,7 @@ window.UNIT_NAV = [["← 目次（気象とその変化）", "./"], ["1 気象�
       const len = Math.min(26, 6 + w.speed * 1.2);
       arrow(pctx, gx, gy, gx + w.vx / w.speed * len, gy + w.vy / w.speed * len, muted, 1.2);
     }
+    flushLabels(pctx, reservedBoxes(pctx));                               // 等圧線の値は矢印の上に（ふちどりで矢印を隠す）
     // 方位
     pctx.fillStyle = ink; pctx.font = '700 12px ' + css('--font-body'); pctx.textBaseline = 'top'; pctx.textAlign = 'center';
     pctx.fillText('北', 300, 4); pctx.textBaseline = 'bottom'; pctx.fillText('南', 300, PW - 4);

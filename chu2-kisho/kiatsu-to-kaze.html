@@ -514,7 +514,10 @@
   const xk = () => Math.min(2, Math.max(1, XW / (xs.clientWidth || XW)));   // fitCanvas と同じ拡大率
   let xsNotes = null, xsDots = [];                                           // 狭い幅のとき、描いた番号の文と、丸・字の枠（避ける四角）をためる
   // (x, y) を中心とする半径 r の丸（字なら半分の大きさ r）が、ためた四角と 3 px 以内に重なるあいだ右へずらす
-  function clearOfDots(x, y, r) { while (xsDots.some(d => x + r + 3 > d.x0 && x - r - 3 < d.x1 && y + r + 3 > d.y0 && y - r - 3 < d.y1)) x += 4; return x; }
+  const hitDots = (x, y, r) => xsDots.some(d => x + r + 3 > d.x0 && x - r - 3 < d.x1 && y + r + 3 > d.y0 && y - r - 3 < d.y1);
+  function clearOfDots(x, y, r) { while (hitDots(x, y, r)) x += 4; return x; }
+  // 左右どちらかの近い方へずらす（右だけだと「1012 hPa」の字にぶつかる地名の字に使う）
+  function clearOfDotsNear(x, y, r) { const R = clearOfDots(x, y, r); let L = x; while (L > r && hitDots(L, y, r)) L -= 4; return L > r && x - L < R - x ? L : R; }
   const keepOut = (x0, y0, x1, y1) => { if (xsNotes) xsDots.push({ x0, y0, x1, y1 }); };
   function drawXsNotes(ctx) {
     const k = xk(), lh = 19 * k, r = 9 * k, x0 = 12 + r, tx = x0 + r + 8, maxW = XW - tx - 8;
@@ -701,8 +704,13 @@
       badge(xctx, 4, down > 300 ? down + 12 : down - 12, 120, sea ? '海の上で空気がしずむ' : '陸の上で空気がしずむ', 'left', lab);
       badgeCentered(xctx, 5, 300, yGround - 22, sea ? '海から陸へ風が吹く ＝ 海風' : '陸から海へ風が吹く ＝ 陸風', lab);
       badgeCentered(xctx, 6, 300, 314, sea ? '陸の気圧が低く、海の気圧が高い' : '海の気圧が低く、陸の気圧が高い', color);
+      if (xsNotes) {                                                       // 同じ行に描く「地上の気圧」「1012 hPa」の字の場所を先に取る
+        const h = 11 * xk();
+        xctx.font = '11px ' + css('--font-body'); keepOut(20, 268 - h / 2, 20 + xctx.measureText('地上の気圧').width, 268 + h / 2);
+        xctx.font = '11px ' + css('--font-num'); keepOut(XW - 20 - xctx.measureText(BG + ' hPa').width, 268 - h / 2, XW - 20, 268 + h / 2);
+      }
       xctx.font = '700 12px ' + css('--font-body'); xctx.textAlign = 'center'; xctx.textBaseline = 'middle';
-      const ly = (x) => GY + 24 + (down === x || xsNotes ? 0 : 16), lx = (x) => xsNotes ? clearOfDots(x, GY + 24, 8 * xk()) : x;
+      const ly = (x) => GY + 24 + (down === x || xsNotes ? 0 : 16), lx = (x) => xsNotes ? clearOfDotsNear(x, GY + 24, 8 * xk()) : x;
       xctx.fillStyle = cool; xctx.fillText('海', lx(seaX), ly(seaX));
       xctx.fillStyle = ink; xctx.fillText('陸', lx(landX), ly(landX));
     }
